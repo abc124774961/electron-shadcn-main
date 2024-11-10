@@ -1,0 +1,87 @@
+{
+    "accountList": [
+        {
+            "account": "abc123",
+            "password": "abc123456",
+            "isOpen": true,
+            "lastHrefUrl": ""
+        },
+        {
+            "account": "abc123456",
+            "password": "abc123456",
+            "isOpen": false
+        },
+        {
+            "account": "abc1234567",
+            "password": "abc123456",
+            "isOpen": false
+        },
+        {
+            "account": "smile1",
+            "password": "111111",
+            "isOpen": false
+        },
+        {
+            "account": "lcy123",
+            "password": "111111",
+            "pubId": "lcy123",
+            "isOpen": false
+        },
+        {
+            "account": "berrys",
+            "pubId": "berrys",
+            "password": "111111",
+            "isOpen": false
+        },
+        {
+            "account": "1182482744@qq.com",
+            "password": "dgvb2242253269",
+            "pubId": "dayj",
+            "isOpen": false
+        },
+        {
+            "account": "508369742@qq.com",
+            "password": "222222",
+            "pubId": "zengdongbo",
+            "isOpen": false
+        },
+        {
+            "account": "vb588088042",
+            "password": "dgvb2242253269",
+            "isOpen": false,
+            "payPassword": "456988"
+        },
+        {
+            "account": "emily2332@163.com",
+            "password": "222222",
+            "isOpen": false
+        },
+        {
+            "account": "abc124774961",
+            "password": "abc123456",
+            "isOpen": false
+        },
+        {
+            "account": "starstech",
+            "password": "starstech",
+            "isOpen": false,
+            "phonse": "+1 5393079043",
+            "google": "starstech33@gmail.com"
+        },
+        {
+            "account": "emma2222a@163.com",
+            "password": "111111",
+            "isOpen": false
+        },
+        {
+            "account": "thompson2012@163.com",
+            "password": "111111",
+            "isOpen": false
+        },
+        {
+            "account": "beers",
+            "password": "111111",
+            "isOpen": false
+        }
+    ]
+}
