@@ -61,7 +61,8 @@
             "account": {
                 "account": "thompson2012",
                 "email": "thompson2012@163.com",
-                "password": "111111"
+                "password": "111111",
+                "kyc": "蔡青-同学"
             },
             "browser": {
                 "userAgent": {
@@ -143,22 +144,79 @@
             }
         },
         {
+            "isOpen": true,
+            "account": {
+                "account": "zengdongbo",
+                "password": "222222",
+                "email": "508369742@qq.com"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 11; GPQ12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "117.120.0.54",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": true,
+            "account": {
+                "account": "vb588088042",
+                "password": "dgvb2242253269",
+                "payPassword": "456988",
+                "kyc": "哥"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 11; IN2025) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.40.199",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": true,
+            "account": {
+                "account": "starstech",
+                "password": "starstech",
+                "phonse": "+1 5393079043",
+                "email": "starstech33@gmail.com",
+                "google": "starstech33@gmail.com",
+                "kyc": "蔡青"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 11; M2102K1C) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.52.31",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
             "account": "berrys",
             "password": "111111",
             "isOpen": false
-        },
-        {
-            "account": "zengdongbo",
-            "password": "222222",
-            "email": "508369742@qq.com",
-            "isOpen": false
-        },
-        {
-            "account": "vb588088042",
-            "password": "dgvb2242253269",
-            "isOpen": false,
-            "payPassword": "456988",
-            "kyc": "哥"
         },
         {
             "account": "",
@@ -171,14 +229,6 @@
             "account": "abc124774961",
             "password": "abc123456",
             "isOpen": false
-        },
-        {
-            "account": "starstech",
-            "password": "starstech",
-            "isOpen": false,
-            "phonse": "+1 5393079043",
-            "google": "starstech33@gmail.com",
-            "kyc": "蔡青"
         },
         {
             "account": "emma2222a@163.com",
