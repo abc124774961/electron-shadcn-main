@@ -1,60 +1,171 @@
 {
     "accountList": [
         {
-            "account": "abc123",
-            "password": "abc123456",
             "isOpen": true,
-            "lastHrefUrl": ""
+            "account": {
+                "account": "abc123",
+                "password": "abc123456"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.4.230",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "handawei",
+                    "password": "QURJIEe2Z5"
+                }
+            }
         },
         {
-            "account": "abc123456",
-            "password": "abc123456",
-            "isOpen": false
+            "isOpen": true,
+            "account": {
+                "account": "abc123456",
+                "password": "abc123456"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+                },
+                "lastHrefUrl": ""
+            }
         },
         {
-            "account": "abc1234567",
-            "password": "abc123456",
-            "isOpen": false
+            "isOpen": true,
+            "account": {
+                "account": "abc1234567",
+                "password": "abc123456"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.50.35",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
         },
         {
-            "account": "smile1",
-            "password": "111111",
-            "isOpen": false
+            "isOpen": true,
+            "account": {
+                "account": "thompson2012",
+                "email": "thompson2012@163.com",
+                "password": "111111"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.54.115",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
         },
         {
-            "account": "lcy123",
-            "password": "111111",
-            "pubId": "lcy123",
-            "isOpen": false
+            "isOpen": true,
+            "account": {
+                "account": "smile1",
+                "password": "111111"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 11; Mi 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.54.93",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": true,
+            "account": {
+                "account": "lcy123",
+                "password": "111111"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1 Edg/94.0.992.38"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "103.54.154.220",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": true,
+            "account": {
+                "account": "dayi",
+                "password": "dgvb2242253269",
+                "email": "1182482744@qq.com"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 11; SM-G991U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "103.54.154.120",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
         },
         {
             "account": "berrys",
-            "pubId": "berrys",
             "password": "111111",
             "isOpen": false
         },
         {
-            "account": "1182482744@qq.com",
-            "password": "dgvb2242253269",
-            "pubId": "dayj",
-            "isOpen": false
-        },
-        {
-            "account": "508369742@qq.com",
+            "account": "zengdongbo",
             "password": "222222",
-            "pubId": "zengdongbo",
+            "email": "508369742@qq.com",
             "isOpen": false
         },
         {
             "account": "vb588088042",
             "password": "dgvb2242253269",
             "isOpen": false,
-            "payPassword": "456988"
+            "payPassword": "456988",
+            "kyc": "哥"
         },
         {
-            "account": "emily2332@163.com",
-            "password": "222222",
-            "isOpen": false
+            "account": "",
+            "email": "670612232@qq.com",
+            "password": "dgvb2242253269",
+            "isOpen": false,
+            "kyc": "妈"
         },
         {
             "account": "abc124774961",
@@ -66,7 +177,8 @@
             "password": "starstech",
             "isOpen": false,
             "phonse": "+1 5393079043",
-            "google": "starstech33@gmail.com"
+            "google": "starstech33@gmail.com",
+            "kyc": "蔡青"
         },
         {
             "account": "emma2222a@163.com",
@@ -74,14 +186,44 @@
             "isOpen": false
         },
         {
-            "account": "thompson2012@163.com",
-            "password": "111111",
+            "account": "emily2332@163.com",
+            "password": "222222",
             "isOpen": false
         },
         {
             "account": "beers",
             "password": "111111",
             "isOpen": false
+        },
+        {
+            "account": "小舅"
+        },
+        {
+            "account": "大舅"
+        },
+        {
+            "account": "大舅妈"
+        },
+        {
+            "account": "大爷"
+        },
+        {
+            "account": "大嫂"
+        },
+        {
+            "account": "三哥"
+        },
+        {
+            "account": "二姐"
+        },
+        {
+            "account": "二姐夫"
+        },
+        {
+            "account": "蔡青"
+        },
+        {
+            "account": "蔡晋"
         }
     ]
 }

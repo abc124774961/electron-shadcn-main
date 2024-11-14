@@ -22,3 +22,9 @@ ipcRenderer.on("taskConfig", (event, dataConfig: ITaskConfig) => {
         },
     });
 });
+
+// 监听主进程发送的数据
+ipcRenderer.on("url-change", (event) => {
+    console.log("url-change");
+    alert("url-change");
+});

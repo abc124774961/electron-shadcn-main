@@ -18,9 +18,10 @@ import path from "path";
 import playwright, { ElectronApplication, _electron as electron } from "playwright";
 // import playwrightCore from "playwright-core";
 import fs from "fs";
-import { IAccountInfo, ITaskConfig } from "./types";
+import { IAccountInfo, ITaskConfig, IWindowState } from "./types";
 import TaskConfig from "./task/TaskConfig";
 import { getCurrentWebContents } from "@electron/remote";
+import { sockProxyRules } from "electron-session-proxy";
 
 const inDevelopment = process.env.NODE_ENV === "development";
 
@@ -48,8 +49,20 @@ async function createWindow() {
     //     });
     // }
 
+    const setCustomSession = () => {
+        // const customSession = session.fromPartition("persist:name");
+        // const cachePath = "path/to/your/cache/directory";
+        // session.fromPath("./cache");
+        // app.setAppLogsPath("/Users/apple/baidu-pan/web3-browser-cache");
+        app.setPath("appData", "/Users/apple/baidu-pan/web3-browser-cache");
+        // app.setPath("web3-browser-cache", "/Users/apple/baidu-pan/web3-browser-cache");
+        let aa = session.defaultSession.getStoragePath();
+        console.log("fdafdafdsfdsafa", aa);
+    };
     // const mainWindow: BrowserWindow = (await electronApp.firstWindow()) as any;
     // debugger;
+
+    setCustomSession();
 
     const mainWindow = new BrowserWindow({
         width: width,
@@ -67,11 +80,11 @@ async function createWindow() {
     registerListeners(mainWindow);
 
     const dataConfig: ITaskConfig = JSON.parse(fs.readFileSync("src/task1.config.json", "utf-8"));
-    // const taskConfig: TaskConfig = TaskConfig.fromJson(JSON.stringify(dataConfig));
-    console.log("dataConfig", dataConfig);
+    const taskConfig: TaskConfig = TaskConfig.fromJson(JSON.stringify(dataConfig));
+    // console.log("dataConfig", dataConfig);
 
     const webContainerView = new View();
-    const containerLayout = new ViewContainerLayout(webContainerView, 5);
+    const containerLayout = new ViewContainerLayout(webContainerView, 6);
 
     // // Open the DevTools.
     // mainWindow.webContents.openDevTools();
@@ -84,7 +97,7 @@ async function createWindow() {
     mainWindow.on("resize", () => {
         const { height, width } = mainWindow.contentView.getBounds();
         // 更新布局
-        // containerLayout?.updateLayout(mainWindow.contentView.getBounds());
+        containerLayout?.updateLayout(mainWindow.contentView.getBounds());
         webContainerView?.setBounds({ x: 0, y: top, width, height: height - top });
     });
 
@@ -147,34 +160,34 @@ async function createWindow() {
 
     // nativeTheme.themeSource = "dark";
 
-    // mainWindow.contentView.addChildView(webContainerView);
+    mainWindow.contentView.addChildView(webContainerView);
 
     // // 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1'
     // // 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
 
-    // /**
-    //  * 循环创建tabWebContent、初始化设置创建个数、添加到webContainerView
-    //  */
-    // const accountList: Array<IAccountInfo> = taskConfig.getAccountListByIsOpen(true);
-    // // const tabWebCount = taskConfig.getAccountListByIsOpen(true).length; //dataConfig.accountList.length;
-    // accountList.forEach((account) => {
-    //     // for (let i = 0; i < tabWebCount; i++) {
-    //     // if (i == 0 || i == 2 || i == 3 || i == 5 || i == 1) continue;
-    //     const view = createNewWebTabContent(account.account);
-    //     webContainerView.addChildView(view);
-    //     containerLayout.addViewLayoutItemModel(view);
-    //     // }
+    /**
+     * 循环创建tabWebContent、初始化设置创建个数、添加到webContainerView
+     */
+    const windowList: Array<IWindowState> = taskConfig.getAccountListByIsOpen(true);
+    // const tabWebCount = taskConfig.getAccountListByIsOpen(true).length; //dataConfig.accountList.length;
+    windowList.forEach((win) => {
+        // for (let i = 0; i < tabWebCount; i++) {
+        // if (i == 0 || i == 2 || i == 3 || i == 5 || i == 1) continue;
+        const view = createNewWebTabContent(win);
+        webContainerView.addChildView(view);
+        containerLayout.addViewLayoutItemModel(view, win);
+        // }
 
-    //     require("@electron/remote/main").initialize();
-    //     require("@electron/remote/main").enable(view);
-    // });
+        // require("@electron/remote/main").initialize();
+        // require("@electron/remote/main").enable(view);
+    });
 
-    // // // const view = createNewWebTabContent(5);
-    // // // webContainerView.addChildView(view);
-    // // // containerLayout.addViewLayoutItemModel(view);
+    // const view = createNewWebTabContent(5);
+    // webContainerView.addChildView(view);
+    // containerLayout.addViewLayoutItemModel(view);
 
-    // // 更新布局
-    // // containerLayout.updateLayout(webContainerView.getBounds());
+    // 更新布局
+    containerLayout.updateLayout(webContainerView.getBounds());
     // });
 
     // const getState = () => ({
@@ -291,7 +304,7 @@ class ViewContainerLayout {
     }
 
     /**增加 ViewLayoutItemModel */
-    addViewLayoutItemModel(view: WebContentsView) {
+    addViewLayoutItemModel(view: WebContentsView, windowState: IWindowState) {
         //获取最后一行item
         // const lastRowItem = this.rowItems[this.rowItems.length - 1];
         // let columnIndex = 0;
@@ -306,7 +319,7 @@ class ViewContainerLayout {
         // } else {
         //     this.rowItems.push([]);
         //     console.log("-------- add.row:" + this.rowItems.length + " -----------------");
-        let viewLayoutItem = new ViewLayoutItemModel(view);
+        let viewLayoutItem = new ViewLayoutItemModel(view, windowState);
         //     this.rowItems[this.rowItems.length - 1].push(viewLayoutItem);
         // }
         this.itemsMap.set(view, viewLayoutItem);
@@ -419,8 +432,10 @@ class ViewLayoutItemModel {
     currentView: WebContentsView;
     rowIndex: number = 0;
     columnIndex: number = 0;
-    constructor(view: WebContentsView) {
+    windowState: IWindowState;
+    constructor(view: WebContentsView, windowState: IWindowState) {
         this.currentView = view;
+        this.windowState = windowState;
         // this.rowIndex = rowIndex;
         // this.columnIndex = columnIndex;
     }
@@ -440,15 +455,25 @@ class ViewLayoutItemModel {
     setDisplayModel(model: "pc" | "mobile") {
         switch (model) {
             case "pc":
+                this.currentView.webContents.setUserAgent(this.windowState.browser.userAgent.pc);
                 this.currentView.webContents.executeJavaScript(
-                    `window.TelegramWebviewProxy=undefined;window.dispatchEvent(new Event('resize'))`
+                    `
+                    // window.TelegramWebviewProxy = undefined;
+                    window.dispatchEvent(new Event('resize'))
+                    `
                 );
                 break;
             case "mobile":
                 console.log("mobile------");
+                this.currentView.webContents.setUserAgent(
+                    this.windowState.browser.userAgent.mobile
+                );
                 setTimeout(() => {
                     this.currentView.webContents.executeJavaScript(
-                        `window.TelegramWebviewProxy={};window.dispatchEvent(new Event('resize'))`
+                        `
+                        // window.TelegramWebviewProxy={};
+                        window.dispatchEvent(new Event('resize'))
+                        `
                     );
                 }, 300);
                 break;
@@ -456,26 +481,160 @@ class ViewLayoutItemModel {
     }
 }
 
-const createNewWebTabContent = (webTabId: string) => {
+const createNewWebTabContent = (windowState: IWindowState) => {
+    const { browser, account } = windowState;
     const view1 = new WebContentsView({
         webPreferences: {
-            partition: `persist:account-${webTabId}`,
+            partition: `persist:account-${account.account}`,
         },
     });
     view1.webContents.setUserAgent(
-        `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) electron-shadcnTemplate/1.0.0 Chrome/128.0.6613.178 Electron/32.2.0 Safari/537.36`
+        // `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) electron-shadcnTemplate/1.0.0 Chrome/128.0.6613.178 Electron/32.2.0 Safari/537.36`
         // `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) vite-reactts-electron-starter/0.6.0 Chrome/124.0.6367.243 Electron/30.1.1 Safari/537.36`
-        // 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1'
+        // "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+        browser.userAgent.mobile
     );
     view1.setBackgroundColor("#20293a");
-    view1.webContents.loadURL("https://sports.mtt.xyz/home/tourney");
-    // view1.webContents.on("did-finish-load", () => {
-    //     view1.webContents
-    //         .executeJavaScript(
-    //             `window.TelegramWebviewProxy={};window.dispatchEvent(new Event('resize'))`
-    //         )
-    //         .finally(() => {});
-    // });
+
+    view1.webContents.on("did-finish-load", () => {
+        view1.webContents
+            .executeJavaScript(
+                `
+                    // window.TelegramWebviewProxy={};
+                    // window.dispatchEvent(new Event('resize'));
+                    localStorage.setItem('LanguageCode','zh-TW');
+                `
+            )
+            .finally(() => {});
+    });
+    view1.webContents.on("did-finish-load", () => {
+        // 注册脚本以监听 URL 变更
+        view1.webContents.executeJavaScript(`
+
+        (function() {
+          const originalPushState = history.pushState;
+          const originalReplaceState = history.replaceState;
+  
+          history.pushState = function(state) {
+            originalPushState.apply(history, arguments);
+            document.dispatchEvent(new Event('url-change'));
+          };
+  
+          history.replaceState = function(state) {
+            originalReplaceState.apply(history, arguments);
+            document.dispatchEvent(new Event('url-change'));
+          };
+  
+          window.addEventListener('hashchange', function() {
+            document.dispatchEvent(new Event('url-change'));
+          });
+            // 在渲染进程中发送消息到主进程
+            document.addEventListener('url-change', () => {
+                const currentUrl = window.location.href;
+                window.postMessage({ type: 'url-change', url: currentUrl }, '*');
+                if(currentUrl.includes('login')){
+
+                }
+
+            });
+        })();
+      `);
+        /**
+         * 隐藏turnstile
+         */
+        view1.webContents.executeJavaScript(`
+        (function() {
+          const style = document.createElement('style');
+          style.innerHTML = \`
+            .turnstile-wrapper {
+              display: none !important;
+            }
+          \`;
+          document.head.appendChild(style);
+        })();
+      `);
+
+        // 监听自定义事件 'url-change'
+        // view1.webContents.on("ipc-message", (event, message) => {
+        //     if (message === "url-change") {
+        //         const currentUrl = mainWindow.webContents.getURL();
+        //         console.log("URL changed to:", currentUrl);
+        //         // 进行业务处理
+        //         handleUrlChange(currentUrl);
+        //     }
+        // });
+    });
+    let proxyUrl = browser.proxy?.getProxyUrl?.();
+    // view1.webContents.loadURL("https://sports.mtt.xyz/home/tourney");
+    if (proxyUrl) {
+        // view1.webContents.session
+        //     .setProxy({
+        //         proxyRules: "http://104.25.0.210:80",
+        //     })
+        //     .then((e) => {
+        //         view1.webContents.loadURL("https://www.ipip.net");
+        //         // view1.webContents.loadURL("https://sports.mtt.xyz/home/tourney");
+        //     });
+        let proxy = {
+            host: "http://104.25.0.210",
+            port: 80,
+            username: "abc124774961",
+            password: "KAwhEZ54jg",
+        };
+        const filter = {
+            urls: ["<all_urls>"],
+        };
+        // view1.webContents.session.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
+        //     // 设置认证头信息
+        //     details.requestHeaders["Proxy-Authorization"] =
+        //         "Basic " +
+        //         Buffer.from(proxy.username + ":" + proxy.password, "utf8").toString("base64");
+        //     callback({ cancel: false, requestHeaders: details.requestHeaders });
+        // });
+        // 设置代理规则和PAC脚本
+        // view1.webContents.session
+        //     .setProxy({
+        //         proxyRules: "http=104.25.0.210:80;https=104.25.0.210:80",
+        //         pacScript: "http://104.25.0.210:80",
+        //     })
+        //     .then((e) => {
+        //         view1.webContents.loadURL("https://www.ipip.net");
+        //     });
+        // const ses = session.fromPartition(`persist:account-${webTabId}`);
+        // ses.setProxy({ proxyRules: "http://142.44.210.174:80" }).then((e) => {
+        //     view1.webContents.loadURL("https://www.ipip.net");
+        // });
+        // proxyRules === 'http://127.0.0.1:[random-port]'
+        console.log("proxyUrl", proxyUrl);
+        sockProxyRules(proxyUrl).then((proxyRules) => {
+            view1.webContents.session.setProxy({ proxyRules }).then((e) => {
+                // console.log("fsdfdafdafas");
+                view1.webContents.loadURL("https://sports-pre.mtt.xyz");
+                // view1.webContents.loadURL("https://www.ipip.net");
+            });
+        });
+        // view1.webContents.loadURL("https://sports.mtt.xyz/home/tourney").then((e) => {
+        //     view1.webContents.on("did-finish-load", () => {
+        //         view1.webContents
+        //             .executeJavaScript(
+        //                 `window.TelegramWebviewProxy={};window.dispatchEvent(new Event('resize'))`
+        //             )
+        //             .finally(() => {});
+        //     });
+        // });
+    } else {
+        view1.webContents.loadURL("https://sports.mtt.xyz/home/tourney");
+        // .then((e) => {
+        //     view1.webContents.on("did-finish-load", () => {
+        //         view1.webContents
+        //             .executeJavaScript(
+        //                 `window.TelegramWebviewProxy={};window.dispatchEvent(new Event('resize'))`
+        //             )
+        //             .finally(() => {});
+        //     });
+        // });
+    }
+    // win.loadURL("https://www.ipip.net");
 
     return view1;
 };

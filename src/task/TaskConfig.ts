@@ -1,12 +1,20 @@
-import { IAccountInfo, ITaskConfig } from "@/types";
+import { IAccountInfo, ITaskConfig, IWindowState } from "@/types";
 import { makeObservable, observable } from "mobx";
 
 class TaskConfig implements ITaskConfig {
     @observable
-    accountList: Array<IAccountInfo>;
-    constructor(accountList: Array<IAccountInfo>) {
-        this.accountList = accountList;
+    windowList: Array<IWindowState>;
+    constructor(windowList: Array<IWindowState>) {
+        this.windowList = windowList;
         makeObservable(this);
+        this.windowList.forEach((state) => {
+            if (state.browser?.proxy) {
+                const p = state.browser.proxy;
+                state.browser.proxy.getProxyUrl = () => {
+                    return `${p.type}://${p.username}:${p.password}@${p.ip}:${p.port}`;
+                };
+            }
+        });
     }
     static fromJson(json: string): TaskConfig {
         const data = JSON.parse(json);
@@ -14,8 +22,8 @@ class TaskConfig implements ITaskConfig {
     }
 
     //根据isOpen返回账号列表
-    getAccountListByIsOpen(isOpen: boolean = true): Array<IAccountInfo> {
-        return this.accountList.filter((account) => account.isOpen === isOpen);
+    getAccountListByIsOpen(isOpen: boolean = true): Array<IWindowState> {
+        return this.windowList.filter((win) => win.isOpen === isOpen && win.browser);
     }
 
     //根据Index获取accountInfo
