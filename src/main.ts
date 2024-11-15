@@ -10,6 +10,7 @@ import {
     contextBridge,
     ipcRenderer,
     session,
+    desktopCapturer,
 } from "electron";
 import registerListeners from "./helpers/ipc/listeners-register";
 // "electron-squirrel-startup" seems broken when packaging with vite
@@ -20,7 +21,7 @@ import playwright, { ElectronApplication, _electron as electron } from "playwrig
 import fs from "fs";
 import { IAccountInfo, ITaskConfig, IWindowState } from "./types";
 import TaskConfig from "./task/TaskConfig";
-import { getCurrentWebContents } from "@electron/remote";
+import { BrowserView, getCurrentWebContents } from "@electron/remote";
 import { sockProxyRules } from "electron-session-proxy";
 
 const inDevelopment = process.env.NODE_ENV === "development";
@@ -54,7 +55,7 @@ async function createWindow() {
         // const cachePath = "path/to/your/cache/directory";
         // session.fromPath("./cache");
         // app.setAppLogsPath("/Users/apple/baidu-pan/web3-browser-cache");
-        app.setPath("appData", "/Users/apple/baidu-pan/web3-browser-cache");
+        app.setPath("appData", "e:\\cache-test");
         // app.setPath("web3-browser-cache", "/Users/apple/baidu-pan/web3-browser-cache");
         let aa = session.defaultSession.getStoragePath();
         console.log("fdafdafdsfdsafa", aa);
@@ -168,7 +169,7 @@ async function createWindow() {
     /**
      * 循环创建tabWebContent、初始化设置创建个数、添加到webContainerView
      */
-    const windowList: Array<IWindowState> = taskConfig.getAccountListByIsOpen(true);
+    const windowList: Array<IWindowState> = taskConfig.getAccountListByIsOpen(true).slice(0, 1);
     // const tabWebCount = taskConfig.getAccountListByIsOpen(true).length; //dataConfig.accountList.length;
     windowList.forEach((win) => {
         // for (let i = 0; i < tabWebCount; i++) {
@@ -495,7 +496,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         browser.userAgent.mobile
     );
     view1.setBackgroundColor("#20293a");
-
+    view1.webContents.session.clearData({ dataTypes: ["cache"] })
     view1.webContents.on("did-finish-load", () => {
         view1.webContents
             .executeJavaScript(
@@ -505,8 +506,57 @@ const createNewWebTabContent = (windowState: IWindowState) => {
                     localStorage.setItem('LanguageCode','zh-TW');
                 `
             )
-            .finally(() => {});
+            .finally(() => { });
     });
+
+    // const enforceInheritance = (topWebContents: Electron.WebContents) => {
+    //     const handle = (webContents: Electron.WebContents) => {
+    //         webContents.on(
+    //             'new-window',
+    //             (event, url, frameName, disposition, options) => {
+    //                 if (!options.webPreferences) {
+    //                     options.webPreferences = {};
+    //                 }
+    //                 Object.assign(
+    //                     options.webPreferences,
+    //                     topWebContents.getLastWebPreferences()
+    //                 );
+    //                 if (options.webContents) {
+    //                     handle(options.webContents);
+    //                 }
+    //             }
+    //         );
+    //     };
+    //     handle(topWebContents);
+    // };
+
+    // enforceInheritance(view1.webContents);
+
+    // view1.webContents.session.setDisplayMediaRequestHandler((request, callback) => {
+    //     desktopCapturer.getSources({ types: ['screen'] }).then((sources) => {
+    //         console.log('fdsfdsafdsfdsfdsaa2122222')
+    //         // Grant access to the first screen found.
+    //         callback({ video: sources[0], audio: 'loopback' })
+    //     })
+    //     // If true, use the system picker if available.
+    //     // Note: this is currently experimental. If the system picker
+    //     // is available, it will be used and the media request handler
+    //     // will not be invoked.
+    // }, { useSystemPicker: true })
+
+    view1.webContents.setWindowOpenHandler((details) => {
+        return {
+            action: 'allow',
+            createWindow: (options) => {
+                const browserView = new BrowserWindow(options)
+                // mainWindow.addBrowserView(browserView)
+                // browserView.setBounds({ x: 0, y: 0, width: 640, height: 480 })
+                return browserView.webContents
+            }
+        }
+    })
+
+
     view1.webContents.on("did-finish-load", () => {
         // 注册脚本以监听 URL 变更
         view1.webContents.executeJavaScript(`
@@ -553,6 +603,21 @@ const createNewWebTabContent = (windowState: IWindowState) => {
           document.head.appendChild(style);
         })();
       `);
+
+        view1.webContents.executeJavaScript(`
+            (function() {
+                // window.addEventListener('DOMContentLoaded', () => {
+                //     alert('fdsfdsfds')
+                //     const originalOpen = window.open;
+                //     window.open = function (url, target, features, replace) {
+                //        console.log('fdsafdsfdsafdsfdsa==================')
+
+                //         // 阻止默认的 window.open 行为（可选）
+                //         return null;
+                //     };
+                // });
+            })();
+          `);
 
         // 监听自定义事件 'url-change'
         // view1.webContents.on("ipc-message", (event, message) => {
