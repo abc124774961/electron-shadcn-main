@@ -457,26 +457,28 @@ class ViewLayoutItemModel {
         switch (model) {
             case "pc":
                 this.currentView.webContents.setUserAgent(this.windowState.browser.userAgent.pc);
-                this.currentView.webContents.executeJavaScript(
-                    `
-                    // window.TelegramWebviewProxy = undefined;
-                    window.dispatchEvent(new Event('resize'))
-                    `
-                );
+                this.currentView.webContents.reload();
+                // this.currentView.webContents.executeJavaScript(
+                //     `
+                //     // window.TelegramWebviewProxy = undefined;
+                //     window.dispatchEvent(new Event('resize'))
+                //     `
+                // );
                 break;
             case "mobile":
                 console.log("mobile------");
                 this.currentView.webContents.setUserAgent(
                     this.windowState.browser.userAgent.mobile
                 );
-                setTimeout(() => {
-                    this.currentView.webContents.executeJavaScript(
-                        `
-                        // window.TelegramWebviewProxy={};
-                        window.dispatchEvent(new Event('resize'))
-                        `
-                    );
-                }, 300);
+                this.currentView.webContents.reload();
+                // setTimeout(() => {
+                //     this.currentView.webContents.executeJavaScript(
+                //         `
+                //         // window.TelegramWebviewProxy={};
+                //         window.dispatchEvent(new Event('resize'))
+                //         `
+                //     );
+                // }, 300);
                 break;
         }
     }

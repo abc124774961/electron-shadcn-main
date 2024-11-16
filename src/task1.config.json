@@ -214,9 +214,27 @@
             }
         },
         {
-            "account": "berrys",
-            "password": "111111",
-            "isOpen": false
+            "isOpen": true,
+            "account": {
+                "account": "emily2332",
+                "email": "emily2332@163.com",
+                "password": "222222",
+                "kyc": "小舅"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 11; M2102K1C) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
         },
         {
             "account": "",
@@ -226,18 +244,18 @@
             "kyc": "妈"
         },
         {
-            "account": "abc124774961",
-            "password": "abc123456",
-            "isOpen": false
-        },
-        {
             "account": "emma2222a@163.com",
             "password": "111111",
             "isOpen": false
         },
         {
-            "account": "emily2332@163.com",
-            "password": "222222",
+            "account": "berrys",
+            "password": "111111",
+            "isOpen": false
+        },
+        {
+            "account": "abc124774961",
+            "password": "abc123456",
             "isOpen": false
         },
         {
