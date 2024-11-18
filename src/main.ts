@@ -11,6 +11,9 @@ import {
     ipcRenderer,
     session,
     desktopCapturer,
+    BaseWindow,
+    WebContentsViewConstructorOptions,
+    WebContents,
 } from "electron";
 import registerListeners from "./helpers/ipc/listeners-register";
 // "electron-squirrel-startup" seems broken when packaging with vite
@@ -55,13 +58,11 @@ async function createWindow() {
         // const cachePath = "path/to/your/cache/directory";
         // session.fromPath("./cache");
         // app.setAppLogsPath("/Users/apple/baidu-pan/web3-browser-cache");
-        app.setPath("appData", "e:\\cache-test");
+        // app.setPath("appData", "e:\\cache-test");
         // app.setPath("web3-browser-cache", "/Users/apple/baidu-pan/web3-browser-cache");
         let aa = session.defaultSession.getStoragePath();
         console.log("fdafdafdsfdsafa", aa);
     };
-    // const mainWindow: BrowserWindow = (await electronApp.firstWindow()) as any;
-    // debugger;
 
     setCustomSession();
 
@@ -102,19 +103,15 @@ async function createWindow() {
         webContainerView?.setBounds({ x: 0, y: top, width, height: height - top });
     });
 
-    // mainWindow.webContents.on("dom-ready", () => {
     mainWindow.webContents.send("taskConfig", dataConfig);
-    // });
 
-    // mainWindow.webContents.session.setProxy({ proxyRules: "socks5://114.215.193.156:1080" });
-    // mainWindow.webContents.session
-    //     .setProxy({ proxyRules: "socks5://114.215.193.156:1080" })
-    //     .then(() => {
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
         mainWindow.loadURL(pathUrl);
     } else {
         mainWindow.loadFile(pathUrl);
     }
+
+    // mainWindow.loadFile("");
 
     //     // mainWindow.loadURL("https://whatismyipaddress.com/");
     // })
@@ -169,14 +166,14 @@ async function createWindow() {
     /**
      * 循环创建tabWebContent、初始化设置创建个数、添加到webContainerView
      */
-    const windowList: Array<IWindowState> = taskConfig.getAccountListByIsOpen(true).slice(0, 1);
+    const windowList: Array<IWindowState> = taskConfig.getAccountListByIsOpen(true);
     // const tabWebCount = taskConfig.getAccountListByIsOpen(true).length; //dataConfig.accountList.length;
     windowList.forEach((win) => {
         // for (let i = 0; i < tabWebCount; i++) {
         // if (i == 0 || i == 2 || i == 3 || i == 5 || i == 1) continue;
         const view = createNewWebTabContent(win);
-        webContainerView.addChildView(view);
-        containerLayout.addViewLayoutItemModel(view, win);
+        let webviewContainer = containerLayout.addViewLayoutItemModel(view, win);
+        webContainerView.addChildView(webviewContainer.getContainer());
         // }
 
         // require("@electron/remote/main").initialize();
@@ -191,6 +188,18 @@ async function createWindow() {
     containerLayout.updateLayout(webContainerView.getBounds());
     // });
 
+    // const web3ToolBar = new View();
+    // web3ToolBar.setBackgroundColor("red");
+    // web3ToolBar.setBounds({
+    //     x: 200,
+    //     y: 200,
+    //     width: 100,
+    //     height: 40,
+    // });
+    // mainWindow.contentView.addChildView(web3ToolBar, 10);
+
+    // const win = new BaseWindow();
+
     // const getState = () => ({
     //     isVisible: mainWindow.isVisible(),
     //     isDevToolsOpened: mainWindow.webContents.isDevToolsOpened(),
@@ -199,6 +208,12 @@ async function createWindow() {
 
     // // await app.firstWindow()
     // // const mainWindow = await app.firstWindow();
+
+    initWebviewConfiguration(mainWindow.webContents);
+    mainWindow.webContents.on("did-finish-load", () => {
+        // console.log("did-finish-load");
+        initWebviewConfiguration(mainWindow.webContents);
+    });
 
     // For AppBar
     ipcMain.on("minimize", () => {
@@ -219,6 +234,10 @@ async function createWindow() {
     const website = new MttWebSiteHelper();
     // puppeteer 相关
     ipcMain.handle("user:login", website.login);
+
+    // puppeteer 相关
+    ipcMain.handle("swv:reload", SubWebwebHelper.reload);
+    ipcMain.handle("swv:setIsAllowCamera", SubWebwebHelper.setIsAllowCamera);
 }
 
 // This method will be called when Electron has finished
@@ -305,7 +324,10 @@ class ViewContainerLayout {
     }
 
     /**增加 ViewLayoutItemModel */
-    addViewLayoutItemModel(view: WebContentsView, windowState: IWindowState) {
+    addViewLayoutItemModel(
+        webview: WebContentsView,
+        windowState: IWindowState
+    ): ViewLayoutItemModel {
         //获取最后一行item
         // const lastRowItem = this.rowItems[this.rowItems.length - 1];
         // let columnIndex = 0;
@@ -320,15 +342,17 @@ class ViewContainerLayout {
         // } else {
         //     this.rowItems.push([]);
         //     console.log("-------- add.row:" + this.rowItems.length + " -----------------");
-        let viewLayoutItem = new ViewLayoutItemModel(view, windowState);
+        let viewLayoutItem = new ViewLayoutItemModel(webview, windowState);
+        SubWebwebHelper.add(windowState.account.account, viewLayoutItem);
         //     this.rowItems[this.rowItems.length - 1].push(viewLayoutItem);
         // }
-        this.itemsMap.set(view, viewLayoutItem);
+        this.itemsMap.set(webview, viewLayoutItem);
 
         // this.rowItems[rowIndex]
         //   ? this.rowItems[rowIndex].push(viewLayoutItem)
         //   : (this.rowItems[rowIndex] = [viewLayoutItem]);
         this.updateRowItemCount();
+        return viewLayoutItem;
     }
 
     parentView: Electron.View;
@@ -350,6 +374,12 @@ class ViewContainerLayout {
             //设置
             this.itemsMap.forEach((item) => {
                 item.setDisplayModel("pc");
+            });
+        } else if (this.itemsMap.size == 6) {
+            this.currentColumnCount = 5;
+            //设置
+            this.itemsMap.forEach((item) => {
+                item.setDisplayModel("mobile");
             });
         } else {
             this.currentColumnCount = this.columnMaxQuantity;
@@ -392,12 +422,11 @@ class ViewContainerLayout {
                 const rowHeight =
                     (height - this.marginLine * (rowItem.length - 1)) / rowItems.length;
                 //根据当前行列item获取x，y、需要加上边距、最后一个和第一个无需加边距
-                let { x, width: prevWidth } = rowItem[j - 1]?.currentView?.getBounds() ?? {
+                let { x, width: prevWidth } = rowItem[j - 1]?.getContainer()?.getBounds() ?? {
                     x: 0,
                     width: 0,
                 };
-                // console.log('------prevWidth x', x, prevWidth + x);
-                let { y, height: prevHeight } = prevRowItem[0]?.currentView?.getBounds() || {
+                let { y, height: prevHeight } = prevRowItem[0]?.getContainer()?.getBounds() || {
                     y: 0,
                     height: 0,
                 };
@@ -412,6 +441,7 @@ class ViewContainerLayout {
                 if (i !== 0) {
                     y = y + this.marginLine;
                 }
+                // console.log('------prevWidth x', x, prevWidth + x);
                 viewLayoutItemModel?.updateLayout(
                     columnWidth,
                     rowHeight,
@@ -434,11 +464,17 @@ class ViewLayoutItemModel {
     rowIndex: number = 0;
     columnIndex: number = 0;
     windowState: IWindowState;
+    webviewContainer: View;
     constructor(view: WebContentsView, windowState: IWindowState) {
         this.currentView = view;
         this.windowState = windowState;
         // this.rowIndex = rowIndex;
         // this.columnIndex = columnIndex;
+        this.webviewContainer = createWebviewContainer(view, windowState);
+    }
+
+    getContainer() {
+        return this.webviewContainer;
     }
 
     updateRowIndex(rowIndex: number) {
@@ -449,15 +485,15 @@ class ViewLayoutItemModel {
     }
 
     updateLayout = (width: number, height: number, x: number, y: number) => {
-        // console.log('updateLayout', this);
-        this.currentView.setBounds({ x, y, width, height });
+        console.log("updateLayout", x, y, width, height);
+        this.webviewContainer.setBounds({ x, y, width, height });
     };
 
     setDisplayModel(model: "pc" | "mobile") {
         switch (model) {
             case "pc":
                 this.currentView.webContents.setUserAgent(this.windowState.browser.userAgent.pc);
-                this.currentView.webContents.reload();
+                this.currentView.webContents.reloadIgnoringCache();
                 // this.currentView.webContents.executeJavaScript(
                 //     `
                 //     // window.TelegramWebviewProxy = undefined;
@@ -498,7 +534,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         browser.userAgent.mobile
     );
     view1.setBackgroundColor("#20293a");
-    view1.webContents.session.clearData({ dataTypes: ["cache"] })
+    view1.webContents.session.clearData({ dataTypes: ["cache"] });
     view1.webContents.on("did-finish-load", () => {
         view1.webContents
             .executeJavaScript(
@@ -508,7 +544,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
                     localStorage.setItem('LanguageCode','zh-TW');
                 `
             )
-            .finally(() => { });
+            .finally(() => {});
     });
 
     // const enforceInheritance = (topWebContents: Electron.WebContents) => {
@@ -548,16 +584,26 @@ const createNewWebTabContent = (windowState: IWindowState) => {
 
     view1.webContents.setWindowOpenHandler((details) => {
         return {
-            action: 'allow',
+            action: "allow",
             createWindow: (options) => {
-                const browserView = new BrowserWindow(options)
+                const browserView = new BrowserWindow(options);
                 // mainWindow.addBrowserView(browserView)
                 // browserView.setBounds({ x: 0, y: 0, width: 640, height: 480 })
-                return browserView.webContents
-            }
-        }
-    })
+                return browserView.webContents;
+            },
+        };
+    });
 
+    // 监听权限请求事件
+    view1.webContents.session.setPermissionRequestHandler((webContents, permission, callback) => {
+        if (permission === "media") {
+            // 拒绝摄像头权限
+            callback(Web3AppConfig.isAllowCamara);
+        } else {
+            // 其他权限请求默认允许
+            callback(true);
+        }
+    });
 
     view1.webContents.on("did-finish-load", () => {
         // 注册脚本以监听 URL 变更
@@ -634,44 +680,6 @@ const createNewWebTabContent = (windowState: IWindowState) => {
     let proxyUrl = browser.proxy?.getProxyUrl?.();
     // view1.webContents.loadURL("https://sports.mtt.xyz/home/tourney");
     if (proxyUrl) {
-        // view1.webContents.session
-        //     .setProxy({
-        //         proxyRules: "http://104.25.0.210:80",
-        //     })
-        //     .then((e) => {
-        //         view1.webContents.loadURL("https://www.ipip.net");
-        //         // view1.webContents.loadURL("https://sports.mtt.xyz/home/tourney");
-        //     });
-        let proxy = {
-            host: "http://104.25.0.210",
-            port: 80,
-            username: "abc124774961",
-            password: "KAwhEZ54jg",
-        };
-        const filter = {
-            urls: ["<all_urls>"],
-        };
-        // view1.webContents.session.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
-        //     // 设置认证头信息
-        //     details.requestHeaders["Proxy-Authorization"] =
-        //         "Basic " +
-        //         Buffer.from(proxy.username + ":" + proxy.password, "utf8").toString("base64");
-        //     callback({ cancel: false, requestHeaders: details.requestHeaders });
-        // });
-        // 设置代理规则和PAC脚本
-        // view1.webContents.session
-        //     .setProxy({
-        //         proxyRules: "http=104.25.0.210:80;https=104.25.0.210:80",
-        //         pacScript: "http://104.25.0.210:80",
-        //     })
-        //     .then((e) => {
-        //         view1.webContents.loadURL("https://www.ipip.net");
-        //     });
-        // const ses = session.fromPartition(`persist:account-${webTabId}`);
-        // ses.setProxy({ proxyRules: "http://142.44.210.174:80" }).then((e) => {
-        //     view1.webContents.loadURL("https://www.ipip.net");
-        // });
-        // proxyRules === 'http://127.0.0.1:[random-port]'
         console.log("proxyUrl", proxyUrl);
         sockProxyRules(proxyUrl).then((proxyRules) => {
             view1.webContents.session.setProxy({ proxyRules }).then((e) => {
@@ -680,31 +688,128 @@ const createNewWebTabContent = (windowState: IWindowState) => {
                 // view1.webContents.loadURL("https://www.ipip.net");
             });
         });
-        // view1.webContents.loadURL("https://sports.mtt.xyz/home/tourney").then((e) => {
-        //     view1.webContents.on("did-finish-load", () => {
-        //         view1.webContents
-        //             .executeJavaScript(
-        //                 `window.TelegramWebviewProxy={};window.dispatchEvent(new Event('resize'))`
-        //             )
-        //             .finally(() => {});
-        //     });
-        // });
     } else {
         view1.webContents.loadURL("https://sports.mtt.xyz/home/tourney");
-        // .then((e) => {
-        //     view1.webContents.on("did-finish-load", () => {
-        //         view1.webContents
-        //             .executeJavaScript(
-        //                 `window.TelegramWebviewProxy={};window.dispatchEvent(new Event('resize'))`
-        //             )
-        //             .finally(() => {});
-        //     });
-        // });
     }
     // win.loadURL("https://www.ipip.net");
 
     return view1;
 };
+
+class WebView extends WebContentsView {
+    constructor(options: WebContentsViewConstructorOptions) {
+        super(options);
+    }
+}
+
+const createWebviewContainer = (webview: WebContentsView, windowState: IWindowState) => {
+    const view = new View();
+    view.setBackgroundColor("red");
+    // view.setBounds({ x: 0, y: 0, width: 100, height: 100 });
+    let toolBarHeight = 32;
+
+    const updateLayout = (parentBound: Electron.Rectangle) => {
+        console.log("bounds-changed", view.getBounds(), view.children.length);
+        let layout = view.getBounds();
+        layout.height -= toolBarHeight;
+        layout.y = 0 + toolBarHeight;
+        layout.x = 0;
+        webview.setBounds(layout);
+
+        let toolBarLayout = { ...parentBound };
+        toolBarLayout.height = toolBarHeight;
+        toolBarLayout.y = 0;
+        toolBarLayout.x = 0;
+        toolBarLayout.width = parentBound.width;
+        toolbarWebview.setBounds(toolBarLayout);
+    };
+    view.on("bounds-changed", () => {
+        updateLayout(view.getBounds());
+    });
+
+    const preload = path.join(__dirname, "preload.js");
+
+    const toolbarWebview = new WebContentsView({
+        webPreferences: {
+            devTools: inDevelopment,
+            contextIsolation: true,
+            nodeIntegration: true,
+            nodeIntegrationInSubFrames: false,
+            preload: preload,
+            webviewTag: true,
+        },
+    });
+    // toolbarWebview.setBackgroundColor("blue");
+
+    let pathUrl = "";
+    if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+        pathUrl = MAIN_WINDOW_VITE_DEV_SERVER_URL + "/toolbar.html";
+    } else {
+        pathUrl = path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/toolbar.html`);
+    }
+    if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+        toolbarWebview.webContents.loadURL(pathUrl);
+    } else {
+        toolbarWebview.webContents.loadFile(pathUrl);
+    }
+    initWebviewConfiguration(toolbarWebview.webContents, windowState);
+    toolbarWebview.webContents.on("did-finish-load", () => {
+        console.log("toolbarWebview did-finish-load", windowState.account.account);
+        initWebviewConfiguration(toolbarWebview.webContents, windowState);
+    });
+    // console.log("MAIN_WINDOW_VITE_DEV_SERVER_URL", MAIN_WINDOW_VITE_DEV_SERVER_URL);
+
+    view.addChildView(toolbarWebview);
+    view.addChildView(webview);
+
+    updateLayout(view.getBounds());
+    return view;
+};
+
+class SubWebwebHelper {
+    static mapSubWebview: Map<string, ViewLayoutItemModel> = new Map<string, ViewLayoutItemModel>();
+    static async reload(event: any, id: string) {
+        let webview = SubWebwebHelper.mapSubWebview.get(id);
+        console.log("reload", id);
+        // this.mapSubWebview.
+        // SubWebwebHelper.mapSubWebview.get(id)?.currentView.webContents.reload();
+        webview?.currentView.webContents.session.clearData({ dataTypes: ["cache"] }).then((e) => {
+            webview?.currentView.webContents.reload();
+        });
+    }
+
+    static add(id: string, view: ViewLayoutItemModel) {
+        this.mapSubWebview.set(id, view);
+    }
+
+    /**
+     * Sets the allowance status for the camera based on the provided event, boolean value, and identifier.
+     *
+     * @param event - The event object associated with the camera access request.
+     * @param allow - A boolean indicating whether camera access is allowed (`true`) or denied (`false`).
+     * @param id - A string identifier for the camera access request.
+     * @returns void
+     */
+    static setIsAllowCamera(event: any, allow: boolean, id: string) {
+        Web3AppConfig.isAllowCamara = allow;
+        console.log("setIsAllowCamera.allow", Web3AppConfig.isAllowCamara);
+    }
+}
+
+function initWebviewConfiguration(webContents: WebContents, window?: IWindowState) {
+    webContents.executeJavaScript(
+        `window.__env = {
+            id:'${window?.account?.account}',
+            config:{
+                isAllowCamara:${Web3AppConfig.isAllowCamara}
+            }
+        };`
+    );
+}
+
+class Web3AppConfig {
+    static isAllowCamara: boolean = false;
+}
 
 class MttWebSiteHelper {
     login = async () => {
@@ -734,3 +839,6 @@ class MttWebSiteHelper {
         // });
     };
 }
+
+declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string;
+declare const MAIN_WINDOW_VITE_NAME: string;

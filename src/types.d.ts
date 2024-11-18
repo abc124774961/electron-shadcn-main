@@ -21,4 +21,7 @@ interface ElectronWindow {
 declare interface Window {
     themeMode: ThemeModeContext;
     electronWindow: ElectronWindow;
+    __env: {
+        id: string;
+    };
 }

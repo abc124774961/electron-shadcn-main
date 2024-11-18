@@ -224,11 +224,58 @@
             "browser": {
                 "userAgent": {
                     "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 11; M2102K1C) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
+                    "mobile": "Mozilla/5.0 (Linux; Android 11; G020F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
                 },
                 "lastHrefUrl": "",
                 "proxy": {
                     "ip": "",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": true,
+            "account": {
+                "account": "eemma",
+                "email": "emma2222a@163.com",
+                "password": "222222",
+                "kyc": "蔡青-同学-曾曙波"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/604.1"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.3.92",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": true,
+            "account": {
+                "account": "bradley",
+                "email": "b4235282@gmail.com",
+                "password": "333333",
+                "payPwd": "111111",
+                "kyc": "蔡青-同学-曾艳琳"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/604.1"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.52.115",
                     "port": 50101,
                     "type": "socks5",
                     "username": "abc124774961",
@@ -244,9 +291,12 @@
             "kyc": "妈"
         },
         {
-            "account": "emma2222a@163.com",
-            "password": "111111",
-            "isOpen": false
+            "account": "zachleo",
+            "email": "zachleo955@gmail.com",
+            "password": "333333",
+            "isOpen": false,
+            "payPwd": "111111",
+            "kyc": ""
         },
         {
             "account": "berrys",
@@ -257,14 +307,6 @@
             "account": "abc124774961",
             "password": "abc123456",
             "isOpen": false
-        },
-        {
-            "account": "beers",
-            "password": "111111",
-            "isOpen": false
-        },
-        {
-            "account": "小舅"
         },
         {
             "account": "大舅"

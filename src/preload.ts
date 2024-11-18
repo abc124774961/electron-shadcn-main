@@ -28,3 +28,15 @@ ipcRenderer.on("url-change", (event) => {
     console.log("url-change");
     alert("url-change");
 });
+
+contextBridge.exposeInMainWorld("swv", {
+    reload: (id: string) => {
+        ipcRenderer.invoke("swv:reload", id);
+        // alert(window.__env);
+    },
+    setIsAllowCamera: (allow: boolean, id: string) => {
+        console.log("setIsAllowCamera", allow, id);
+        // alert(allow)
+        ipcRenderer.invoke("swv:setIsAllowCamera", allow, id);
+    },
+});
