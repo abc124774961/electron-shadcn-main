@@ -24,20 +24,6 @@
         {
             "isOpen": true,
             "account": {
-                "account": "abc123456",
-                "password": "abc123456"
-            },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
-                },
-                "lastHrefUrl": ""
-            }
-        },
-        {
-            "isOpen": true,
-            "account": {
                 "account": "abc1234567",
                 "password": "abc123456"
             },
@@ -49,29 +35,6 @@
                 "lastHrefUrl": "",
                 "proxy": {
                     "ip": "45.206.50.35",
-                    "port": 50101,
-                    "type": "socks5",
-                    "username": "abc124774961",
-                    "password": "KAwhEZ54jg"
-                }
-            }
-        },
-        {
-            "isOpen": true,
-            "account": {
-                "account": "thompson2012",
-                "email": "thompson2012@163.com",
-                "password": "111111",
-                "kyc": "蔡青-同学"
-            },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
-                },
-                "lastHrefUrl": "",
-                "proxy": {
-                    "ip": "45.206.54.115",
                     "port": 50101,
                     "type": "socks5",
                     "username": "abc124774961",
@@ -216,7 +179,7 @@
         {
             "isOpen": true,
             "account": {
-                "account": "emily2332",
+                "account": "waemily",
                 "email": "emily2332@163.com",
                 "password": "222222",
                 "kyc": "小舅"
@@ -228,7 +191,7 @@
                 },
                 "lastHrefUrl": "",
                 "proxy": {
-                    "ip": "",
+                    "ip": "45.206.51.246",
                     "port": 50101,
                     "type": "socks5",
                     "username": "abc124774961",
@@ -281,6 +244,43 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
+            }
+        },
+        {
+            "isOpen": true,
+            "account": {
+                "account": "thompson2012",
+                "email": "thompson2012@163.com",
+                "password": "111111",
+                "kyc": "蔡青-同学"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.54.115",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": true,
+            "account": {
+                "account": "abc123456",
+                "password": "abc123456"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+                },
+                "lastHrefUrl": ""
             }
         },
         {

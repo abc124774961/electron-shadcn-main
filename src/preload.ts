@@ -29,14 +29,19 @@ ipcRenderer.on("url-change", (event) => {
     alert("url-change");
 });
 
-contextBridge.exposeInMainWorld("swv", {
+contextBridge.exposeInMainWorld("web3", {
     reload: (id: string) => {
-        ipcRenderer.invoke("swv:reload", id);
+        ipcRenderer.invoke("web3:reload", id);
         // alert(window.__env);
     },
     setIsAllowCamera: (allow: boolean, id: string) => {
         console.log("setIsAllowCamera", allow, id);
         // alert(allow)
-        ipcRenderer.invoke("swv:setIsAllowCamera", allow, id);
+        ipcRenderer.invoke("web3:setIsAllowCamera", allow, id);
+    },
+    setWindowIsOpen: (open: boolean, id: string) => {
+        console.log("setIsAllowCamera", open, id);
+        // alert(allow)
+        ipcRenderer.invoke("web3:setWindowIsOpen", open, id);
     },
 });

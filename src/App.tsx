@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useReducer } from "react";
 import { createRoot } from "react-dom/client";
 import { syncThemeWithLocal } from "./helpers/theme_helpers";
 import { useTranslation } from "react-i18next";
@@ -10,12 +10,17 @@ import { Theme } from "@radix-ui/themes";
 import { useState } from "react";
 import { ThemeProvider } from "next-themes";
 import { Row, Col, Button, Checkbox } from "antd";
+import TaskUtil from "./task/TaskUtil";
+
+TaskUtil.initDataFromConfig(window.qeConfig?.dataConfig());
 export default function App() {
     const { i18n } = useTranslation();
     const [themeMode, setThemeMode] = useState("dark");
+    const [, forceUpdate] = useReducer((i) => i + 1, 0);
 
     const [allowCamera, setAllowCamera] = useState(window.__env?.config?.isAllowCamara ?? false);
 
+    const windowList = TaskUtil.currentTaskConfig?.getWindowList();
     useEffect(() => {
         syncThemeWithLocal();
         updateAppLanguage(i18n);
@@ -25,36 +30,55 @@ export default function App() {
     }, [i18n]);
 
     return (
-        <>
-            <ThemeProvider attribute="class">
-                <Theme appearance={"dark"}>
-                    {/* <RouterProvider router={router} />; */}
-                    <Row gutter={[16, 16]} style={{ marginTop: "6px" }}>
-                        <Col span={1}></Col>
-                        <Col span={6}>
+        <div
+            style={{
+                background: "#333",
+                width: "100%",
+                height: window.screen.height,
+                marginTop: "-6px",
+            }}
+        >
+            {/* <RouterProvider router={router} />; */}
+            <Row gutter={[16, 16]} style={{ marginTop: "6px" }}>
+                <Col span={1}></Col>
+                <Col span={3}>
+                    <Checkbox
+                        style={{ width: "100%", color: "white" }}
+                        type="link"
+                        checked={allowCamera}
+                        onClick={() => {
+                            setAllowCamera(!allowCamera);
+                            window.web3.setIsAllowCamera(!allowCamera, window.__env.id);
+                        }}
+                        onChange={(e) => {
+                            // alert('e.target.checked')
+                            // setAllowCamera(e.target.checked);
+                            // window.web3.setIsAllowCamera(e.target.checked, window.__env.id);
+                        }}
+                    >
+                        是否允许摄像头
+                    </Checkbox>
+                </Col>
+                <Col span={18}>
+                    {windowList?.map((win) => {
+                        return (
                             <Checkbox
-                                style={{ width: "100%", color: "white" }}
-                                type="link"
-                                checked={allowCamera}
+                                checked={win.isOpen}
+                                onChange={() => {}}
                                 onClick={() => {
-                                    setAllowCamera(!allowCamera);
-                                    window.swv.setIsAllowCamera(!allowCamera, window.__env.id);
-                                }}
-                                onChange={(e) => {
-                                    // alert('e.target.checked')
-                                    // setAllowCamera(e.target.checked);
-                                    // window.swv.setIsAllowCamera(e.target.checked, window.__env.id);
+                                    window.web3.setWindowIsOpen(!win.isOpen, win.account.account);
+                                    win.isOpen = !win.isOpen;
+                                    forceUpdate();
                                 }}
                             >
-                                是否允许摄像头
+                                {win.account.account + "-" + (win.account.kyc || "")}
                             </Checkbox>
-                        </Col>
-                        <Col span={6} />
-                        <Col span={6}></Col>
-                    </Row>
-                </Theme>
-            </ThemeProvider>
-        </>
+                        );
+                    })}
+                </Col>
+                <Col span={1}>dsd</Col>
+            </Row>
+        </div>
     );
 }
 

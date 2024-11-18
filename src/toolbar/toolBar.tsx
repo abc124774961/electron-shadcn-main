@@ -42,19 +42,16 @@ export default function App() {
                     }}
                 >
                     {window.__env?.id}
+
                 </Col>
-                <Col span={6} />
-                <Col
-                    span={6}
+                <Col span={12}
                     style={{
                         color: "white",
                         justifyContent: "center",
                         lineHeight: "30px",
                         paddingLeft: "18px",
-                    }}
-                >
-                    {/* {window.__env?.id} */}
-                </Col>
+                    }}>
+                    {window.__env?.kyc}</Col>
                 <Col span={6}>
                     <Button
                         style={{ width: "100%" }}

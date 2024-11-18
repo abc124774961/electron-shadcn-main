@@ -7,6 +7,7 @@ export interface IAccountInfo {
     password: string;
     index: number;
     userAgent: string;
+    kyc: string;
 }
 
 export interface IWindowState {

@@ -36,7 +36,6 @@ async function createWindow() {
 
     const primaryDisplay = screen.getPrimaryDisplay();
     const { width, height } = primaryDisplay.workAreaSize;
-    debugger;
     console.log("screen::::::", "width", width, "height", height);
     const preload = path.join(__dirname, "preload.js");
 
@@ -58,7 +57,7 @@ async function createWindow() {
         // const cachePath = "path/to/your/cache/directory";
         // session.fromPath("./cache");
         // app.setAppLogsPath("/Users/apple/baidu-pan/web3-browser-cache");
-        // app.setPath("appData", "e:\\cache-test");
+        app.setPath("appData", "e:\\web3browser-cache");
         // app.setPath("web3-browser-cache", "/Users/apple/baidu-pan/web3-browser-cache");
         let aa = session.defaultSession.getStoragePath();
         console.log("fdafdafdsfdsafa", aa);
@@ -86,7 +85,7 @@ async function createWindow() {
     // console.log("dataConfig", dataConfig);
 
     const webContainerView = new View();
-    const containerLayout = new ViewContainerLayout(webContainerView, 6);
+    const containerLayout = new ViewContainerLayoutManager(webContainerView, 7);
 
     // // Open the DevTools.
     // mainWindow.webContents.openDevTools();
@@ -111,16 +110,6 @@ async function createWindow() {
         mainWindow.loadFile(pathUrl);
     }
 
-    // mainWindow.loadFile("");
-
-    //     // mainWindow.loadURL("https://whatismyipaddress.com/");
-    // })
-    // .catch((err) => console.error(err));
-
-    // function () {
-    //     mainWindow.loadURL("https://whatismyipaddress.com/");
-    // }
-
     app.on("web-contents-created", (event, contents) => {
         contents.setWindowOpenHandler((info) => {
             mainWindow?.webContents.send("webview-url-is-change");
@@ -133,31 +122,6 @@ async function createWindow() {
         });
     });
 
-    // // 设置代理
-    // const proxyServer = "http://your.proxy.server:port";
-
-    // // 为WebView设置代理
-    // session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    //     if (details.resourceType === "mainFrame") {
-    //         Object.assign(details.requestHeaders, {
-    //             "Proxy-Authorization": `Basic ${Buffer.from("proxyUsername:proxyPassword", "utf8").toString("base64")}`,
-    //         });
-    //     }
-    //     callback({ cancel: false, requestHeaders: details.requestHeaders });
-    // });
-
-    // // 设置session代理
-    // session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    //     if (details.resourceType === "mainFrame") {
-    //         Object.assign(details.requestHeaders, {
-    //             "User-Agent": "My-Agent",
-    //         });
-    //     }
-    //     callback({ cancel: false, requestHeaders: details.requestHeaders });
-    // });
-
-    // nativeTheme.themeSource = "dark";
-
     mainWindow.contentView.addChildView(webContainerView);
 
     // // 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1'
@@ -166,48 +130,19 @@ async function createWindow() {
     /**
      * 循环创建tabWebContent、初始化设置创建个数、添加到webContainerView
      */
-    const windowList: Array<IWindowState> = taskConfig.getAccountListByIsOpen(true);
+    const windowList: Array<IWindowState> = taskConfig.getWindowList();
     // const tabWebCount = taskConfig.getAccountListByIsOpen(true).length; //dataConfig.accountList.length;
     windowList.forEach((win) => {
-        // for (let i = 0; i < tabWebCount; i++) {
-        // if (i == 0 || i == 2 || i == 3 || i == 5 || i == 1) continue;
-        const view = createNewWebTabContent(win);
-        let webviewContainer = containerLayout.addViewLayoutItemModel(view, win);
-        webContainerView.addChildView(webviewContainer.getContainer());
-        // }
-
-        // require("@electron/remote/main").initialize();
-        // require("@electron/remote/main").enable(view);
+        // const view = createNewWebTabContent(win);
+        const web3Window = new Web3Window(win);
+        web3Window.init(containerLayout);
+        web3Window.appendToWindow();
+        // let webviewContainer = containerLayout.addViewLayoutItemModel(view, win);
+        // webContainerView.addChildView(webviewContainer.getContainer());
     });
-
-    // const view = createNewWebTabContent(5);
-    // webContainerView.addChildView(view);
-    // containerLayout.addViewLayoutItemModel(view);
 
     // 更新布局
     containerLayout.updateLayout(webContainerView.getBounds());
-    // });
-
-    // const web3ToolBar = new View();
-    // web3ToolBar.setBackgroundColor("red");
-    // web3ToolBar.setBounds({
-    //     x: 200,
-    //     y: 200,
-    //     width: 100,
-    //     height: 40,
-    // });
-    // mainWindow.contentView.addChildView(web3ToolBar, 10);
-
-    // const win = new BaseWindow();
-
-    // const getState = () => ({
-    //     isVisible: mainWindow.isVisible(),
-    //     isDevToolsOpened: mainWindow.webContents.isDevToolsOpened(),
-    //     isCrashed: mainWindow.webContents.isCrashed(),
-    // });
-
-    // // await app.firstWindow()
-    // // const mainWindow = await app.firstWindow();
 
     initWebviewConfiguration(mainWindow.webContents);
     mainWindow.webContents.on("did-finish-load", () => {
@@ -236,8 +171,9 @@ async function createWindow() {
     ipcMain.handle("user:login", website.login);
 
     // puppeteer 相关
-    ipcMain.handle("swv:reload", SubWebwebHelper.reload);
-    ipcMain.handle("swv:setIsAllowCamera", SubWebwebHelper.setIsAllowCamera);
+    ipcMain.handle("web3:reload", SubWebwebHelper.reload);
+    ipcMain.handle("web3:setIsAllowCamera", SubWebwebHelper.setIsAllowCamera);
+    ipcMain.handle("web3:setWindowIsOpen", SubWebwebHelper.setWindowIsOpen);
 }
 
 // This method will be called when Electron has finished
@@ -305,10 +241,11 @@ ipcMain.on("message", (event: IpcMainEvent, message: any) => {
 
 const TOP_MARGIN = 60;
 
-class ViewContainerLayout {
+class ViewContainerLayoutManager {
     columnMaxQuantity: number = 2;
     currentColumnCount: number = 0;
-    marginLine: number = 6;
+    marginLine: number = 2;
+    parentView: Electron.View;
 
     // rowItems: ViewLayoutItemModel[][] = [[]];
     itemsMap: Map<View, ViewLayoutItemModel> = new Map();
@@ -323,9 +260,13 @@ class ViewContainerLayout {
         });
     }
 
+    getParentContainerView() {
+        return this.parentView;
+    }
+
     /**增加 ViewLayoutItemModel */
-    addViewLayoutItemModel(
-        webview: WebContentsView,
+    createViewLayoutItemModel(
+        webview: Web3WebView,
         windowState: IWindowState
     ): ViewLayoutItemModel {
         //获取最后一行item
@@ -343,7 +284,6 @@ class ViewContainerLayout {
         //     this.rowItems.push([]);
         //     console.log("-------- add.row:" + this.rowItems.length + " -----------------");
         let viewLayoutItem = new ViewLayoutItemModel(webview, windowState);
-        SubWebwebHelper.add(windowState.account.account, viewLayoutItem);
         //     this.rowItems[this.rowItems.length - 1].push(viewLayoutItem);
         // }
         this.itemsMap.set(webview, viewLayoutItem);
@@ -355,7 +295,12 @@ class ViewContainerLayout {
         return viewLayoutItem;
     }
 
-    parentView: Electron.View;
+    removeItem(webview: Web3WebView) {
+        //    const viewLayoutItem= this.itemsMap.get(webview)
+        this.itemsMap.delete(webview);
+        // viewLayoutItem?.removeViewFromParent()
+        this.updateRowItemCount();
+    }
 
     /**更新根据webview数量计算出每行的数量 */
     updateRowItemCount() {
@@ -460,12 +405,12 @@ class ViewContainerLayout {
 }
 
 class ViewLayoutItemModel {
-    currentView: WebContentsView;
+    currentView: Web3WebView;
     rowIndex: number = 0;
     columnIndex: number = 0;
     windowState: IWindowState;
     webviewContainer: View;
-    constructor(view: WebContentsView, windowState: IWindowState) {
+    constructor(view: Web3WebView, windowState: IWindowState) {
         this.currentView = view;
         this.windowState = windowState;
         // this.rowIndex = rowIndex;
@@ -493,7 +438,7 @@ class ViewLayoutItemModel {
         switch (model) {
             case "pc":
                 this.currentView.webContents.setUserAgent(this.windowState.browser.userAgent.pc);
-                this.currentView.webContents.reloadIgnoringCache();
+                // this.currentView.webContents.reloadIgnoringCache();
                 // this.currentView.webContents.executeJavaScript(
                 //     `
                 //     // window.TelegramWebviewProxy = undefined;
@@ -502,11 +447,10 @@ class ViewLayoutItemModel {
                 // );
                 break;
             case "mobile":
-                console.log("mobile------");
                 this.currentView.webContents.setUserAgent(
                     this.windowState.browser.userAgent.mobile
                 );
-                this.currentView.webContents.reload();
+                // this.currentView.webContents.reload();
                 // setTimeout(() => {
                 //     this.currentView.webContents.executeJavaScript(
                 //         `
@@ -518,11 +462,15 @@ class ViewLayoutItemModel {
                 break;
         }
     }
+
+    removeViewFromParent(parent: View) {
+        parent.removeChildView(this.webviewContainer);
+    }
 }
 
 const createNewWebTabContent = (windowState: IWindowState) => {
     const { browser, account } = windowState;
-    const view1 = new WebContentsView({
+    const view1 = new Web3WebView({
         webPreferences: {
             partition: `persist:account-${account.account}`,
         },
@@ -534,7 +482,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         browser.userAgent.mobile
     );
     view1.setBackgroundColor("#20293a");
-    view1.webContents.session.clearData({ dataTypes: ["cache"] });
+    // view1.webContents.session.clearData({ dataTypes: ["cache"] });
     view1.webContents.on("did-finish-load", () => {
         view1.webContents
             .executeJavaScript(
@@ -582,13 +530,26 @@ const createNewWebTabContent = (windowState: IWindowState) => {
     //     // will not be invoked.
     // }, { useSystemPicker: true })
 
+    const primaryDisplay = screen.getPrimaryDisplay();
+    /**
+     *
+     */
     view1.webContents.setWindowOpenHandler((details) => {
         return {
             action: "allow",
             createWindow: (options) => {
+                console.log("new-window", options);
+                const { width, height } = primaryDisplay.workAreaSize;
+                // options.width = width / 2;
+                // options.height = height / 2;
                 const browserView = new BrowserWindow(options);
                 // mainWindow.addBrowserView(browserView)
-                // browserView.setBounds({ x: 0, y: 0, width: 640, height: 480 })
+                browserView.setBounds({
+                    x: width / 2 - width / 2 / 2,
+                    y: height / 2 - height / 2 / 2,
+                    width: width / 2,
+                    height: height / 2,
+                });
                 return browserView.webContents;
             },
         };
@@ -688,6 +649,9 @@ const createNewWebTabContent = (windowState: IWindowState) => {
                 // view1.webContents.loadURL("https://www.ipip.net");
             });
         });
+        view1.webContents.addListener("preload-error", () => {
+            console.log("preload-error");
+        });
     } else {
         view1.webContents.loadURL("https://sports.mtt.xyz/home/tourney");
     }
@@ -696,7 +660,67 @@ const createNewWebTabContent = (windowState: IWindowState) => {
     return view1;
 };
 
-class WebView extends WebContentsView {
+class Web3Window {
+    window: IWindowState;
+    web3Webview?: Web3WebView;
+    web3Container?: ViewLayoutItemModel;
+    viewContainerLayoutManager?: ViewContainerLayoutManager;
+    constructor(win: IWindowState) {
+        this.window = win;
+        SubWebwebHelper.add(win.account.account, this);
+    }
+
+    init(viewContainerLayoutManager: ViewContainerLayoutManager) {
+        this.viewContainerLayoutManager = viewContainerLayoutManager;
+    }
+
+    visible(win: IWindowState) {
+        this.window = win;
+        const view = createNewWebTabContent(win);
+        this.web3Webview = view;
+        // containerLayout.addViewLayoutItemModel(view, win);
+    }
+
+    appendToWindow() {
+        console.log("this.window.isOpen", this.window.isOpen);
+        if (this.window.isOpen) {
+            console.log("web3Webview", this.web3Webview ? "存在" : "不存在");
+            if (!this.web3Webview) {
+                this.visible(this.window);
+            }
+            if (this.web3Webview) {
+                this.web3Container = this.viewContainerLayoutManager?.createViewLayoutItemModel(
+                    this.web3Webview,
+                    this.window
+                );
+                if (this.web3Container?.getContainer()) {
+                    this.viewContainerLayoutManager?.parentView.addChildView(
+                        this.web3Container?.getContainer()
+                    );
+                    this.viewContainerLayoutManager?.updateLayout(
+                        this.viewContainerLayoutManager?.parentView.getBounds()
+                    );
+                }
+            }
+        }
+    }
+
+    destory() {
+        if (this.web3Webview && this.web3Container?.getContainer()) {
+            this.viewContainerLayoutManager?.parentView.removeChildView(
+                this.web3Container?.getContainer()
+            );
+            this.viewContainerLayoutManager?.removeItem(this.web3Webview);
+            this.web3Webview = undefined;
+            this.web3Container = undefined;
+            this.viewContainerLayoutManager?.updateLayout(
+                this.viewContainerLayoutManager?.parentView.getBounds()
+            );
+        }
+    }
+}
+
+class Web3WebView extends WebContentsView {
     constructor(options: WebContentsViewConstructorOptions) {
         super(options);
     }
@@ -767,32 +791,53 @@ const createWebviewContainer = (webview: WebContentsView, windowState: IWindowSt
 };
 
 class SubWebwebHelper {
-    static mapSubWebview: Map<string, ViewLayoutItemModel> = new Map<string, ViewLayoutItemModel>();
+    static mapWeb3Window: Map<string, Web3Window> = new Map<string, Web3Window>();
     static async reload(event: any, id: string) {
-        let webview = SubWebwebHelper.mapSubWebview.get(id);
+        let webview = SubWebwebHelper.mapWeb3Window.get(id);
         console.log("reload", id);
         // this.mapSubWebview.
         // SubWebwebHelper.mapSubWebview.get(id)?.currentView.webContents.reload();
-        webview?.currentView.webContents.session.clearData({ dataTypes: ["cache"] }).then((e) => {
-            webview?.currentView.webContents.reload();
-        });
+
+        let browser = webview?.window.browser;
+        let proxyUrl = browser?.proxy?.getProxyUrl?.();
+        const web3Content = webview?.web3Webview?.webContents;
+        if (web3Content) {
+            web3Content.session.clearData({ dataTypes: ["cache"] }).then((e) => {
+                if (proxyUrl) {
+                    sockProxyRules(proxyUrl).then((proxyRules) => {
+                        web3Content.session.setProxy({ proxyRules }).then((e) => {
+                            // console.log("fsdfdafdafas");
+                            web3Content.loadURL("https://sports-pre.mtt.xyz");
+                            // view1.webContents.loadURL("https://www.ipip.net");
+                            web3Content.reload();
+                        });
+                    });
+                } else {
+                    web3Content.reload();
+                }
+            });
+        }
     }
 
-    static add(id: string, view: ViewLayoutItemModel) {
-        this.mapSubWebview.set(id, view);
+    static add(id: string, view: Web3Window) {
+        this.mapWeb3Window.set(id, view);
     }
 
-    /**
-     * Sets the allowance status for the camera based on the provided event, boolean value, and identifier.
-     *
-     * @param event - The event object associated with the camera access request.
-     * @param allow - A boolean indicating whether camera access is allowed (`true`) or denied (`false`).
-     * @param id - A string identifier for the camera access request.
-     * @returns void
-     */
     static setIsAllowCamera(event: any, allow: boolean, id: string) {
         Web3AppConfig.isAllowCamara = allow;
         console.log("setIsAllowCamera.allow", Web3AppConfig.isAllowCamara);
+    }
+    static setWindowIsOpen(event: any, open: boolean, id: string) {
+        let webview = SubWebwebHelper.mapWeb3Window.get(id);
+        if (webview?.window) {
+            webview.window.isOpen = open;
+        }
+        if (open) {
+            webview?.appendToWindow();
+        } else {
+            webview?.destory();
+        }
+        console.log("setWindowIsOpen.open", id, open);
     }
 }
 
@@ -800,6 +845,7 @@ function initWebviewConfiguration(webContents: WebContents, window?: IWindowStat
     webContents.executeJavaScript(
         `window.__env = {
             id:'${window?.account?.account}',
+            kyc:'${window?.account?.kyc || ""}',
             config:{
                 isAllowCamara:${Web3AppConfig.isAllowCamara}
             }

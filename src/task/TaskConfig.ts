@@ -22,8 +22,11 @@ class TaskConfig implements ITaskConfig {
     }
 
     //根据isOpen返回账号列表
-    getAccountListByIsOpen(isOpen: boolean = true): Array<IWindowState> {
+    getWindowListByIsOpen(isOpen: boolean = true): Array<IWindowState> {
         return this.windowList.filter((win) => win.isOpen === isOpen && win.browser);
+    }
+    getWindowList(): Array<IWindowState> {
+        return this.windowList.filter((win) => win.browser);
     }
 
     //根据Index获取accountInfo
