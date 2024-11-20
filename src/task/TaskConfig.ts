@@ -1,12 +1,12 @@
 import { IAccountInfo, ITaskConfig, IWindowState } from "@/types";
-import { makeObservable, observable } from "mobx";
+// import { makeObservable, observable } from "mobx";
 
 class TaskConfig implements ITaskConfig {
-    @observable
+    // @observable
     windowList: Array<IWindowState>;
     constructor(windowList: Array<IWindowState>) {
         this.windowList = windowList;
-        makeObservable(this);
+        // makeObservable(this);
         this.windowList.forEach((state) => {
             if (state.browser?.proxy) {
                 const p = state.browser.proxy;

@@ -1,11 +1,11 @@
 import { ipcRenderer } from "electron/renderer";
 import TaskConfig from "./TaskConfig";
-import { makeObservable, observable } from "mobx";
+// import { makeObservable, observable } from "mobx";
 import { ITaskConfig } from "@/types";
 
 class TaskUtil {
     public constructor() {
-        makeObservable(this);
+        // makeObservable(this);
     }
     initDataFromConfig(dataConfig: ITaskConfig): void {
         // 从配置文件中读取数据，并更新currentTaskConfig
@@ -14,7 +14,7 @@ class TaskUtil {
 
     iii = 0;
 
-    @observable
+    // @observable
     currentTaskConfig: TaskConfig | undefined;
     //setTaskConfig
     public async setTaskConfig(taskConfig: TaskConfig): Promise<void> {

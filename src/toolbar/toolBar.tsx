@@ -28,12 +28,11 @@ export default function App() {
             forceUpdate();
         }, 2000);
     }, [i18n]);
-
     return (
         <>
             <Row gutter={[16, 16]} style={{ background: "#222" }}>
                 <Col
-                    span={6}
+                    span={18}
                     style={{
                         color: "white",
                         justifyContent: "center",
@@ -41,24 +40,15 @@ export default function App() {
                         paddingLeft: "18px",
                     }}
                 >
-                    {window.__env?.id}
-
+                    {window.__env?.id}-{window.__env?.password}-{window.__env?.kyc}
                 </Col>
-                <Col span={12}
-                    style={{
-                        color: "white",
-                        justifyContent: "center",
-                        lineHeight: "30px",
-                        paddingLeft: "18px",
-                    }}>
-                    {window.__env?.kyc}</Col>
                 <Col span={6}>
                     <Button
                         style={{ width: "100%" }}
                         type="link"
                         onClick={() => {
                             // alert(window.wv.reload());
-                            window.swv.reload(window.__env?.id);
+                            window.web3.reload(window.__env?.id);
                         }}
                     >
                         刷新

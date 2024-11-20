@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import LangToggle from "@/components/LangToggle";
 import { WebContentsView } from "electron/main";
 import TaskUtil from "@/task/TaskUtil";
-import { observer } from "mobx-react-lite";
 import TaskConfig from "@/task/TaskConfig";
 
 import "./HomePage.scss";

@@ -25,7 +25,7 @@ import fs from "fs";
 import { IAccountInfo, ITaskConfig, IWindowState } from "./types";
 import TaskConfig from "./task/TaskConfig";
 import { BrowserView, getCurrentWebContents } from "@electron/remote";
-import { sockProxyRules } from "electron-session-proxy";
+import { sockProxyRules } from "./utils/socksSessionProxy";
 
 const inDevelopment = process.env.NODE_ENV === "development";
 
@@ -162,7 +162,7 @@ async function createWindow() {
     });
 
     ipcMain.on("close", () => {
-        // mainWindow.close();
+        mainWindow.close();
         electronApp.close();
     });
 
@@ -359,7 +359,7 @@ class ViewContainerLayoutManager {
         for (let i = 0; i < rowItems.length; i++) {
             const prevRowItem = rowItems[i - 1] ?? [];
             const rowItem = rowItems[i];
-            console.log("-------- row:" + i + " -----------------");
+            // console.log("-------- row:" + i + " -----------------");
             for (let j = 0; j < rowItem?.length; j++) {
                 //根据每行数量获取每列的宽度
                 const columnWidth = (width - this.marginLine * (columnCount - 1)) / columnCount;
@@ -376,8 +376,8 @@ class ViewContainerLayoutManager {
                     height: 0,
                 };
 
-                console.log("------prevWidth y", "row:" + i, "column:" + j, y, prevHeight + y);
-                console.log("------rowHeight", rowHeight, height);
+                // console.log("------prevWidth y", "row:" + i, "column:" + j, y, prevHeight + y);
+                // console.log("------rowHeight", rowHeight, height);
                 const viewLayoutItemModel = rowItem[j];
                 //如果不是第一个item、需要加上左边距
                 if (j !== 0) {
@@ -430,7 +430,7 @@ class ViewLayoutItemModel {
     }
 
     updateLayout = (width: number, height: number, x: number, y: number) => {
-        console.log("updateLayout", x, y, width, height);
+        // console.log("updateLayout", x, y, width, height);
         this.webviewContainer.setBounds({ x, y, width, height });
     };
 
@@ -535,24 +535,49 @@ const createNewWebTabContent = (windowState: IWindowState) => {
      *
      */
     view1.webContents.setWindowOpenHandler((details) => {
-        return {
-            action: "allow",
-            createWindow: (options) => {
-                console.log("new-window", options);
-                const { width, height } = primaryDisplay.workAreaSize;
-                // options.width = width / 2;
-                // options.height = height / 2;
-                const browserView = new BrowserWindow(options);
-                // mainWindow.addBrowserView(browserView)
-                browserView.setBounds({
-                    x: width / 2 - width / 2 / 2,
-                    y: height / 2 - height / 2 / 2,
-                    width: width / 2,
-                    height: height / 2,
-                });
-                return browserView.webContents;
-            },
-        };
+        const { width, height } = primaryDisplay.workAreaSize;
+        // mainWindow.addBrowserView(browserView)
+        // browserView.setBounds({
+        //     x: width / 2 - width / 2 / 2,
+        //     y: height / 2 - height / 2 / 2,
+        //     width: width / 2,
+        //     height: height / 1.5,
+        // });
+        console.log("faceUrl:", details.url);
+        if (Web3AppConfig.isAllowCamara && details.url.includes("face")) {
+            const browserView = new BrowserWindow();
+            let winHeight = 780;
+            browserView.setBounds({
+                x: width / 2,
+                y: winHeight / 2 - winHeight / 2 / 2,
+                width: 460,
+                height: winHeight,
+            });
+            // browserView.webContents.session.resolveProxy()
+            browserView.webContents.setUserAgent(windowState.browser.userAgent.mobile);
+            browserView.webContents.loadURL(details.url);
+            return null;
+        } else {
+            // https://face.mtt.xyz/entry?txId=673e241c335475a47823fe4c&lang=zh-TW&redirectUrl=https%3A%2F%2Fsports-pre.mtt.xyz%2Fhome%2Fwallet?
+            return {
+                action: "allow",
+                createWindow: (options) => {
+                    console.log("new-window");
+                    const { width, height } = primaryDisplay.workAreaSize;
+                    // options.width = width / 2;
+                    // options.height = height / 2;
+                    const browserView = new BrowserWindow(options);
+                    // mainWindow.addBrowserView(browserView)
+                    browserView.setBounds({
+                        x: width / 2 - width / 2 / 2,
+                        y: height / 2 - height / 2 / 2,
+                        width: width / 2,
+                        height: height / 1.5,
+                    });
+                    return browserView.webContents;
+                },
+            };
+        }
     });
 
     // 监听权限请求事件
@@ -733,7 +758,7 @@ const createWebviewContainer = (webview: WebContentsView, windowState: IWindowSt
     let toolBarHeight = 32;
 
     const updateLayout = (parentBound: Electron.Rectangle) => {
-        console.log("bounds-changed", view.getBounds(), view.children.length);
+        // console.log("bounds-changed", view.getBounds(), view.children.length);
         let layout = view.getBounds();
         layout.height -= toolBarHeight;
         layout.y = 0 + toolBarHeight;
@@ -793,8 +818,8 @@ const createWebviewContainer = (webview: WebContentsView, windowState: IWindowSt
 class SubWebwebHelper {
     static mapWeb3Window: Map<string, Web3Window> = new Map<string, Web3Window>();
     static async reload(event: any, id: string) {
-        let webview = SubWebwebHelper.mapWeb3Window.get(id);
         console.log("reload", id);
+        let webview = SubWebwebHelper.mapWeb3Window.get(id);
         // this.mapSubWebview.
         // SubWebwebHelper.mapSubWebview.get(id)?.currentView.webContents.reload();
 
@@ -804,7 +829,8 @@ class SubWebwebHelper {
         if (web3Content) {
             web3Content.session.clearData({ dataTypes: ["cache"] }).then((e) => {
                 if (proxyUrl) {
-                    sockProxyRules(proxyUrl).then((proxyRules) => {
+                    sockProxyRules(proxyUrl).then(async (proxyRules) => {
+                        await web3Content.session.forceReloadProxyConfig();
                         web3Content.session.setProxy({ proxyRules }).then((e) => {
                             // console.log("fsdfdafdafas");
                             web3Content.loadURL("https://sports-pre.mtt.xyz");
@@ -845,6 +871,7 @@ function initWebviewConfiguration(webContents: WebContents, window?: IWindowStat
     webContents.executeJavaScript(
         `window.__env = {
             id:'${window?.account?.account}',
+            password:'${window?.account?.password}',
             kyc:'${window?.account?.kyc || ""}',
             config:{
                 isAllowCamara:${Web3AppConfig.isAllowCamara}
