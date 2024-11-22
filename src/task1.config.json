@@ -46,7 +46,8 @@
             "isOpen": true,
             "account": {
                 "account": "smile1",
-                "password": "111111"
+                "password": "111111",
+                "kyc": "沈欢"
             },
             "browser": {
                 "userAgent": {
@@ -67,7 +68,8 @@
             "isOpen": true,
             "account": {
                 "account": "lcy123",
-                "password": "111111"
+                "password": "111111",
+                "kyc": "蔡姣"
             },
             "browser": {
                 "userAgent": {
@@ -249,6 +251,74 @@
             }
         },
         {
+            "isOpen": true,
+            "account": {
+                "account": "berrys",
+                "password": "111111",
+                "kyc": "罗玉明"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.54.58",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": true,
+            "account": {
+                "account": "jvito",
+                "email": "jvito1773@gmail.com",
+                "password": "333333",
+                "kyc": "蔡姣-表姐"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.50.242",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": true,
+            "account": {
+                "account": "luoming",
+                "email": "670612232@qq.com",
+                "password": "333333",
+                "kyc": "妈"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPod; U; CPU iPhone OS 3_2 like Mac OS X; gu-IN) AppleWebKit/531.1.6 (KHTML, like Gecko) Version/3.0.5 Mobile/8B119 Safari/6531.1.6"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.52.2",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
             "isOpen": false,
             "account": {
                 "account": "eemma",
@@ -304,34 +374,11 @@
             "browser": {
                 "userAgent": {
                     "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_5 like Mac OS X) AppleWebKit/536.2 (KHTML, like Gecko) CriOS/19.0.875.0 Mobile/17N642 Safari/536.2"
                 },
                 "lastHrefUrl": "",
                 "proxy": {
                     "ip": "45.206.54.115",
-                    "port": 50101,
-                    "type": "socks5",
-                    "username": "abc124774961",
-                    "password": "KAwhEZ54jg"
-                }
-            }
-        },
-        {
-            "isOpen": false,
-            "account": {
-                "account": "jvito",
-                "email": "jvito1773@gmail.com",
-                "password": "333333",
-                "kyc": ""
-            },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
-                },
-                "lastHrefUrl": "",
-                "proxy": {
-                    "ip": "",
                     "port": 50101,
                     "type": "socks5",
                     "username": "abc124774961",
@@ -365,30 +412,9 @@
         {
             "isOpen": false,
             "account": {
-                "account": "berrys",
-                "password": "111111",
-                "kyc": "罗玉明"
-            },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
-                },
-                "lastHrefUrl": "",
-                "proxy": {
-                    "ip": "",
-                    "port": 50101,
-                    "type": "socks5",
-                    "username": "abc124774961",
-                    "password": "KAwhEZ54jg"
-                }
-            }
-        },
-        {
-            "isOpen": false,
-            "account": {
                 "account": "abc123456",
-                "password": "abc123456"
+                "password": "abc123456",
+                "kyc": "罗玉明-日赛"
             },
             "browser": {
                 "userAgent": {
@@ -397,18 +423,6 @@
                 },
                 "lastHrefUrl": ""
             }
-        },
-        {
-            "account": "",
-            "email": "670612232@qq.com",
-            "password": "dgvb2242253269",
-            "isOpen": false,
-            "kyc": "妈"
-        },
-        {
-            "account": "abc124774961",
-            "password": "abc123456",
-            "isOpen": false
         },
         {
             "account": "大舅妈"

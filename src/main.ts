@@ -546,15 +546,18 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         console.log("faceUrl:", details.url);
         if (Web3AppConfig.isAllowCamara && details.url.includes("face")) {
             const browserView = new BrowserWindow();
-            let winHeight = 780;
+            let winHeight = 1280;
             browserView.setBounds({
                 x: width / 2,
                 y: winHeight / 2 - winHeight / 2 / 2,
-                width: 460,
+                width: 1800,
                 height: winHeight,
             });
             // browserView.webContents.session.resolveProxy()
-            browserView.webContents.setUserAgent(windowState.browser.userAgent.mobile);
+            // browserView.webContents.setUserAgent(windowState.browser.userAgent.mobile);
+            // browserView.webContents.setUserAgent(
+            //     "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+            // );
             browserView.webContents.loadURL(details.url);
             return null;
         } else {

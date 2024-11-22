@@ -63,6 +63,7 @@ export default function App() {
                     {windowList?.map((win) => {
                         return (
                             <Checkbox
+                                style={{ color: "white" }}
                                 checked={win.isOpen}
                                 onChange={() => {}}
                                 onClick={() => {

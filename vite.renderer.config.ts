@@ -24,6 +24,9 @@ export default defineConfig((env) => {
                 "@": path.resolve(__dirname, "./src"),
             },
         },
+        server: {
+            port: 3333,
+        },
         clearScreen: false,
     } as UserConfig;
 });
