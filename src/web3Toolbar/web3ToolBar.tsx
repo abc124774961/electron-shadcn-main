@@ -1,19 +1,21 @@
 import React, { useEffect, useReducer } from "react";
 import { createRoot } from "react-dom/client";
-import { syncThemeWithLocal } from "./helpers/theme_helpers";
+import { syncThemeWithLocal } from "../helpers/theme_helpers";
 import { useTranslation } from "react-i18next";
-import "./localization/i18n";
-import { updateAppLanguage } from "./helpers/language_helpers";
-import { router } from "./routes/router";
+import "../localization/i18n";
+import { updateAppLanguage } from "../helpers/language_helpers";
+import { router } from "../routes/router";
 import { RouterProvider } from "@tanstack/react-router";
 import { Theme } from "@radix-ui/themes";
 import { useState } from "react";
 import { ThemeProvider } from "next-themes";
-import { Row, Col, Button, Checkbox, Dropdown, Select } from "antd";
-import TaskUtil from "./task/TaskUtil";
-import DragWindowRegion from "./components/DragWindowRegion";
+import { Button, Checkbox, Col, ConfigProvider, Row, Select } from "antd";
+import "./index.css";
+import TaskUtil from "@/task/TaskUtil";
+import DragWindowRegion from "@/components/DragWindowRegion";
 
 TaskUtil.initDataFromConfig(window.qeConfig?.dataConfig());
+
 export default function App() {
     const { i18n } = useTranslation();
     const [themeMode, setThemeMode] = useState("dark");
@@ -30,6 +32,8 @@ export default function App() {
         });
     }, [i18n]);
 
+    // alert(window.qeConfig?.dataConfig())
+
     return (
         <div
             style={{
@@ -39,9 +43,9 @@ export default function App() {
                 marginTop: "-6px",
             }}
         >
-            <DragWindowRegion title="" />
+            {/* <DragWindowRegion title="" /> */}
             {/* <RouterProvider router={router} />; */}
-            {/* <Row gutter={[16, 16]} style={{ marginTop: "6px" }}>
+            <Row gutter={[16, 16]} style={{ marginTop: "6px" }}>
                 <Col span={1}></Col>
                 <Col span={3}>
                     <Checkbox
@@ -81,7 +85,7 @@ export default function App() {
                     })}
                 </Col>
                 <Col span={1}>dsd</Col>
-            </Row> */}
+            </Row>
         </div>
     );
 }
@@ -89,6 +93,18 @@ export default function App() {
 const root = createRoot(document.getElementById("app")!);
 root.render(
     <React.StrictMode>
-        <App />
+        <ConfigProvider
+            theme={{
+                token: {
+                    // // Seed Token，影响范围大
+                    // colorPrimary: "#00b96b",
+                    // borderRadius: 2,
+                    // // 派生变量，影响范围小
+                    // colorBgContainer: "#f6ffed",
+                },
+            }}
+        >
+            <App />
+        </ConfigProvider>
     </React.StrictMode>
 );

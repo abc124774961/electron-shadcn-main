@@ -86,6 +86,7 @@ async function createWindow() {
 
     const webContainerView = new View();
     const containerLayout = new ViewContainerLayoutManager(webContainerView, 7);
+    SubWebwebHelper.init(containerLayout);
 
     // // Open the DevTools.
     // mainWindow.webContents.openDevTools();
@@ -133,12 +134,9 @@ async function createWindow() {
     const windowList: Array<IWindowState> = taskConfig.getWindowList();
     // const tabWebCount = taskConfig.getAccountListByIsOpen(true).length; //dataConfig.accountList.length;
     windowList.forEach((win) => {
-        // const view = createNewWebTabContent(win);
         const web3Window = new Web3Window(win);
         web3Window.init(containerLayout);
         web3Window.appendToWindow();
-        // let webviewContainer = containerLayout.addViewLayoutItemModel(view, win);
-        // webContainerView.addChildView(webviewContainer.getContainer());
     });
 
     // 更新布局
@@ -174,6 +172,9 @@ async function createWindow() {
     ipcMain.handle("web3:reload", SubWebwebHelper.reload);
     ipcMain.handle("web3:setIsAllowCamera", SubWebwebHelper.setIsAllowCamera);
     ipcMain.handle("web3:setWindowIsOpen", SubWebwebHelper.setWindowIsOpen);
+    ipcMain.handle("web3:setLayoutColumnMaxNumber", SubWebwebHelper.setLayoutColumnMaxNumber);
+
+    Web3ToolBar.getInstance().initToolBar(mainWindow.contentView);
 }
 
 // This method will be called when Electron has finished
@@ -219,6 +220,72 @@ app.whenReady().then(async () => {
         // if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
 });
+
+class Web3ToolBar {
+    private static instance: Web3ToolBar;
+    static getInstance() {
+        if (!Web3ToolBar.instance) {
+            Web3ToolBar.instance = new Web3ToolBar();
+        }
+        return Web3ToolBar.instance;
+    }
+    toolBarLayout?: View;
+    web3WebView?: Web3WebView;
+    minHeight: number = 40;
+    //展开高度
+    maxHeight: number = 200;
+
+    constructor() {}
+
+    initToolBar(toolBarLayout: View) {
+        this.toolBarLayout = toolBarLayout;
+        const primaryDisplay = screen.getPrimaryDisplay();
+        const { width: winWidth, height: winHeight } = primaryDisplay.workAreaSize;
+        const preload = path.join(__dirname, "preload.js");
+        const webview = new Web3WebView({
+            webPreferences: {
+                devTools: inDevelopment,
+                contextIsolation: true,
+                nodeIntegration: true,
+                nodeIntegrationInSubFrames: false,
+                preload: preload,
+                webviewTag: true,
+            },
+        });
+        this.web3WebView = webview;
+
+        let pathUrl = "";
+        if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+            pathUrl = MAIN_WINDOW_VITE_DEV_SERVER_URL + "/web3Toolbar.html";
+        } else {
+            pathUrl = path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/web3Toolbar.html`);
+        }
+        webview.setBounds({
+            x: 0,
+            y: 28,
+            width: winWidth,
+            height: this.minHeight,
+        });
+        webview.webContents.loadURL(pathUrl);
+        this.toolBarLayout.addChildView(webview, 100);
+
+        /**设置配置 */
+        const dataConfig: ITaskConfig = JSON.parse(
+            fs.readFileSync("src/task1.config.json", "utf-8")
+        );
+        const taskConfig: TaskConfig = TaskConfig.fromJson(JSON.stringify(dataConfig));
+        webview.webContents.send("taskConfig", dataConfig);
+        // puppeteer 相关
+        ipcMain.handle("web3:reload", SubWebwebHelper.reload);
+        ipcMain.handle("web3:setIsAllowCamera", SubWebwebHelper.setIsAllowCamera);
+        ipcMain.handle("web3:setWindowIsOpen", SubWebwebHelper.setWindowIsOpen);
+        ipcMain.handle("web3:setLayoutColumnMaxNumber", SubWebwebHelper.setLayoutColumnMaxNumber);
+
+        // webview.webContents.on("cursor-changed", () => {
+        //     console.log("fdsfds");
+        // });
+    }
+}
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -673,7 +740,9 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         sockProxyRules(proxyUrl).then((proxyRules) => {
             view1.webContents.session.setProxy({ proxyRules }).then((e) => {
                 // console.log("fsdfdafdafas");
-                view1.webContents.loadURL("https://sports-pre.mtt.xyz");
+                // view1.webContents.loadURL("https://sports-pre.mtt.xyz");
+                // view1.webContents.loadURL("https://sports.mtt.xyz");
+                view1.webContents.loadURL("https://localhost");
                 // view1.webContents.loadURL("https://www.ipip.net");
             });
         });
@@ -749,7 +818,7 @@ class Web3Window {
 }
 
 class Web3WebView extends WebContentsView {
-    constructor(options: WebContentsViewConstructorOptions) {
+    constructor(options?: WebContentsViewConstructorOptions) {
         super(options);
     }
 }
@@ -819,6 +888,8 @@ const createWebviewContainer = (webview: WebContentsView, windowState: IWindowSt
 };
 
 class SubWebwebHelper {
+    static containerLayout: ViewContainerLayoutManager;
+
     static mapWeb3Window: Map<string, Web3Window> = new Map<string, Web3Window>();
     static async reload(event: any, id: string) {
         console.log("reload", id);
@@ -848,6 +919,10 @@ class SubWebwebHelper {
         }
     }
 
+    static init(containerLayout: ViewContainerLayoutManager) {
+        this.containerLayout = containerLayout;
+    }
+
     static add(id: string, view: Web3Window) {
         this.mapWeb3Window.set(id, view);
     }
@@ -867,6 +942,9 @@ class SubWebwebHelper {
             webview?.destory();
         }
         console.log("setWindowIsOpen.open", id, open);
+    }
+    static setLayoutColumnMaxNumber(event: any, columnNumber: number) {
+        this.containerLayout.columnMaxQuantity = columnNumber;
     }
 }
 

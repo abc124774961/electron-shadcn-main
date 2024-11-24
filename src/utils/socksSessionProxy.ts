@@ -1,5 +1,6 @@
 import { createServer, type IncomingMessage } from "node:http";
 import type { Socket } from "node:net";
+import net from "node:net";
 import { parse } from "node:url";
 import { SocksClient, SocksClientOptions } from "socks";
 
@@ -14,6 +15,18 @@ function errorHandler(clientSocket: Socket, proxySocket?: Socket): (error: Error
         console.error("Socks Proxy Socket Error: ", err.message);
     };
 }
+
+// 目标域名列表，这些域名不使用代理
+const bypassProxyDomains = ["static-s3.mtt.xyz", "sports.mtt.xyz", "aliyuncs.com", "localhost"];
+const whiteProxyDomains = [
+    "api.mtt.xyz",
+    "static-s3.mtt.xyz",
+    "cdn-web.mtt.xyz",
+    "eagleapi-sg.mtt.xyz",
+    "cdn-mttweb.mtt.xyz",
+    "api.gawallet.org",
+    "266-mtt.oss-ap-southeast-1.aliyuncs.com",
+];
 
 /**
  * @description 解决session无法验证用户名密码
@@ -42,6 +55,30 @@ export async function sockProxyRules(proxyRules: string): Promise<string> {
         destination: { host: "", port: 0 },
     };
 
+    // function createConnection(hostname: string, callback: (args1: any, args2: any) => void) {
+    //     if (bypassProxyDomains.includes(hostname)) {
+    //         // 如果是跳过代理的域名，直接创建一个普通的HTTP连接
+    //         return callback(null, new net.Socket());
+    //     }
+
+    //     // 使用SOCKS5代理连接
+    //     socks5Client.createConnection(
+    //         {
+    //             proxy: {
+    //                 host: proxyServer,
+    //                 port: proxyPort,
+    //                 type: 5, // 代理类型SOCKS5
+    //             },
+    //             command: "connect", // 代理命令CONNECT
+    //             destination: {
+    //                 host: hostname,
+    //                 port: 80, // 目标端口
+    //             },
+    //         },
+    //         callback
+    //     );
+    // }
+
     // 创建一个HTTP服务器，用于接收代理请求
     const httpServer = createServer(async (req, res) => {
         if (!req.url) return;
@@ -69,14 +106,28 @@ export async function sockProxyRules(proxyRules: string): Promise<string> {
         }
     });
 
+    let defaultSocket = new net.Socket();
+
     // 处理HTTP服务器的'connect'事件，用于TCP代理
-    httpServer.on("connect", async (req: IncomingMessage, clientSocket: Socket, head: Buffer) => {
+    httpServer.on("connect", async (req: IncomingMessage, proxySocket: Socket, head: Buffer) => {
         // 解析客户端请求的URL，以获取目标主机和端口。
         const parsedUrl = parse("https://" + (req.url ?? ""));
         const { hostname, port } = parsedUrl;
+        //判断是否是跳过代理的域名
+        let clientSocket = defaultSocket;
+        // if (bypassProxyDomains.includes(hostname || "")) {
+        //     _curSocket = defaultSocket;
+        //     console.log("bypassProxyDomains--------", hostname);
+        // }
+        if (whiteProxyDomains.includes(hostname || "")) {
+            clientSocket = proxySocket;
+        } else {
+            console.log("parsedUrl", req.url, hostname);
+            // clientSocket = proxySocket;
+        }
         // 如果URL解析失败，抛出错误。
         if (!hostname || !port) throw new Error("Invalid client request URL.");
-
+        // bypassProxyDomains.includes(hostname)
         socksOptions.destination.host = hostname;
         socksOptions.destination.port = Number.parseInt(port);
 
