@@ -30,6 +30,9 @@ import { sockProxyRules } from "./utils/socksSessionProxy";
 const inDevelopment = process.env.NODE_ENV === "development";
 
 let electronApp: ElectronApplication;
+const TOP_TITLE_DRAG_HANDER = 28;
+const TOP_MARGIN = 56;
+
 async function createWindow() {
     // await pie.initialize(app);
     // const browser = await pie.connect(app, puppeteer as any);
@@ -70,11 +73,12 @@ async function createWindow() {
         height: height,
         webPreferences: {
             devTools: inDevelopment,
-            contextIsolation: true,
             nodeIntegration: true,
+            contextIsolation: false,
             nodeIntegrationInSubFrames: false,
             preload: preload,
             webviewTag: true,
+            webSecurity: false,
         },
         titleBarStyle: "hidden",
     });
@@ -91,7 +95,7 @@ async function createWindow() {
     // // Open the DevTools.
     // mainWindow.webContents.openDevTools();
 
-    const top = TOP_MARGIN;
+    const top = TOP_MARGIN + TOP_TITLE_DRAG_HANDER;
     mainWindow.on("ready-to-show", () => {
         const { height, width } = mainWindow.contentView.getBounds();
         webContainerView?.setBounds({ x: 0, y: top, width, height: height - top });
@@ -122,6 +126,7 @@ async function createWindow() {
             }
         });
     });
+    app.commandLine.appendSwitch("ignore-certificate-errors");
 
     mainWindow.contentView.addChildView(webContainerView);
 
@@ -231,7 +236,7 @@ class Web3ToolBar {
     }
     toolBarLayout?: View;
     web3WebView?: Web3WebView;
-    minHeight: number = 40;
+    minHeight: number = TOP_MARGIN;
     //展开高度
     maxHeight: number = 200;
 
@@ -250,6 +255,7 @@ class Web3ToolBar {
                 nodeIntegrationInSubFrames: false,
                 preload: preload,
                 webviewTag: true,
+                webSecurity: false,
             },
         });
         this.web3WebView = webview;
@@ -262,12 +268,20 @@ class Web3ToolBar {
         }
         webview.setBounds({
             x: 0,
-            y: 28,
+            y: TOP_TITLE_DRAG_HANDER,
             width: winWidth,
             height: this.minHeight,
         });
         webview.webContents.loadURL(pathUrl);
         this.toolBarLayout.addChildView(webview, 100);
+
+        //初始化环境
+
+        initWebviewConfiguration(webview.webContents);
+        webview.webContents.on("did-finish-load", () => {
+            // console.log("did-finish-load");
+            initWebviewConfiguration(webview.webContents);
+        });
 
         /**设置配置 */
         const dataConfig: ITaskConfig = JSON.parse(
@@ -305,8 +319,6 @@ ipcMain.on("message", (event: IpcMainEvent, message: any) => {
     console.log(message);
     setTimeout(() => event.sender.send("message", "common.hiElectron"), 500);
 });
-
-const TOP_MARGIN = 60;
 
 class ViewContainerLayoutManager {
     columnMaxQuantity: number = 2;
@@ -539,7 +551,11 @@ const createNewWebTabContent = (windowState: IWindowState) => {
     const { browser, account } = windowState;
     const view1 = new Web3WebView({
         webPreferences: {
+            // 在WebPreferences中设置contextIsolation和nodeIntegration
+            nodeIntegration: true,
+            contextIsolation: false,
             partition: `persist:account-${account.account}`,
+            webSecurity: false,
         },
     });
     view1.webContents.setUserAgent(
@@ -858,6 +874,7 @@ const createWebviewContainer = (webview: WebContentsView, windowState: IWindowSt
             nodeIntegrationInSubFrames: false,
             preload: preload,
             webviewTag: true,
+            webSecurity: false,
         },
     });
     // toolbarWebview.setBackgroundColor("blue");

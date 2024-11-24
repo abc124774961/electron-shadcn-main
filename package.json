@@ -16,7 +16,8 @@
         "test:watch": "jest --watch",
         "test:unit": "jest",
         "test:e2e": "playwright test",
-        "test:all": "jest && playwright test"
+        "test:all": "jest && playwright test",
+        "bpt":"cd ../bpt-web && pnpm run dev"
     },
     "author": "ROG <luan.roger.2003@gmail.com>",
     "license": "MIT",

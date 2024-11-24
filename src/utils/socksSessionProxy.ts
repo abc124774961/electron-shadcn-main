@@ -26,6 +26,8 @@ const whiteProxyDomains = [
     "cdn-mttweb.mtt.xyz",
     "api.gawallet.org",
     "266-mtt.oss-ap-southeast-1.aliyuncs.com",
+    "face.mtt.xyz",
+    "app.adjust.com",
 ];
 
 /**
