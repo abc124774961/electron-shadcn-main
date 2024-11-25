@@ -26,6 +26,7 @@ import { IAccountInfo, ITaskConfig, IWindowState } from "./types";
 import TaskConfig from "./task/TaskConfig";
 import { BrowserView, getCurrentWebContents } from "@electron/remote";
 import { sockProxyRules } from "./utils/socksSessionProxy";
+import { getSystemInfo } from "./lib/utils";
 
 const inDevelopment = process.env.NODE_ENV === "development";
 
@@ -60,7 +61,10 @@ async function createWindow() {
         // const cachePath = "path/to/your/cache/directory";
         // session.fromPath("./cache");
         // app.setAppLogsPath("/Users/apple/baidu-pan/web3-browser-cache");
-        app.setPath("appData", "e:\\web3browser-cache");
+        if (getSystemInfo() == "windows") {
+            app.setPath("appData", "e:\\web3browser-cache");
+        } else {
+        }
         // app.setPath("web3-browser-cache", "/Users/apple/baidu-pan/web3-browser-cache");
         let aa = session.defaultSession.getStoragePath();
         console.log("fdafdafdsfdsafa", aa);
@@ -558,6 +562,11 @@ const createNewWebTabContent = (windowState: IWindowState) => {
             webSecurity: false,
         },
     });
+
+    // const extensionPath = path.join(__static, 'line/ophjlpahpchlmihnnnihgmmeilfjmjjc/3.5.1_0')
+
+    // view1.webContents.session.loadExtension()
+
     view1.webContents.setUserAgent(
         // `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) electron-shadcnTemplate/1.0.0 Chrome/128.0.6613.178 Electron/32.2.0 Safari/537.36`
         // `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) vite-reactts-electron-starter/0.6.0 Chrome/124.0.6367.243 Electron/30.1.1 Safari/537.36`
@@ -626,6 +635,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         //     width: width / 2,
         //     height: height / 1.5,
         // });
+        details.url += "&" + Math.random();
         console.log("faceUrl:", details.url);
         if (Web3AppConfig.isAllowCamara && details.url.includes("face")) {
             const browserView = new BrowserWindow();
@@ -645,24 +655,40 @@ const createNewWebTabContent = (windowState: IWindowState) => {
             return null;
         } else {
             // https://face.mtt.xyz/entry?txId=673e241c335475a47823fe4c&lang=zh-TW&redirectUrl=https%3A%2F%2Fsports-pre.mtt.xyz%2Fhome%2Fwallet?
-            return {
-                action: "allow",
-                createWindow: (options) => {
-                    console.log("new-window");
-                    const { width, height } = primaryDisplay.workAreaSize;
-                    // options.width = width / 2;
-                    // options.height = height / 2;
-                    const browserView = new BrowserWindow(options);
-                    // mainWindow.addBrowserView(browserView)
-                    browserView.setBounds({
-                        x: width / 2 - width / 2 / 2,
-                        y: height / 2 - height / 2 / 2,
-                        width: width / 2,
-                        height: height / 1.5,
-                    });
-                    return browserView.webContents;
-                },
-            };
+            // return {
+            //     action: "allow",
+            //     createWindow: (options) => {
+            console.log("new-window");
+            const { width, height } = primaryDisplay.workAreaSize;
+            // options.width = width / 2;
+            // options.height = height / 2;
+            const browserView = new BrowserWindow();
+            browserView.webContents.openDevTools();
+
+            // 监听权限请求事件
+            browserView.webContents.session.setPermissionRequestHandler(
+                (webContents, permission, callback) => {
+                    if (permission === "media") {
+                        // 拒绝摄像头权限
+                        callback(Web3AppConfig.isAllowCamara);
+                    } else {
+                        // 其他权限请求默认允许
+                        callback(true);
+                    }
+                }
+            );
+
+            // mainWindow.addBrowserView(browserView)
+            browserView.setBounds({
+                x: width / 2 - width / 2 / 2,
+                y: height / 2 - height / 2 / 2,
+                width: width / 2,
+                height: height / 1.5,
+            });
+            browserView.webContents.loadURL(details.url + "?" + Math.random());
+            //         return browserView.webContents;
+            //     },
+            // };
         }
     });
 

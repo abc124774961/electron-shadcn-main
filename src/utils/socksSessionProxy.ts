@@ -28,6 +28,7 @@ const whiteProxyDomains = [
     "266-mtt.oss-ap-southeast-1.aliyuncs.com",
     "face.mtt.xyz",
     "app.adjust.com",
+    "evm-rpc.mtt.network",
 ];
 
 /**
