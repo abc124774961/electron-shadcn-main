@@ -27,6 +27,7 @@ import TaskConfig from "./task/TaskConfig";
 import { BrowserView, getCurrentWebContents } from "@electron/remote";
 import { sockProxyRules } from "./utils/socksSessionProxy";
 import { getSystemInfo } from "./lib/utils";
+import { URL } from "url";
 
 const inDevelopment = process.env.NODE_ENV === "development";
 
@@ -585,6 +586,16 @@ const createNewWebTabContent = (windowState: IWindowState) => {
                 `
             )
             .finally(() => {});
+
+        view1.webContents.executeJavaScript(
+            `
+            // location.host='sports.mtt.xyz';
+            // location.hostname='sports.mtt.xyz';
+            // location.href='https://sports.mtt.xyz/';
+            // location.origin='https://sports.mtt.xyz';
+            // location.protocol='https';
+        `
+        );
     });
 
     // const enforceInheritance = (topWebContents: Electron.WebContents) => {
@@ -636,21 +647,47 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         //     height: height / 1.5,
         // });
         details.url += "&" + Math.random();
+
+        // https://face.mtt.xyz/entry?txId=6744a08e6a344b3556a2390d&lang=zh-TW&redirectUrl=https%3A%2F%2Flocalhost%2Fhome%2Fwallet?testMode=true&0.524426457783804?0.45953509157856454
+        const uri = URL.parse(details.url);
+        const params = new URLSearchParams(uri?.search);
+        const orgRedirectUrl = decodeURI(params.get("redirectUrl") || "");
+        params.set(
+            "redirectUrl",
+            encodeURI(orgRedirectUrl.replace("https://localhost", "https://sports.mtt.xyz"))
+        );
+        console.log("params", params);
+        details.url = uri?.origin + "?" + params.toString();
         console.log("faceUrl:", details.url);
         if (Web3AppConfig.isAllowCamara && details.url.includes("face")) {
-            const browserView = new BrowserWindow();
-            let winHeight = 1280;
+            let winHeight = 600;
+            let winWidht = 375;
+            const browserView = new BrowserWindow({
+                width: winWidht,
+                height: winHeight,
+            });
             browserView.setBounds({
                 x: width / 2,
                 y: winHeight / 2 - winHeight / 2 / 2,
-                width: 1800,
+                width: winWidht,
                 height: winHeight,
             });
+            // browserView.webContents.openDevTools();
             // browserView.webContents.session.resolveProxy()
             // browserView.webContents.setUserAgent(windowState.browser.userAgent.mobile);
-            // browserView.webContents.setUserAgent(
-            //     "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
-            // );
+            browserView.webContents.setUserAgent(
+                "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+            );
+            // browserView.webContents.on("did-finish-load", () => {
+            //     view1.webContents.executeJavaScript(
+            //         `
+            //             Screen.availWidth=${winWidht};
+            //             Screen.availHeight=${winHeight};
+            //             Screen.width=${winWidht};
+            //             Screen.height=${winHeight};
+            //          `
+            //     );
+            // });
             browserView.webContents.loadURL(details.url);
             return null;
         } else {

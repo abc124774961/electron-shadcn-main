@@ -387,11 +387,12 @@
             }
         },
         {
-            "isOpen": false,
+            "isOpen": true,
             "account": {
                 "account": "starryforest",
                 "email": "starryforest23@gmail.com",
                 "password": "333333",
+                "payPassword": "111111",
                 "kyc": ""
             },
             "browser": {
@@ -401,7 +402,7 @@
                 },
                 "lastHrefUrl": "",
                 "proxy": {
-                    "ip": "",
+                    "ip": "45.206.3.71",
                     "port": 50101,
                     "type": "socks5",
                     "username": "abc124774961",
