@@ -298,6 +298,30 @@
         {
             "isOpen": true,
             "account": {
+                "account": "starryforest",
+                "email": "starryforest23@gmail.com",
+                "password": "333333",
+                "payPassword": "111111",
+                "kyc": ""
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.3.71",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": true,
+            "account": {
                 "account": "luoming",
                 "email": "670612232@qq.com",
                 "password": "333333",
@@ -379,30 +403,6 @@
                 "lastHrefUrl": "",
                 "proxy": {
                     "ip": "45.206.54.115",
-                    "port": 50101,
-                    "type": "socks5",
-                    "username": "abc124774961",
-                    "password": "KAwhEZ54jg"
-                }
-            }
-        },
-        {
-            "isOpen": true,
-            "account": {
-                "account": "starryforest",
-                "email": "starryforest23@gmail.com",
-                "password": "333333",
-                "payPassword": "111111",
-                "kyc": ""
-            },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
-                },
-                "lastHrefUrl": "",
-                "proxy": {
-                    "ip": "45.206.3.71",
                     "port": 50101,
                     "type": "socks5",
                     "username": "abc124774961",
