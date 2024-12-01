@@ -94,7 +94,10 @@ async function createWindow() {
     // console.log("dataConfig", dataConfig);
 
     const webContainerView = new View();
-    const containerLayout = new ViewContainerLayoutManager(webContainerView, 7);
+    const containerLayout = new ViewContainerLayoutManager(
+        webContainerView,
+        Web3AppConfig.displayMaxColumnNumber
+    );
     SubWebwebHelper.init(containerLayout);
 
     // // Open the DevTools.
@@ -342,6 +345,10 @@ class ViewContainerLayoutManager {
         this.parentView.on("bounds-changed", () => {
             this.updateLayout(this.parentView?.getBounds());
         });
+    }
+
+    updateColumnMaxQuantity(columnMaxQuantity: number) {
+        this.columnMaxQuantity = columnMaxQuantity;
     }
 
     getParentContainerView() {
@@ -1011,6 +1018,11 @@ class SubWebwebHelper {
         Web3AppConfig.isAllowCamara = allow;
         console.log("setIsAllowCamera.allow", Web3AppConfig.isAllowCamara);
     }
+
+    static setDisplayColumnNum(event: any, allow: boolean, id: string) {
+        Web3AppConfig.isAllowCamara = allow;
+        console.log("setDisplayColumnNum.allow", Web3AppConfig.isAllowCamara);
+    }
     static setWindowIsOpen(event: any, open: boolean, id: string) {
         let webview = SubWebwebHelper.mapWeb3Window.get(id);
         if (webview?.window) {
@@ -1023,8 +1035,11 @@ class SubWebwebHelper {
         }
         console.log("setWindowIsOpen.open", id, open);
     }
-    static setLayoutColumnMaxNumber(event: any, columnNumber: number) {
-        this.containerLayout.columnMaxQuantity = columnNumber;
+    static setLayoutColumnMaxNumber(event: any, columnNumber: number, id: string) {
+        console.log("setLayoutColumnMaxNumber", columnNumber, SubWebwebHelper.containerLayout);
+        SubWebwebHelper.containerLayout.columnMaxQuantity = columnNumber;
+        SubWebwebHelper.containerLayout?.updateRowItemCount()
+        SubWebwebHelper.containerLayout?.updateLayout(SubWebwebHelper.containerLayout?.parentView.getBounds());
     }
 }
 
@@ -1043,6 +1058,7 @@ function initWebviewConfiguration(webContents: WebContents, window?: IWindowStat
 
 class Web3AppConfig {
     static isAllowCamara: boolean = false;
+    static displayMaxColumnNumber: number = 7;
 }
 
 class MttWebSiteHelper {

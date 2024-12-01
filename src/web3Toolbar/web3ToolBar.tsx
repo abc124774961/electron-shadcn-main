@@ -64,7 +64,17 @@ export default function App() {
                     >
                         是否允许摄像头
                     </Checkbox>
-                    <Select options={[{ value: "1", label: <span>1</span> }]} />
+                    <Select
+                        onChange={(e) => {
+                            // alert(e)
+                            window.web3.setLayoutColumnMaxNumber(e, window.__env.id);
+                        }}
+                        options={[
+                            // { value: "6", label: <span>6</span> },
+                            { value: "7", label: <span>7</span> },
+                            { value: "9", label: <span>9</span> },
+                        ]}
+                    />
                 </Col>
                 <Col span={18}>
                     {windowList?.map((win) => {
