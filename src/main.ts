@@ -826,9 +826,9 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         sockProxyRules(proxyUrl).then((proxyRules) => {
             view1.webContents.session.setProxy({ proxyRules }).then((e) => {
                 // console.log("fsdfdafdafas");
-                // view1.webContents.loadURL("https://sports-pre.mtt.xyz");
+                view1.webContents.loadURL("https://sports-pre.mtt.xyz");
                 // view1.webContents.loadURL("https://sports.mtt.xyz");
-                view1.webContents.loadURL("https://localhost");
+                // view1.webContents.loadURL("https://localhost");
                 // view1.webContents.loadURL("https://www.ipip.net");
             });
         });
