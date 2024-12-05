@@ -33,7 +33,7 @@ const inDevelopment = process.env.NODE_ENV === "development";
 
 let electronApp: ElectronApplication;
 const TOP_TITLE_DRAG_HANDER = 28;
-const TOP_MARGIN = 56;
+const TOP_MARGIN = 64;
 
 async function createWindow() {
     // await pie.initialize(app);
