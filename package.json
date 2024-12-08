@@ -17,7 +17,7 @@
         "test:unit": "jest",
         "test:e2e": "playwright test",
         "test:all": "jest && playwright test",
-        "bpt":"cd ../bpt-web && pnpm run dev"
+        "bpt": "cd ../bpt-web && pnpm run dev"
     },
     "author": "ROG <luan.roger.2003@gmail.com>",
     "license": "MIT",
@@ -51,6 +51,7 @@
         "@types/async-retry": "^1.4.9",
         "@types/electron-squirrel-startup": "^1.0.2",
         "@types/jest": "^29.5.13",
+        "@types/jquery": "^3.5.32",
         "@types/node": "^22.7.5",
         "@types/react": "^18.3.11",
         "@types/react-dom": "^18.3.1",
@@ -96,6 +97,7 @@
         "electron-squirrel-startup": "^1.0.1",
         "get-port": "^7.1.0",
         "i18next": "^23.16.0",
+        "jquery": "^3.7.1",
         "lucide-react": "^0.452.0",
         "mobx": "^6.13.5",
         "mobx-react-lite": "^4.0.7",

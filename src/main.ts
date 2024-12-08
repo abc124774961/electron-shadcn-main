@@ -28,6 +28,7 @@ import { BrowserView, getCurrentWebContents } from "@electron/remote";
 import { sockProxyRules } from "./utils/socksSessionProxy";
 import { getSystemInfo } from "./lib/utils";
 import { URL } from "url";
+import os from "node:os";
 
 const inDevelopment = process.env.NODE_ENV === "development";
 
@@ -248,7 +249,7 @@ class Web3ToolBar {
     //展开高度
     maxHeight: number = 200;
 
-    constructor() { }
+    constructor() {}
 
     initToolBar(toolBarLayout: View) {
         this.toolBarLayout = toolBarLayout;
@@ -568,6 +569,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
             contextIsolation: false,
             partition: `persist:account-${account.account}`,
             webSecurity: false,
+            plugins: true,
         },
     });
 
@@ -581,6 +583,14 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         // "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
         browser.userAgent.mobile
     );
+
+    // view1.webContents.session.loadExtension("../extension/extension-web3-mtt");
+    // const reactDevToolsPath = path.join("../../extension-web3-mtt/dist");
+
+    // view1.webContents.on("dom-ready", async () => {
+    //     view1.webContents.session.loadExtension(reactDevToolsPath);
+    // });
+
     view1.setBackgroundColor("#20293a");
     // view1.webContents.session.clearData({ dataTypes: ["cache"] });
     view1.webContents.on("did-finish-load", () => {
@@ -592,7 +602,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
                     localStorage.setItem('LanguageCode','zh-TW');
                 `
             )
-            .finally(() => { });
+            .finally(() => {});
 
         view1.webContents.executeJavaScript(
             `
@@ -604,9 +614,15 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         `
         );
     });
+    // view1.webContents.openDevTools();
+    view1.webContents.on("did-finish-load", () => {
+        const jsCode = fs.readFileSync(path.join(__dirname, "MTTAuto.js"), "utf8");
+        // console.log("jsCode", jsCode);
+        view1.webContents.executeJavaScript(jsCode).then((e) => {});
+    });
     view1.webContents.on("certificate-error", (event, url, error, certificate, callback) => {
-        callback(true) // 信任本地的https服务器
-    })
+        callback(true); // 信任本地的https服务器
+    });
 
     // const enforceInheritance = (topWebContents: Electron.WebContents) => {
     //     const handle = (webContents: Electron.WebContents) => {
@@ -1041,8 +1057,10 @@ class SubWebwebHelper {
     static setLayoutColumnMaxNumber(event: any, columnNumber: number, id: string) {
         console.log("setLayoutColumnMaxNumber", columnNumber, SubWebwebHelper.containerLayout);
         SubWebwebHelper.containerLayout.columnMaxQuantity = columnNumber;
-        SubWebwebHelper.containerLayout?.updateRowItemCount()
-        SubWebwebHelper.containerLayout?.updateLayout(SubWebwebHelper.containerLayout?.parentView.getBounds());
+        SubWebwebHelper.containerLayout?.updateRowItemCount();
+        SubWebwebHelper.containerLayout?.updateLayout(
+            SubWebwebHelper.containerLayout?.parentView.getBounds()
+        );
     }
 }
 

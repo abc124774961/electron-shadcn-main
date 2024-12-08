@@ -91,7 +91,7 @@ export function pluginExposeRenderer(name: string): Plugin {
     };
 }
 
-export function pluginHotRestart(command: "reload" | "restart"): Plugin {
+export function pluginHotRestart(command: "reload" | "restart" | "automtt"): Plugin {
     return {
         name: "@electron-forge/plugin-vite:hot-restart",
         closeBundle() {

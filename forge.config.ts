@@ -32,6 +32,10 @@ const config: ForgeConfig = {
                     entry: "src/preload.ts",
                     config: "vite.preload.config.ts",
                 },
+                {
+                    entry: "src/auto/MTTAuto.ts",
+                    config: "vite.automtt.config.ts",
+                },
             ],
             renderer: [
                 {
