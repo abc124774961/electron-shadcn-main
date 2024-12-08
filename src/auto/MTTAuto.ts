@@ -66,7 +66,7 @@ async function autoHandlerStatus() {
                 touchClick(checkButton);
                 await sleep(2000);
             }
-        } else if (status.callPrice > 0 && status.callPrice <= 1200) {
+        } else if (status.callPrice >= 0 && status.callPrice <= 2000) {
             //点击跟注
             let callButton = getCallButton();
             if (callButton) {
@@ -123,7 +123,9 @@ function getCheckButton() {
 
 //获取call按钮
 function getCallButton() {
-    return document.querySelectorAll(".game-operation .game-operation-button.main")[1];
+    return document.querySelector(
+        ".game-operation .game-operation-button__text.main.multiline span"
+    )?.parentElement;
 }
 
 //获取桌子弃牌按钮
