@@ -248,7 +248,7 @@ class Web3ToolBar {
     //展开高度
     maxHeight: number = 200;
 
-    constructor() {}
+    constructor() { }
 
     initToolBar(toolBarLayout: View) {
         this.toolBarLayout = toolBarLayout;
@@ -592,7 +592,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
                     localStorage.setItem('LanguageCode','zh-TW');
                 `
             )
-            .finally(() => {});
+            .finally(() => { });
 
         view1.webContents.executeJavaScript(
             `
@@ -604,6 +604,9 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         `
         );
     });
+    view1.webContents.on("certificate-error", (event, url, error, certificate, callback) => {
+        callback(true) // 信任本地的https服务器
+    })
 
     // const enforceInheritance = (topWebContents: Electron.WebContents) => {
     //     const handle = (webContents: Electron.WebContents) => {
@@ -826,9 +829,9 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         sockProxyRules(proxyUrl).then((proxyRules) => {
             view1.webContents.session.setProxy({ proxyRules }).then((e) => {
                 // console.log("fsdfdafdafas");
-                view1.webContents.loadURL("https://sports-pre.mtt.xyz");
+                // view1.webContents.loadURL("https://sports-pre.mtt.xyz");
                 // view1.webContents.loadURL("https://sports.mtt.xyz");
-                // view1.webContents.loadURL("https://localhost");
+                view1.webContents.loadURL("https://localhost");
                 // view1.webContents.loadURL("https://www.ipip.net");
             });
         });
