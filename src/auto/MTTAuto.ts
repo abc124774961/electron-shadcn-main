@@ -28,6 +28,11 @@ async function autoHandlerStatus() {
     }
     //如果在围观中、则点击推出游戏
     else if (status.isWatching) {
+        await sleep(2000);
+        status = getCurrentStatus();
+        if (!status.isWatching) {
+            return;
+        }
         let gameMenuButton = getGameMenuButton();
         //等待游戏菜单按钮出现
         if (!gameOperationBar) {
@@ -80,9 +85,9 @@ async function autoHandlerStatus() {
         }
     }
 
-    return setTimeout(() => {
-        autoHandlerStatus();
-    }, 400);
+    // return setTimeout(() => {
+    //     autoHandlerStatus();
+    // }, 400);
 }
 
 function getGoBackSeatButton(): HTMLDivElement | undefined {
@@ -258,7 +263,7 @@ function startAuto() {
         // console.log("当前页面：", page, window.document);
         if (page == EnumPage.Game) {
             // console.log("自动化监听开始");
-            autoTime = (await autoHandlerStatus()) as any;
+            (await autoHandlerStatus()) as any;
         }
     }
     let running = false;
