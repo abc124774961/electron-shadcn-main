@@ -66,7 +66,7 @@ async function autoHandlerStatus() {
                 touchClick(checkButton);
                 await sleep(2000);
             }
-        } else if (status.callPrice > 0 && status.callPrice <= 800) {
+        } else if (status.callPrice > 0 && status.callPrice <= 1200) {
             //点击跟注
             let callButton = getCallButton();
             if (callButton) {
