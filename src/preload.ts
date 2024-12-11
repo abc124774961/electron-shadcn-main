@@ -44,9 +44,9 @@ contextBridge.exposeInMainWorld("web3", {
         // alert(allow)
         ipcRenderer.invoke("web3:setWindowIsOpen", open, id);
     },
-    setLayoutColumnMaxNumber: (column: number, id: string) => {
-        console.log("setLayoutColumnMaxNumber", column, id);
+    setLayoutColumnMaxNumber: (column: number) => {
+        console.log("setLayoutColumnMaxNumber", column);
         // alert(allow)
-        ipcRenderer.invoke("web3:setLayoutColumnMaxNumber", column, id);
+        ipcRenderer.invoke("web3:setLayoutColumnMaxNumber", column);
     },
 });

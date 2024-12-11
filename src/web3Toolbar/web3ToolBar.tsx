@@ -9,7 +9,7 @@ import { RouterProvider } from "@tanstack/react-router";
 import { Theme } from "@radix-ui/themes";
 import { useState } from "react";
 import { ThemeProvider } from "next-themes";
-import { Button, Checkbox, Col, ConfigProvider, Row, Select } from "antd";
+import { Button, Checkbox, Col, ConfigProvider, Radio, Row, Select } from "antd";
 import "./index.css";
 import TaskUtil from "@/task/TaskUtil";
 import DragWindowRegion from "@/components/DragWindowRegion";
@@ -21,7 +21,10 @@ export default function App() {
     const [themeMode, setThemeMode] = useState("dark");
     const [, forceUpdate] = useReducer((i) => i + 1, 0);
 
-    const [allowCamera, setAllowCamera] = useState(window.__env?.config?.isAllowCamara ?? false);
+    const [allowCamera, setAllowCamera] = useState(window.__env?.config?.isAllowCamara ?? true);
+    const [displayColumn, setDisplayColumn] = useState(
+        window.__env?.config?.displayMaxColumnNumber ?? 7
+    );
 
     const windowList = TaskUtil.currentTaskConfig?.getWindowList();
     useEffect(() => {
@@ -33,6 +36,13 @@ export default function App() {
     }, [i18n]);
 
     // alert(window.qeConfig?.dataConfig())
+
+    useEffect(() => {
+        console.log("num", displayColumn);
+        if (window.web3 && window.__env && displayColumn) {
+            window.web3.setLayoutColumnMaxNumber(displayColumn, window.__env.id);
+        }
+    }, [displayColumn]);
 
     return (
         <div
@@ -46,15 +56,14 @@ export default function App() {
             {/* <DragWindowRegion title="" /> */}
             {/* <RouterProvider router={router} />; */}
             <Row gutter={[16, 16]} style={{ marginTop: "6px" }}>
-                <Col span={1}></Col>
-                <Col span={3}>
+                <Col span={3} style={{ textAlign: "left", justifyContent: "left" }}>
                     <Checkbox
                         style={{ width: "100%", color: "white" }}
                         type="link"
                         checked={allowCamera}
                         onClick={() => {
                             setAllowCamera(!allowCamera);
-                            window.web3.setIsAllowCamera(!allowCamera, window.__env.id);
+                            window.web3.setIsAllowCamera(!allowCamera);
                         }}
                         onChange={(e) => {
                             // alert('e.target.checked')
@@ -64,7 +73,22 @@ export default function App() {
                     >
                         是否允许摄像头
                     </Checkbox>
-                    <Select
+                    {[6, 7, 8, 9].map((n) => {
+                        return (
+                            <Radio
+                                checked={displayColumn == n}
+                                style={{ color: "white" }}
+                                value={n}
+                                onChange={(e) => {
+                                    setDisplayColumn(e.target.value);
+                                    window.web3.setLayoutColumnMaxNumber(e.target.value);
+                                }}
+                            >
+                                {n}列
+                            </Radio>
+                        );
+                    })}
+                    {/* <Select
                         onChange={(e) => {
                             // alert(e)
                             window.web3.setLayoutColumnMaxNumber(e, window.__env.id);
@@ -74,7 +98,7 @@ export default function App() {
                             { value: "7", label: <span>7</span> },
                             { value: "9", label: <span>9</span> },
                         ]}
-                    />
+                    /> */}
                 </Col>
                 <Col span={18}>
                     {windowList?.map((win) => {

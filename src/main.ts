@@ -1013,7 +1013,8 @@ class SubWebwebHelper {
                         await web3Content.session.forceReloadProxyConfig();
                         web3Content.session.setProxy({ proxyRules }).then((e) => {
                             // console.log("fsdfdafdafas");
-                            web3Content.loadURL("https://sports-pre.mtt.xyz");
+                            // web3Content.loadURL("https://sports-pre.mtt.xyz");
+                            web3Content.loadURL("https://localhost");
                             // view1.webContents.loadURL("https://www.ipip.net");
                             web3Content.reload();
                         });
@@ -1054,7 +1055,7 @@ class SubWebwebHelper {
         }
         console.log("setWindowIsOpen.open", id, open);
     }
-    static setLayoutColumnMaxNumber(event: any, columnNumber: number, id: string) {
+    static setLayoutColumnMaxNumber(event: any, columnNumber: number) {
         console.log("setLayoutColumnMaxNumber", columnNumber, SubWebwebHelper.containerLayout);
         SubWebwebHelper.containerLayout.columnMaxQuantity = columnNumber;
         SubWebwebHelper.containerLayout?.updateRowItemCount();
@@ -1071,14 +1072,15 @@ function initWebviewConfiguration(webContents: WebContents, window?: IWindowStat
             password:'${window?.account?.password}',
             kyc:'${window?.account?.kyc || ""}',
             config:{
-                isAllowCamara:${Web3AppConfig.isAllowCamara}
+                isAllowCamara:${Web3AppConfig.isAllowCamara},
+                displayMaxColumnNumber:${Web3AppConfig.displayMaxColumnNumber}
             }
         };`
     );
 }
 
 class Web3AppConfig {
-    static isAllowCamara: boolean = false;
+    static isAllowCamara: boolean = true;
     static displayMaxColumnNumber: number = 7;
 }
 
