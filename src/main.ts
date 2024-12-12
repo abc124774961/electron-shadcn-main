@@ -1081,7 +1081,7 @@ function initWebviewConfiguration(webContents: WebContents, window?: IWindowStat
 
 class Web3AppConfig {
     static isAllowCamara: boolean = true;
-    static displayMaxColumnNumber: number = 7;
+    static displayMaxColumnNumber: number = 8;
 }
 
 class MttWebSiteHelper {

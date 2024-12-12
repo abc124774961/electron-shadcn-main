@@ -23,7 +23,7 @@ export default function App() {
 
     const [allowCamera, setAllowCamera] = useState(window.__env?.config?.isAllowCamara ?? true);
     const [displayColumn, setDisplayColumn] = useState(
-        window.__env?.config?.displayMaxColumnNumber ?? 7
+        window.__env?.config?.displayMaxColumnNumber ?? 8
     );
 
     const windowList = TaskUtil.currentTaskConfig?.getWindowList();
