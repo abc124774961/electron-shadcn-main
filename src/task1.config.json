@@ -667,6 +667,75 @@
         {
             "isOpen": false,
             "account": {
+                "account": "lvnnlvnn04",
+                "email": "lvnnlvnn04@gmail.com",
+                "password": "555555",
+                "kyc": "采购-2007"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_5 like Mac OS X) AppleWebKit/536.2 (KHTML, like Gecko) CriOS/19.0.875.0 Mobile/17N642 Safari/536.2"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "103.54.154.36",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "jess588088",
+                "email": "jess588088@gmail.com",
+                "password": "555555",
+                "kyc": "采购-2008"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_5 like Mac OS X) AppleWebKit/536.2 (KHTML, like Gecko) CriOS/19.0.875.0 Mobile/17N642 Safari/536.2"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "172.120.69.140",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "cadyc8529",
+                "email": "cadyc8529@gmail.com",
+                "password": "555555",
+                "kyc": "采购-2009"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_5 like Mac OS X) AppleWebKit/536.2 (KHTML, like Gecko) CriOS/19.0.875.0 Mobile/17N642 Safari/536.2"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "172.120.69.148",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": false,
+            "account": {
                 "account": "journey989898",
                 "email": "journey989898@gmail.com",
                 "password": "444444",
@@ -768,21 +837,6 @@
         },
         {
             "account": "大爷"
-        },
-        {
-            "account": "大嫂"
-        },
-        {
-            "account": "三哥"
-        },
-        {
-            "account": "二姐"
-        },
-        {
-            "account": "二姐夫"
-        },
-        {
-            "account": "蔡青"
         },
         {
             "account": "蔡晋"
