@@ -450,18 +450,19 @@ export class AutoHandler {
                 if (page == EnumPage.Game) {
                     // console.log("自动化监听开始");
                     (await autoHandlerStatus()) as any;
-                } else if (page == EnumPage.Home1 || page == EnumPage.Home2) {
-                    // console.log("首页");
-                    console.log("跳转至比赛页面");
-                    let isEntry = await autoHandlerEnterTableFlow();
-                    if (!isEntry) {
-                        location.href = EnumPage.TourneyList5;
-                    }
-                } else if (page == EnumPage.Tourney) {
-                    location.href = EnumPage.TourneyList5;
-                } else if (page == EnumPage.TourneyList5) {
-                    await autoHandlerEntryListMatchFlow();
                 }
+                //  else if (page == EnumPage.Home1 || page == EnumPage.Home2) {
+                //     // console.log("首页");
+                //     console.log("跳转至比赛页面");
+                //     let isEntry = await autoHandlerEnterTableFlow();
+                //     if (!isEntry) {
+                //         location.href = EnumPage.TourneyList5;
+                //     }
+                // } else if (page == EnumPage.Tourney) {
+                //     location.href = EnumPage.TourneyList5;
+                // } else if (page == EnumPage.TourneyList5) {
+                //     await autoHandlerEntryListMatchFlow();
+                // }
             } catch (error: any) {
                 console.log("自动化异常", error);
             }
