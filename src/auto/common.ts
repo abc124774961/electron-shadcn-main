@@ -189,7 +189,7 @@ async function autoHandlerLoginFlow(account: any) {
     await sleep(200);
     let loginBtn = await waitForElement(".mtt-btn");
     loginBtn.trigger("click");
-    await sleep(3000);
+    await sleep(6000);
 }
 
 async function autoHandlerInputPasswordFlow(password: string) {
@@ -198,7 +198,7 @@ async function autoHandlerInputPasswordFlow(password: string) {
     await sleep(200);
     let loginBtn = await waitForElement(".mtt-btn");
     loginBtn.trigger("click");
-    await sleep(3000);
+    await sleep(6000);
 }
 
 async function autoHandlerEnterTableFlow() {
