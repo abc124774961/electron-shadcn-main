@@ -9,7 +9,7 @@ import { RouterProvider } from "@tanstack/react-router";
 import { Theme } from "@radix-ui/themes";
 import { useState } from "react";
 import { ThemeProvider } from "next-themes";
-import { Button, Col, ConfigProvider, Row } from "antd";
+import { Button, Checkbox, Col, ConfigProvider, Row } from "antd";
 import "./index.css";
 
 export default function App() {
@@ -17,6 +17,9 @@ export default function App() {
     const [themeMode, setThemeMode] = useState("dark");
 
     const [, forceUpdate] = useReducer((x) => x + 1, 0);
+    const { autoSetting } = window.__env || {};
+    const [autoMining, setAutoMining] = useState(false);
+    const [autoPlay, setAutoPlay] = useState(false);
 
     useEffect(() => {
         syncThemeWithLocal();
@@ -28,6 +31,7 @@ export default function App() {
             forceUpdate();
         }, 2000);
     }, [i18n]);
+
     return (
         <>
             <Row gutter={[16, 16]} style={{ background: "#222" }}>
@@ -38,9 +42,30 @@ export default function App() {
                         justifyContent: "center",
                         lineHeight: "30px",
                         paddingLeft: "18px",
+                        fontSize: "12px",
                     }}
                 >
-                    {window.__env?.id}-{window.__env?.password}-{window.__env?.kyc}
+                    {window.__env?.id}-{window.__env?.kyc}{" "}
+                    <Checkbox
+                        checked={autoMining}
+                        style={{ color: "white", fontSize: "12px" }}
+                        onChange={(e) => {
+                            setAutoMining(e.target.checked);
+                            window.web3.setAutoMining(e.target.checked, window.__env?.id);
+                        }}
+                    >
+                        自动进入挖矿
+                    </Checkbox>
+                    <Checkbox
+                        checked={autoPlay}
+                        style={{ color: "white", fontSize: "12px" }}
+                        onChange={(e) => {
+                            setAutoPlay(e.target.checked);
+                            window.web3.setAutoPlay(e.target.checked, window.__env?.id);
+                        }}
+                    >
+                        自动打牌
+                    </Checkbox>
                 </Col>
                 <Col span={6}>
                     <Button

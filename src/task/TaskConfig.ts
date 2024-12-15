@@ -14,6 +14,12 @@ class TaskConfig implements ITaskConfig {
                     return `${p.type}://${p.username}:${p.password}@${p.ip}:${p.port}`;
                 };
             }
+            state.autoSetting = {
+                autoLogin: false,
+                autoKyc: false,
+                autoPlay: false,
+                autoMining: false,
+            };
         });
     }
     static fromJson(json: string): TaskConfig {

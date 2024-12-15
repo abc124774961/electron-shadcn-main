@@ -14,6 +14,14 @@ export interface IWindowState {
     isOpen: boolean;
     account: IAccountInfo;
     browser: IBrowserConfig;
+    autoSetting: IAutoSetting;
+}
+
+export interface IAutoSetting {
+    autoLogin: boolean;
+    autoKyc: boolean;
+    autoPlay: boolean;
+    autoMining: boolean;
 }
 
 export interface IBrowserConfig {

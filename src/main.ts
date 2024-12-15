@@ -183,10 +183,10 @@ async function createWindow() {
     ipcMain.handle("user:login", website.login);
 
     // puppeteer 相关
-    ipcMain.handle("web3:reload", SubWebwebHelper.reload);
-    ipcMain.handle("web3:setIsAllowCamera", SubWebwebHelper.setIsAllowCamera);
-    ipcMain.handle("web3:setWindowIsOpen", SubWebwebHelper.setWindowIsOpen);
-    ipcMain.handle("web3:setLayoutColumnMaxNumber", SubWebwebHelper.setLayoutColumnMaxNumber);
+    // ipcMain.handle("web3:reload", SubWebwebHelper.reload);
+    // ipcMain.handle("web3:setIsAllowCamera", SubWebwebHelper.setIsAllowCamera);
+    // ipcMain.handle("web3:setWindowIsOpen", SubWebwebHelper.setWindowIsOpen);
+    // ipcMain.handle("web3:setLayoutColumnMaxNumber", SubWebwebHelper.setLayoutColumnMaxNumber);
 
     Web3ToolBar.getInstance().initToolBar(mainWindow.contentView);
 }
@@ -298,15 +298,21 @@ class Web3ToolBar {
         );
         const taskConfig: TaskConfig = TaskConfig.fromJson(JSON.stringify(dataConfig));
         webview.webContents.send("taskConfig", dataConfig);
+
+        // webview.webContents.on("cursor-changed", () => {
+        //     console.log("fdsfds");
+        // });
+        this.initToolIpcMain();
+    }
+
+    initToolIpcMain() {
         // puppeteer 相关
         ipcMain.handle("web3:reload", SubWebwebHelper.reload);
         ipcMain.handle("web3:setIsAllowCamera", SubWebwebHelper.setIsAllowCamera);
         ipcMain.handle("web3:setWindowIsOpen", SubWebwebHelper.setWindowIsOpen);
         ipcMain.handle("web3:setLayoutColumnMaxNumber", SubWebwebHelper.setLayoutColumnMaxNumber);
-
-        // webview.webContents.on("cursor-changed", () => {
-        //     console.log("fdsfds");
-        // });
+        ipcMain.handle("web3:setAutoMining", SubWebwebHelper.setAutoMining);
+        ipcMain.handle("web3:setAutoPlay", SubWebwebHelper.setAutoMining);
     }
 }
 
@@ -614,8 +620,10 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         `
         );
     });
-    // view1.webContents.openDevTools({ mode: "right" });
+    view1.webContents.openDevTools({ mode: "right" });
     view1.webContents.on("did-finish-load", () => {
+        initWebviewConfiguration(view1.webContents, windowState);
+
         const jsCode = fs.readFileSync(path.join(__dirname, "MTTAuto.js"), "utf8");
         // console.log("jsCode", jsCode);
         view1.webContents.executeJavaScript(jsCode).then((e) => {});
@@ -989,6 +997,7 @@ const createWebviewContainer = (webview: WebContentsView, windowState: IWindowSt
     view.addChildView(toolbarWebview);
     view.addChildView(webview);
 
+    Web3ToolBar.getInstance().initToolIpcMain();
     updateLayout(view.getBounds());
     return view;
 };
@@ -1056,25 +1065,48 @@ class SubWebwebHelper {
         console.log("setWindowIsOpen.open", id, open);
     }
     static setLayoutColumnMaxNumber(event: any, columnNumber: number) {
-        console.log("setLayoutColumnMaxNumber", columnNumber, SubWebwebHelper.containerLayout);
+        // console.log("setLayoutColumnMaxNumber", columnNumber, SubWebwebHelper.containerLayout);
         SubWebwebHelper.containerLayout.columnMaxQuantity = columnNumber;
         SubWebwebHelper.containerLayout?.updateRowItemCount();
         SubWebwebHelper.containerLayout?.updateLayout(
             SubWebwebHelper.containerLayout?.parentView.getBounds()
         );
     }
+    static setAutoMining(event: any, mining: boolean, id: string) {
+        console.log("static.setAutoMining", id, mining);
+        let webview = SubWebwebHelper.mapWeb3Window.get(id);
+        if (webview?.window) {
+            webview.window.autoSetting.autoMining = mining;
+            if (webview?.web3Webview?.webContents) {
+                console.log("static.setAutoMining", id, webview.window.autoSetting);
+                initWebviewConfiguration(webview?.web3Webview?.webContents, webview.window);
+            }
+        }
+    }
+    static async setAutoPlay(event: any, play: boolean, id: string) {
+        console.log("setAutoPlay", play);
+        let webview = SubWebwebHelper.mapWeb3Window.get(id);
+        if (webview?.window) {
+            webview.window.autoSetting.autoPlay = play;
+            if (webview?.web3Webview?.webContents) {
+                initWebviewConfiguration(webview?.web3Webview?.webContents, webview.window);
+            }
+        }
+    }
 }
 
 function initWebviewConfiguration(webContents: WebContents, window?: IWindowState) {
     webContents.executeJavaScript(
         `window.__env = {
+            account:${JSON.stringify(window?.account)},
             id:'${window?.account?.account}',
             password:'${window?.account?.password}',
             kyc:'${window?.account?.kyc || ""}',
             config:{
                 isAllowCamara:${Web3AppConfig.isAllowCamara},
                 displayMaxColumnNumber:${Web3AppConfig.displayMaxColumnNumber}
-            }
+            },
+            autoSetting:${JSON.stringify(window?.autoSetting)}
         };`
     );
 }

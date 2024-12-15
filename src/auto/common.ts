@@ -11,6 +11,8 @@ enum EnumPage {
     //挖矿赛列表5
     TourneyList5 = "/home/tourneyList?view=5",
     Competition = "/home/competition",
+    VerifyPassword = "/oauth2/verifyPassword",
+    Login = "/oauth2/login",
 }
 
 //获取当前处于的页面
@@ -29,10 +31,14 @@ function getCurrentPage() {
         return EnumPage.Competition;
     } else if (url.includes(EnumPage.TourneyList5)) {
         return EnumPage.TourneyList5;
+    } else if (url.includes(EnumPage.VerifyPassword)) {
+        return EnumPage.VerifyPassword;
+    } else if (url.includes(EnumPage.Login)) {
+        return EnumPage.Login;
     }
 }
 
-async function autoHandlerStatus() {
+async function autoHandlerStatus(autoHandler: AutoHandler) {
     let status = getCurrentStatus();
     let gameOperationBar = document.querySelector(".game-operation");
     let currentHand = getCurrentHandCardsWithTypes();
@@ -94,7 +100,11 @@ async function autoHandlerStatus() {
                 return;
             }
         }
-    } else if (false && currentHand.winProbability > 0.5 && status.isMyselfOpreateTime) {
+    } else if (
+        autoHandler.autoPaly &&
+        currentHand.winProbability > 0.5 &&
+        status.isMyselfOpreateTime
+    ) {
         console.log("当前牌基础胜率：", currentHand.winProbability);
         //获取all in按钮
         let allInButton = await getAllInButton();
@@ -161,6 +171,34 @@ async function autoHandlerEntryMatchFlow() {
             }
         }
     }
+}
+async function autoHandlerLoginFlow(account: any) {
+    await waitForElement(".login-title");
+    let historyLogin = await waitForElement(".history-login", undefined, 200).catch(() => []);
+    if (historyLogin?.length > 0) {
+        let switchBtn = await waitForElement("#button-next", undefined, 200);
+        switchBtn.trigger("click");
+        await sleep(400);
+    }
+    await simulateInput("#accountInput input", account.account);
+    await sleep(200);
+    let switchBtn = await waitForElement("#button-next", undefined, 200);
+    switchBtn.trigger("click");
+    await waitForElement(".ant-input-password");
+    await simulateInput(".ant-input-password input", account.password);
+    await sleep(200);
+    let loginBtn = await waitForElement(".mtt-btn");
+    loginBtn.trigger("click");
+    await sleep(3000);
+}
+
+async function autoHandlerInputPasswordFlow(password: string) {
+    await waitForElement(".ant-input-password");
+    await simulateInput(".ant-input-password input", password);
+    await sleep(200);
+    let loginBtn = await waitForElement(".mtt-btn");
+    loginBtn.trigger("click");
+    await sleep(3000);
 }
 
 async function autoHandlerEnterTableFlow() {
@@ -435,8 +473,10 @@ export class AutoHandler {
         runInAction(async () => {
             this.autoStartStatus = true;
         });
+        const { account, autoSetting } = window.__env;
 
         let autoTime: any;
+        let that = this;
         // window.addEventListener("popstate", function () {
         //     let page = getCurrentPage();
         //     console.log("路由切换", page);
@@ -446,23 +486,32 @@ export class AutoHandler {
         async function runAuto() {
             let page = getCurrentPage();
             try {
-                // console.log("当前页面：", page, window.document);
+                // console.log("当前页面：", page, that.autoMining);
                 if (page == EnumPage.Game) {
                     // console.log("自动化监听开始");
-                    (await autoHandlerStatus()) as any;
+                    (await autoHandlerStatus(that)) as any;
+                } else if (page == EnumPage.Login) {
+                    await autoHandlerLoginFlow(account);
+                } else if (page == EnumPage.VerifyPassword) {
+                    await autoHandlerInputPasswordFlow(account.password);
+                } else if (page == EnumPage.Home1 || page == EnumPage.Home2) {
+                    // console.log("首页");
+                    if (that.autoMining) {
+                        console.log("跳转至比赛页面");
+                        let isEntry = await autoHandlerEnterTableFlow();
+                        if (!isEntry) {
+                            location.href = EnumPage.TourneyList5;
+                        }
+                    }
+                } else if (page == EnumPage.Tourney) {
+                    if (that.autoMining) {
+                        location.href = EnumPage.TourneyList5;
+                    }
+                } else if (page == EnumPage.TourneyList5) {
+                    if (that.autoMining) {
+                        await autoHandlerEntryListMatchFlow();
+                    }
                 }
-                //  else if (page == EnumPage.Home1 || page == EnumPage.Home2) {
-                //     // console.log("首页");
-                //     console.log("跳转至比赛页面");
-                //     let isEntry = await autoHandlerEnterTableFlow();
-                //     if (!isEntry) {
-                //         location.href = EnumPage.TourneyList5;
-                //     }
-                // } else if (page == EnumPage.Tourney) {
-                //     location.href = EnumPage.TourneyList5;
-                // } else if (page == EnumPage.TourneyList5) {
-                //     await autoHandlerEntryListMatchFlow();
-                // }
             } catch (error: any) {
                 console.log("自动化异常", error);
             }
@@ -478,6 +527,14 @@ export class AutoHandler {
                 });
             }
         }, 300);
+    }
+
+    get autoPaly() {
+        return window.__env?.autoSetting?.autoPlay;
+    }
+
+    get autoMining() {
+        return window.__env?.autoSetting?.autoMining;
     }
 }
 
@@ -848,4 +905,67 @@ function calculateWinProbability(hand: string[]): number {
     const handStr = hand.sort((a, b) => cardValueMap[b] - cardValueMap[a]).join("");
     console.log("handStr", hand, handStr);
     return handRank[handStr] || 0.2; // 默认胜率为0.2
+}
+
+async function simulateInput(selector: string, text: string, interval: number = 100) {
+    try {
+        const inputElement = await waitForElement(selector);
+        if (inputElement.length === 0) {
+            throw new Error(`Element with selector "${selector}" not found`);
+        }
+
+        inputElement.trigger("focusin");
+        // 清空输入框
+        inputElement.val("");
+
+        // 模拟逐个字符输入
+        for (let char of text) {
+            const keyCode = char.charCodeAt(0);
+
+            // 触发 keydown 事件
+            inputElement.trigger({
+                type: "keydown",
+                key: char,
+                keyCode: keyCode,
+                which: keyCode,
+            });
+
+            // 触发 keypress 事件
+            inputElement.trigger({
+                type: "keypress",
+                key: char,
+                keyCode: keyCode,
+                which: keyCode,
+            });
+
+            // 更新输入框的值
+            //inputid是需要赋值的input的id
+            let event = new Event("input", { bubbles: true });
+            let input = inputElement.get(0);
+            if (input) {
+                input.value = inputElement.val() + char;
+                let tracker = input._valueTracker;
+                if (tracker) {
+                    tracker.setValue(inputElement.val() + char);
+                }
+                input.dispatchEvent(event);
+                inputElement.get(0)?.dispatchEvent(event);
+            }
+
+            // 触发 input 事件
+            inputElement.trigger("input");
+
+            // 触发 keyup 事件
+            inputElement.trigger({
+                type: "keyup",
+                key: char,
+                keyCode: keyCode,
+                which: keyCode,
+            });
+
+            await sleep(interval); // 模拟打字间隔
+        }
+    } catch (error) {
+        console.error("Error simulating input:", error);
+    }
 }

@@ -49,4 +49,12 @@ contextBridge.exposeInMainWorld("web3", {
         // alert(allow)
         ipcRenderer.invoke("web3:setLayoutColumnMaxNumber", column);
     },
+    setAutoMining: (autoMining: boolean, id: string) => {
+        console.log("----setAutoMining", autoMining);
+        ipcRenderer.invoke("web3:setAutoMining", autoMining, id);
+    },
+    setAutoPlay: (autoPlay: boolean, id: string) => {
+        console.log("setAutoPlay", autoPlay);
+        ipcRenderer.invoke("web3:setAutoPlay", autoPlay, id);
+    },
 });
