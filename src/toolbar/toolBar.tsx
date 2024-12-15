@@ -36,7 +36,7 @@ export default function App() {
         <>
             <Row gutter={[16, 16]} style={{ background: "#222" }}>
                 <Col
-                    span={18}
+                    span={20}
                     style={{
                         color: "white",
                         justifyContent: "center",
@@ -67,7 +67,7 @@ export default function App() {
                         打牌
                     </Checkbox>
                 </Col>
-                <Col span={6}>
+                <Col span={1}>
                     <Button
                         style={{ width: "100%" }}
                         type="link"
