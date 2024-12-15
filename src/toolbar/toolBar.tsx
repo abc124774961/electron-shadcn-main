@@ -54,7 +54,7 @@ export default function App() {
                             window.web3.setAutoMining(e.target.checked, window.__env?.id);
                         }}
                     >
-                        自动进入挖矿
+                        挖矿
                     </Checkbox>
                     <Checkbox
                         checked={autoPlay}
@@ -64,7 +64,7 @@ export default function App() {
                             window.web3.setAutoPlay(e.target.checked, window.__env?.id);
                         }}
                     >
-                        自动打牌
+                        打牌
                     </Checkbox>
                 </Col>
                 <Col span={6}>

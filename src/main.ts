@@ -189,6 +189,7 @@ async function createWindow() {
     // ipcMain.handle("web3:setLayoutColumnMaxNumber", SubWebwebHelper.setLayoutColumnMaxNumber);
 
     Web3ToolBar.getInstance().initToolBar(mainWindow.contentView);
+    Web3ToolBar.getInstance().initToolIpcMain();
 }
 
 // This method will be called when Electron has finished
@@ -997,7 +998,6 @@ const createWebviewContainer = (webview: WebContentsView, windowState: IWindowSt
     view.addChildView(toolbarWebview);
     view.addChildView(webview);
 
-    Web3ToolBar.getInstance().initToolIpcMain();
     updateLayout(view.getBounds());
     return view;
 };
