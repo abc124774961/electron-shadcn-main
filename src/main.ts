@@ -620,7 +620,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         `
         );
     });
-    view1.webContents.openDevTools({ mode: "right" });
+    // view1.webContents.openDevTools({ mode: "right" });
     view1.webContents.on("did-finish-load", () => {
         initWebviewConfiguration(view1.webContents, windowState);
 
