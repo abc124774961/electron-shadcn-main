@@ -614,7 +614,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         `
         );
     });
-    // view1.webContents.openDevTools();
+    // view1.webContents.openDevTools({ mode: "right" });
     view1.webContents.on("did-finish-load", () => {
         const jsCode = fs.readFileSync(path.join(__dirname, "MTTAuto.js"), "utf8");
         // console.log("jsCode", jsCode);

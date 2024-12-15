@@ -100,7 +100,7 @@ export default function App() {
                         ]}
                     /> */}
                 </Col>
-                <Col span={18}>
+                <Col span={21}>
                     {windowList?.map((win) => {
                         return (
                             <Checkbox
@@ -118,7 +118,6 @@ export default function App() {
                         );
                     })}
                 </Col>
-                <Col span={1}>dsd</Col>
             </Row>
         </div>
     );

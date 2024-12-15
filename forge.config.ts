@@ -33,7 +33,7 @@ const config: ForgeConfig = {
                     config: "vite.preload.config.ts",
                 },
                 {
-                    entry: "src/auto/MTTAuto.ts",
+                    entry: "src/auto/MTTAuto.tsx",
                     config: "vite.automtt.config.ts",
                 },
             ],
