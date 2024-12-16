@@ -1,7 +1,7 @@
 {
     "accountList": [
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "abc123",
                 "password": "abc123456"
@@ -22,7 +22,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "abc1234567",
                 "password": "abc123456"
@@ -43,7 +43,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "smile1",
                 "password": "111111",
@@ -65,7 +65,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "lcy123",
                 "password": "111111",
@@ -87,7 +87,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "zengdongbo",
                 "password": "222222",
@@ -109,7 +109,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "vb588088042",
                 "password": "dgvb2242253269",
@@ -132,7 +132,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "duncanerin70",
                 "password": "333333",
@@ -155,7 +155,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "berrys",
                 "password": "111111",
@@ -177,7 +177,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "jvito",
                 "email": "jvito1773@gmail.com",
@@ -200,7 +200,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "luoming",
                 "email": "670612232@qq.com",
@@ -223,7 +223,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "dayi",
                 "password": "dgvb2242253269",
@@ -315,7 +315,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "later19871202",
                 "password": "444444",
@@ -338,7 +338,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "autumn188122",
                 "password": "555555",
@@ -361,7 +361,7 @@
             }
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "nuyoah",
                 "password": "333333",
@@ -830,6 +830,75 @@
                     "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
                 },
                 "lastHrefUrl": ""
+            }
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "xena2854",
+                "email": "xena2854@gmail.com",
+                "password": "555555",
+                "kyc": ""
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/604.1"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "172.120.69.141",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "ania588088",
+                "password": "555555",
+                "email": "ania588088@gmail.com",
+                "kyc": ""
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "172.120.69.147",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "sini271186",
+                "password": "555555",
+                "email": "sini271186@gmail.com",
+                "kyc": ""
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "172.120.69.144",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
             }
         },
         {

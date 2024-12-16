@@ -25,6 +25,7 @@ export default function App() {
     const [displayColumn, setDisplayColumn] = useState(
         window.__env?.config?.displayMaxColumnNumber ?? 8
     );
+    const [autoLogin, setAutoLogin] = useState(window.__env?.config?.autoLogin ?? true);
 
     const windowList = TaskUtil.currentTaskConfig?.getWindowList();
     useEffect(() => {
@@ -58,7 +59,7 @@ export default function App() {
             <Row gutter={[16, 16]} style={{ marginTop: "6px" }}>
                 <Col span={3} style={{ textAlign: "left", justifyContent: "left" }}>
                     <Checkbox
-                        style={{ width: "100%", color: "white" }}
+                        style={{ width: "100%", color: "white", fontSize: "12px" }}
                         type="link"
                         checked={allowCamera}
                         onClick={() => {
@@ -71,13 +72,29 @@ export default function App() {
                             // window.web3.setIsAllowCamera(e.target.checked, window.__env.id);
                         }}
                     >
-                        是否允许摄像头
+                        摄像头
+                    </Checkbox>
+                    <Checkbox
+                        style={{ width: "100%", color: "white", fontSize: "12px" }}
+                        type="link"
+                        checked={autoLogin}
+                        onClick={() => {
+                            setAutoLogin(!autoLogin);
+                            window.web3.setAutoLogin(!autoLogin);
+                        }}
+                        onChange={(e) => {
+                            // alert('e.target.checked')
+                            // setAllowCamera(e.target.checked);
+                            // window.web3.setIsAllowCamera(e.target.checked, window.__env.id);
+                        }}
+                    >
+                        自动登录
                     </Checkbox>
                     {[6, 7, 8, 9].map((n) => {
                         return (
                             <Radio
                                 checked={displayColumn == n}
-                                style={{ color: "white" }}
+                                style={{ color: "white", fontSize: "12px" }}
                                 value={n}
                                 onChange={(e) => {
                                     setDisplayColumn(e.target.value);
@@ -100,11 +117,11 @@ export default function App() {
                         ]}
                     /> */}
                 </Col>
-                <Col span={21}>
+                <Col span={19}>
                     {windowList?.map((win) => {
                         return (
                             <Checkbox
-                                style={{ color: "white" }}
+                                style={{ color: "white", fontSize: "12px" }}
                                 checked={win.isOpen}
                                 onChange={() => {}}
                                 onClick={() => {

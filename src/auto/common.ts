@@ -491,7 +491,9 @@ export class AutoHandler {
                     // console.log("自动化监听开始");
                     (await autoHandlerStatus(that)) as any;
                 } else if (page == EnumPage.Login) {
-                    await autoHandlerLoginFlow(account);
+                    if (that.autoLogin) {
+                        await autoHandlerLoginFlow(account);
+                    }
                 } else if (page == EnumPage.VerifyPassword) {
                     await autoHandlerInputPasswordFlow(account.password);
                 } else if (page == EnumPage.Home1 || page == EnumPage.Home2) {
@@ -535,6 +537,9 @@ export class AutoHandler {
 
     get autoMining() {
         return window.__env?.autoSetting?.autoMining;
+    }
+    get autoLogin() {
+        return window.__env?.autoSetting?.autoLogin;
     }
 }
 

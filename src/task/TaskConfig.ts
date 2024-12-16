@@ -15,7 +15,7 @@ class TaskConfig implements ITaskConfig {
                 };
             }
             state.autoSetting = {
-                autoLogin: false,
+                autoLogin: true,
                 autoKyc: false,
                 autoPlay: false,
                 autoMining: false,

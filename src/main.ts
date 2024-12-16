@@ -314,6 +314,7 @@ class Web3ToolBar {
         ipcMain.handle("web3:setLayoutColumnMaxNumber", SubWebwebHelper.setLayoutColumnMaxNumber);
         ipcMain.handle("web3:setAutoMining", SubWebwebHelper.setAutoMining);
         ipcMain.handle("web3:setAutoPlay", SubWebwebHelper.setAutoPlay);
+        ipcMain.handle("web3:setAutoLogin", SubWebwebHelper.setAutoLogin);
     }
 }
 
@@ -1092,6 +1093,18 @@ class SubWebwebHelper {
                 initWebviewConfiguration(webview?.web3Webview?.webContents, webview.window);
             }
         }
+    }
+
+    static async setAutoLogin(event: any, login: boolean, id: string) {
+        console.log("setAutoLogin", login);
+        SubWebwebHelper.mapWeb3Window.forEach((webview) => {
+            if (webview?.window) {
+                webview.window.autoSetting.autoLogin = login;
+                if (webview?.web3Webview?.webContents) {
+                    initWebviewConfiguration(webview?.web3Webview?.webContents, webview.window);
+                }
+            }
+        });
     }
 }
 

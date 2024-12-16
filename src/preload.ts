@@ -57,4 +57,8 @@ contextBridge.exposeInMainWorld("web3", {
         console.log("setAutoPlay", autoPlay);
         ipcRenderer.invoke("web3:setAutoPlay", autoPlay, id);
     },
+    setAutoLogin: (autoLogin: boolean, id: string) => {
+        console.log("setAutoLogin", autoLogin);
+        ipcRenderer.invoke("web3:setAutoLogin", autoLogin, id);
+    },
 });
