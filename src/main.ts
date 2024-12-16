@@ -313,7 +313,7 @@ class Web3ToolBar {
         ipcMain.handle("web3:setWindowIsOpen", SubWebwebHelper.setWindowIsOpen);
         ipcMain.handle("web3:setLayoutColumnMaxNumber", SubWebwebHelper.setLayoutColumnMaxNumber);
         ipcMain.handle("web3:setAutoMining", SubWebwebHelper.setAutoMining);
-        ipcMain.handle("web3:setAutoPlay", SubWebwebHelper.setAutoMining);
+        ipcMain.handle("web3:setAutoPlay", SubWebwebHelper.setAutoPlay);
     }
 }
 
