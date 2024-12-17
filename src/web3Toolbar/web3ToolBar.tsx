@@ -90,7 +90,7 @@ export default function App() {
                     >
                         自动登录
                     </Checkbox>
-                    {[6, 7, 8, 9].map((n) => {
+                    {[6, 7, 8, 9, 10].map((n) => {
                         return (
                             <Radio
                                 checked={displayColumn == n}

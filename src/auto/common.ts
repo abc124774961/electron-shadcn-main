@@ -174,22 +174,24 @@ async function autoHandlerEntryMatchFlow() {
 }
 async function autoHandlerLoginFlow(account: any) {
     await waitForElement(".login-title");
-    let historyLogin = await waitForElement(".history-login", undefined, 200).catch(() => []);
+    await sleep(1400);
+    let historyLogin = await waitForElement(".history-login", undefined).catch(() => []);
     if (historyLogin?.length > 0) {
-        let switchBtn = await waitForElement("#button-next", undefined, 200);
+        let switchBtn = await waitForElement("#button-next", undefined);
         switchBtn.trigger("click");
-        await sleep(400);
+        await sleep(1400);
     }
     await simulateInput("#accountInput input", account.account);
-    await sleep(200);
-    let switchBtn = await waitForElement("#button-next", undefined, 200);
+    await sleep(500);
+    let switchBtn = await waitForElement("#button-next", undefined);
     switchBtn.trigger("click");
+    await sleep(1500);
     await waitForElement(".ant-input-password");
     await simulateInput(".ant-input-password input", account.password);
     await sleep(200);
     let loginBtn = await waitForElement(".mtt-btn");
     loginBtn.trigger("click");
-    await sleep(6000);
+    await waitForRouteChange();
 }
 
 async function autoHandlerInputPasswordFlow(password: string) {
@@ -198,7 +200,7 @@ async function autoHandlerInputPasswordFlow(password: string) {
     await sleep(200);
     let loginBtn = await waitForElement(".mtt-btn");
     loginBtn.trigger("click");
-    await sleep(6000);
+    await waitForRouteChange();
 }
 
 async function autoHandlerEnterTableFlow() {
@@ -387,9 +389,9 @@ const getCurrentStatus = () => {
     let isOpreateTime = isNaN(time) ? false : true;
 
     //获取操作时间是否已经快到结束时刻
-    let isOpreateTimeToEnd = time < 10 ? true : false;
+    let isOpreateTimeToEnd = time < 20 ? true : false;
 
-    //获取操作时间是否已经快到结束时刻
+    //获取是否已经快到操作时间
     let isMyselfOpreateTime = time > 0 ? true : false;
 
     let isOpenEndedModel =
@@ -666,7 +668,7 @@ const cardConfig = {
     "4c": { position: "-0.984954rem 0rem" }, //1
     "4d": { position: "-0.984954rem -1.00825rem" }, //1
     //5
-    "5s": { position: "" },
+    "5s": { position: "-1.47743rem -1.68041rem" }, //1
     "5h": { position: "-1.72367rem -0.672164rem" }, //1
     "5c": { position: "-0.984954rem -0.336082rem" }, //1
     "5d": { position: "-1.23119rem -1.00825rem" }, //1
@@ -691,19 +693,19 @@ const cardConfig = {
     "9c": { position: "-0.738715rem -0.672164rem" }, //1
     "9d": { position: "-1.47743rem -1.00825rem" }, //1
     //10
-    Ts: { position: "-1.96991rem -1.34433rem" },
+    Ts: { position: "-1.96991rem -1.34433rem" }, //1
     Th: { position: "-0.492477rem -1.34433rem" }, //1
     Tc: { position: "-0.492477rem 0rem" }, //1
     Td: { position: "-1.23119rem -0.336082rem" }, //1
     //J
     Js: { position: "0rem -1.68041rem" }, //1
-    Jd: { position: "-1.23119rem -0.672164rem" },
     Jh: { position: "-0.738715rem -1.34433rem" },
-    Jc: { position: "" },
+    Jc: { position: "0rem -0.336082rem" }, //1
+    Jd: { position: "-1.23119rem -0.672164rem" }, //1
     //Q
     Qs: { position: "-0.246238rem -1.68041rem" }, //1
     Qh: { position: "-0.984954rem -1.34433rem" }, //1
-    Qc: { position: "-0.246238rem -0.336082rem" },
+    Qc: { position: "-0.246238rem -0.336082rem" }, //1
     Qd: { position: "0rem -1.00825rem" }, //1
     //K
     Kh: { position: "-1.23119rem -1.34433rem" }, //1
@@ -973,4 +975,25 @@ async function simulateInput(selector: string, text: string, interval: number = 
     } catch (error) {
         console.error("Error simulating input:", error);
     }
+}
+
+function waitForRouteChange(timeout: number = 10000): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const originalUrl = window.location.href;
+
+        const onPopState = () => {
+            if (window.location.href !== originalUrl) {
+                window.removeEventListener("popstate", onPopState);
+                clearTimeout(timer);
+                resolve(window.location.href);
+            }
+        };
+
+        window.addEventListener("popstate", onPopState);
+
+        const timer = setTimeout(() => {
+            window.removeEventListener("popstate", onPopState);
+            reject(new Error(`Route change did not occur within ${timeout}ms`));
+        }, timeout);
+    });
 }
