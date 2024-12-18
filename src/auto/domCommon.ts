@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 export function touchClick(element: HTMLElement | Element) {
     // 创建一个鼠标点击事件
     var mouseClickEvent = new PointerEvent("pointerdown", {
@@ -102,6 +104,7 @@ export async function waitForElement(
     timeout: number = 10000
 ): Promise<JQuery<HTMLElement>> {
     return new Promise((resolve, reject) => {
+        console.log(`Waiting for element with selector "${selector}"...`);
         const observer = new MutationObserver((mutationsList) => {
             for (const mutation of mutationsList) {
                 if (mutation.type === "childList") {

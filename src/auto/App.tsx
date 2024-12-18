@@ -4,6 +4,9 @@ import { Menu } from "react-float-menu";
 import { Observer } from "mobx-react-lite";
 
 import { autoHandler } from "./AutoHandler";
+import { mttMatchData } from "./mttMatchData";
+import { mttDomCommon } from "./mttSportsCommon";
+import { featFlowHandler } from "./FeatFlowHandler";
 export default function App() {
     useEffect(() => {
         autoHandler.startAuto();
@@ -16,15 +19,24 @@ export default function App() {
                         style={{
                             width: "50px",
                             height: "50px",
-                            background: autoHandler.autoStartStatus ? "green" : "red",
-                            borderRadius: "50%",
+                            background: autoHandler.runActive ? "green" : "red",
+                            borderRadius: "4px",
                             justifyContent: "center",
                             alignItems: "center",
                             display: "flex",
                         }}
                     >
-                        <div style={{ fontSize: "14px" }}>
-                            {autoHandler.autoStartStatus ? "开启" : "关闭"}
+                        <div
+                            style={{ fontSize: "12px" }}
+                            onClick={() => {
+                                featFlowHandler.getTodayMiningCount();
+                            }}
+                        >
+                            今日：
+                            {mttMatchData.todayMiningCount == -1
+                                ? "--"
+                                : mttMatchData.todayMiningCount}
+                            {/* {autoHandler.running} */}
                         </div>
                     </div>
                 );

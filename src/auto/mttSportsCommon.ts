@@ -1,5 +1,7 @@
 import { sleep, touchClick } from "./domCommon";
 import { EnumPage } from "./types";
+import $ from "jquery";
+
 
 class MttDomCommon {
     getGoBackSeatButton(): HTMLDivElement | undefined {

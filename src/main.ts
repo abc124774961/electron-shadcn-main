@@ -570,14 +570,22 @@ class ViewLayoutItemModel {
 
 const createNewWebTabContent = (windowState: IWindowState) => {
     const { browser, account } = windowState;
+    const preload = path.join(__dirname, "preload.js");
     const view1 = new Web3WebView({
         webPreferences: {
             // 在WebPreferences中设置contextIsolation和nodeIntegration
-            nodeIntegration: true,
-            contextIsolation: false,
+            // nodeIntegration: true,
+            // contextIsolation: true,
             partition: `persist:account-${account.account}`,
-            webSecurity: false,
-            plugins: true,
+            // webSecurity: false,
+            // plugins: true,
+            // preload: preload,
+            // // nodeIntegrationInSubFrames: false,
+            // webviewTag: true,
+            nodeIntegration: true, // 为了解决require 识别问题
+            contextIsolation: false,
+            enableRemoteModule: true,
+            // preload: preload,
         },
     });
 
@@ -622,7 +630,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         `
         );
     });
-    // view1.webContents.openDevTools({ mode: "right" });
+    view1.webContents.openDevTools({ mode: "right" });
     view1.webContents.on("did-finish-load", () => {
         initWebviewConfiguration(view1.webContents, windowState);
 

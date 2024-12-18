@@ -6,6 +6,7 @@ import { sleep, touchClick, waitForElement } from "./domCommon";
 import { Hand } from "pokersolver";
 import { getCurrentHandCardsWithTypes } from "./pokerCommon";
 import { AutomationConfig } from "./AutomationConfig";
+import { mttMatchData } from "./mttMatchData";
 
 export class AutoHandler {
     constructor() {
@@ -15,7 +16,22 @@ export class AutoHandler {
 
     running = false;
 
+    runActive = false;
+    activeTime: any;
+
     automationConfig = new AutomationConfig();
+
+    autoTime: any;
+
+    getAutoflow() {
+        let params = new URLSearchParams(location.search);
+
+        if (params.get("__autoflow")) {
+            return params.get("__autoflow");
+        } else {
+            return null;
+        }
+    }
 
     startAuto() {
         if (this.autoStartStatus) return;
@@ -23,10 +39,10 @@ export class AutoHandler {
         runInAction(async () => {
             this.autoStartStatus = true;
         });
-        const { account, autoSetting } = window.__env;
+        const { account, autoSetting, id } = window.__env;
 
-        let autoTime: any;
         let that = this;
+
         // window.addEventListener("popstate", function () {
         //     let page = getCurrentPage();
         //     console.log("路由切换", page);
@@ -37,7 +53,16 @@ export class AutoHandler {
             let page = mttDomCommon.getCurrentPage();
             try {
                 // console.log("当前页面：", page, that.autoMining);
-                if (page == EnumPage.Game) {
+                if (that.getAutoflow()) {
+                    let autoflow = that.getAutoflow();
+                    console.log("继续上次自动流程：", autoflow);
+                    switch (autoflow) {
+                        case "getTodayMiningCount":
+                            await featFlowHandler.getTodayMiningCount();
+                            break;
+                        default:
+                    }
+                } else if (page == EnumPage.Game) {
                     // console.log("自动化监听开始");
                     (await that.autoHandlerStatus(that)) as any;
                 } else if (page == EnumPage.Login) {
@@ -46,39 +71,61 @@ export class AutoHandler {
                     }
                 } else if (page == EnumPage.VerifyPassword) {
                     await featFlowHandler.autoHandlerInputPasswordFlow(account.password);
-                } else if (page == EnumPage.Home1 || page == EnumPage.Home2) {
+                } else if (page == EnumPage.TourneyList5) {
+                    if (that.automationConfig.autoMining) {
+                        await featFlowHandler.autoHandlerEntryListMatchFlow();
+                    }
+                } else {
+                    // if (page == EnumPage.Home1 || page == EnumPage.Home2) {
                     // console.log("首页");
                     if (that.automationConfig.autoMining) {
                         console.log("跳转至比赛页面");
                         let isEntry = await featFlowHandler.autoHandlerEnterTableFlow();
                         if (!isEntry) {
-                            location.href = EnumPage.TourneyList5;
+                            //     let count =
+                            //         mttMatchData.todayMiningCount >= 0
+                            //             ? mttMatchData.todayMiningCount
+                            //             : await featFlowHandler.getTodayMiningCount();
+                            //     if (count != undefined && count >= 13) {
+                            //         console.log("暂停。。。。。");
+                            //         that.automationConfig.setAutoMining(false);
+                            //     } else if (count != undefined && count < 13 && count >= 0) {
+                            //         // location.href = EnumPage.TourneyList5;
+                            //         // location.replace(EnumPage.TourneyList5)
+                            //         window.history.go(-2);
+                            //         // window.history.pushState(null, "", EnumPage.TourneyList5);
+                            //     }
+                            location.replace(EnumPage.TourneyList5);
                         }
                     }
-                } else if (page == EnumPage.Tourney) {
-                    if (that.automationConfig.autoMining) {
-                        location.href = EnumPage.TourneyList5;
-                    }
-                } else if (page == EnumPage.TourneyList5) {
-                    if (that.automationConfig.autoMining) {
-                        await featFlowHandler.autoHandlerEntryListMatchFlow();
-                    }
+                    // } else if (page == EnumPage.Tourney) {
+                    //     if (that.automationConfig.autoMining) {
+                    //         location.href = EnumPage.TourneyList5;
+                    //     }
+                    // }
                 }
             } catch (error: any) {
                 console.log("自动化异常", error);
             }
         }
-        autoTime = setInterval(async () => {
+        this.autoTime = setInterval(async () => {
             if (!this.running) {
                 runInAction(async () => {
                     this.running = true;
+                    this.runActive = true;
                 });
-                await runAuto();
+                await runAuto().catch(() => {});
                 runInAction(async () => {
                     this.running = false;
                 });
             }
         }, 300);
+
+        this.activeTime = setInterval(() => {
+            runInAction(async () => {
+                this.runActive = false;
+            });
+        }, 1000);
     }
 
     async autoHandlerStatus(autoHandler: AutoHandler) {

@@ -1,3 +1,4 @@
+import { runInAction } from "mobx";
 import {
     simulateInput,
     sleep,
@@ -5,6 +6,9 @@ import {
     waitForPageLoad,
     waitForRouteChange,
 } from "./domCommon";
+import $ from "jquery";
+import { mttMatchData } from "./mttMatchData";
+import { EnumPage } from "./types";
 
 class FeatFlowHandler {
     async autoHandlerLoginFlow(account: any) {
@@ -41,14 +45,53 @@ class FeatFlowHandler {
     }
 
     async autoHandlerEnterTableFlow() {
-        let elements = await waitForElement(".multi-table", undefined, 10000).catch(() => []);
-        console.log("获取到已进入的桌子：数量", elements.length);
+        if (location.pathname == EnumPage.Home1 || location.pathname == EnumPage.Home2) {
+            await waitForElement(".home-multi-table").catch(() => []);
+        }
+        let tables = $(".home-multi-table .multi-table");
+        console.log("获取到已进入的桌子：数量", tables.length);
         //进入已进入的桌子中
-        if (elements.length > 0) {
-            $(elements).find(".multi-table__item:first").trigger("click");
+        if (tables.length > 0) {
+            $(tables).find(".multi-table__item:first").trigger("click");
             return true;
         }
         return false;
+    }
+
+    async getTodayMiningCount() {
+        if (location.pathname != EnumPage.HomeHistory) {
+            let nav = await waitForElement(
+                ".mobile-bottom-nav .media-header-row",
+                undefined,
+                5000
+            ).catch(() => []);
+            // if (nav.length == 0) {
+            //     location.replace(EnumPage.Me + "?__autoflow=getTodayMiningCount");
+            //     return;
+            // }
+            let me = $(".mobile-bottom-nav .media-header-row:last");
+            if (me.length) {
+                me.trigger("click");
+                await sleep(300);
+            }
+            let iconMygame = await waitForElement("span.icon-mygames");
+            iconMygame?.trigger("click");
+        }
+        let historyItem = await waitForElement(".history-game-list-item");
+        let todayCount = 0;
+        historyItem.each((index, item) => {
+            let time = $(item).find("> div > div span:nth-child(2)").html();
+            let today = new Date().getDate();
+            let day = new Date(time).getDate();
+            if (today == day) {
+                todayCount++;
+            }
+        });
+        runInAction(() => {
+            mttMatchData.todayMiningCount = todayCount;
+        });
+        console.log("获取到今日已开奖的场次", todayCount);
+        return todayCount;
     }
 
     async autoHandlerEntryListMatchFlow() {
