@@ -1,19 +1,12 @@
 import React from "react";
 import { useEffect, useReducer, useState } from "react";
 import { Menu } from "react-float-menu";
-import { autoHandler, getCurrentHandCardsElement } from "./common";
 import { Observer } from "mobx-react-lite";
 
-import { Hand } from "pokersolver";
-import { getCard1SmSprite } from "./assets/card1-sm-sprite";
+import { autoHandler } from "./AutoHandler";
 export default function App() {
     useEffect(() => {
         autoHandler.startAuto();
-        let cardImg = getCard1SmSprite("clubs-1.png");
-        console.log("cardImg", cardImg);
-        var hand = Hand.solve(["Ad", "As", "Jc", "Th", "2d", "Qs", "Qd"]);
-        console.log(hand.name); // Two Pair
-        console.log(hand.descr); // Two Pair, A's & Q's
     }, []);
     return (
         <Observer>
@@ -112,7 +105,6 @@ export default function App() {
 //mobile background-image: url(&quot;https://localhost/packages/shared/assets/game-pixi/spritesheet/card1-sm-sprite.png&quot;); background-repeat: no-repeat; background-position: -1.23119rem -0.336082rem; background-size: 2.45573rem 2.00984rem; width: 0.239583rem; height: 0.329427rem;
 //梅花10
 // -0.492477rem 0rem
-
 
 //黑桃J
 //mobile background-image: url(&quot;https://localhost/packages/shared/assets/game-pixi/spritesheet/card1-sm-sprite.png&quot;); background-repeat: no-repeat; background-position: 0rem -1.68041rem; background-size: 2.45573rem 2.00984rem; width: 0.239583rem; height: 0.329427rem;
