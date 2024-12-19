@@ -948,6 +948,29 @@
             }
         },
         {
+            "isOpen": false,
+            "account": {
+                "account": "lock8885566",
+                "password": "555555",
+                "email": "lock8885566@gmail.com",
+                "kyc": ""
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 11; SM-G991U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "172.120.69.142",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            }
+        },
+        {
             "account": "大舅妈"
         },
         {
