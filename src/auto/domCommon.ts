@@ -161,11 +161,12 @@ export function waitForRouteChange(timeout: number = 10000): Promise<string> {
 
 export async function waitForPageLoad(
     targetNode?: Node,
-    config: MutationObserverInit = { childList: true, subtree: true }
+    config: MutationObserverInit = { childList: true, subtree: true },
+    timeout: number = 15000
 ): Promise<void> {
     let _targetNode = targetNode;
     if (!_targetNode) _targetNode = document.querySelector(".box-content") as Node;
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const observer = new MutationObserver((mutationsList, observer) => {
             for (let mutation of mutationsList) {
                 if (mutation.type === "childList") {
@@ -179,5 +180,13 @@ export async function waitForPageLoad(
         });
 
         observer.observe(_targetNode, config);
+        setTimeout(() => {
+            observer.disconnect();
+            reject(
+                new Error(
+                    `Element with selector "${_targetNode}" not found or condition not met within ${timeout}ms`
+                )
+            );
+        }, timeout);
     });
 }

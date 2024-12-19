@@ -2,11 +2,12 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { mttDomCommon } from "./mttSportsCommon";
 import { EnumPage } from "./types";
 import { featFlowHandler } from "./FeatFlowHandler";
-import { sleep, touchClick, waitForElement } from "./domCommon";
+import { sleep, touchClick, waitForElement, waitForPageLoad } from "./domCommon";
 import { Hand } from "pokersolver";
 import { getCurrentHandCardsWithTypes } from "./pokerCommon";
 import { AutomationConfig } from "./AutomationConfig";
 import { mttMatchData } from "./mttMatchData";
+import $ from "jquery";
 
 export class AutoHandler {
     constructor() {
@@ -82,20 +83,32 @@ export class AutoHandler {
                         console.log("跳转至比赛页面");
                         let isEntry = await featFlowHandler.autoHandlerEnterTableFlow();
                         if (!isEntry) {
-                            //     let count =
-                            //         mttMatchData.todayMiningCount >= 0
-                            //             ? mttMatchData.todayMiningCount
-                            //             : await featFlowHandler.getTodayMiningCount();
-                            //     if (count != undefined && count >= 13) {
-                            //         console.log("暂停。。。。。");
-                            //         that.automationConfig.setAutoMining(false);
-                            //     } else if (count != undefined && count < 13 && count >= 0) {
-                            //         // location.href = EnumPage.TourneyList5;
-                            //         // location.replace(EnumPage.TourneyList5)
-                            //         window.history.go(-2);
-                            //         // window.history.pushState(null, "", EnumPage.TourneyList5);
-                            //     }
-                            location.replace(EnumPage.TourneyList5);
+                            let count =
+                                mttMatchData.todayMiningCount >= 0
+                                    ? mttMatchData.todayMiningCount
+                                    : await featFlowHandler.getTodayMiningCount();
+                            if (count != undefined && count >= 13) {
+                                console.log("暂停。。。。。");
+                                that.automationConfig.setAutoMining(false);
+                            } else if (count != undefined && count < 13 && count >= 0) {
+                                console.log("返回-2");
+                                // location.href = EnumPage.TourneyList5;
+                                // window.history.go(-2);
+                                // location.replace(EnumPage.TourneyList5)
+                                // window.history.pushState(null, "", EnumPage.TourneyList5);
+                                $(".back-wrap .icon-navi-previous").trigger("click");
+                                await waitForPageLoad();
+                                let me = $(".mobile-bottom-nav .media-header-row:nth-child(2)");
+                                if (me.length) {
+                                    me.trigger("click");
+                                    await waitForPageLoad();
+                                    let tourney = await waitForElement(
+                                        '.card-board span[data-link="/home/tourneyList?view=5"]'
+                                    );
+                                    tourney.trigger("click");
+                                }
+                            }
+                            // location.replace(EnumPage.TourneyList5);
                         }
                     }
                     // } else if (page == EnumPage.Tourney) {
@@ -159,6 +172,7 @@ export class AutoHandler {
         } else if (status.isOpenEndedModel) {
             let closeButton = mttDomCommon.getGameOverCloseButton();
             if (closeButton) {
+                await sleep(10000);
                 console.log("closeButton click,点击关闭");
                 closeButton.trigger("click");
                 await sleep(1000);

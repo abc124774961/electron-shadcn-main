@@ -48,7 +48,9 @@ class FeatFlowHandler {
         if (location.pathname == EnumPage.Home1 || location.pathname == EnumPage.Home2) {
             await waitForElement(".home-multi-table").catch(() => []);
         }
-        let tables = $(".home-multi-table .multi-table");
+        let tables = await waitForElement(".home-multi-table .multi-table", undefined, 5000).catch(
+            () => []
+        );
         console.log("获取到已进入的桌子：数量", tables.length);
         //进入已进入的桌子中
         if (tables.length > 0) {
@@ -130,6 +132,8 @@ class FeatFlowHandler {
                     } else if (buttons.length > 1) {
                         buttons[buttons.length - 1].click();
                     }
+                    //等待页面跳转完成
+                    await waitForPageLoad();
                     break;
                 }
             }
