@@ -25,14 +25,12 @@ export default function App() {
                             alignItems: "center",
                             display: "flex",
                         }}
+                        onClick={() => {
+                            // featFlowHandler.getMiningCountByDate();
+                            featFlowHandler.getTodayMiningCount();
+                        }}
                     >
-                        <div
-                            style={{ fontSize: "12px" }}
-                            onClick={() => {
-                                // featFlowHandler.getMiningCountByDate();
-                                featFlowHandler.getTodayMiningCount();
-                            }}
-                        >
+                        <div style={{ fontSize: "12px" }}>
                             今日：
                             {mttMatchData.todayMiningCount == -1
                                 ? "--"
