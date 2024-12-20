@@ -1,4 +1,5 @@
 import $ from "jquery";
+import axios from "axios";
 
 export function touchClick(element: HTMLElement | Element) {
     // 创建一个鼠标点击事件
@@ -189,4 +190,29 @@ export async function waitForPageLoad(
             );
         }, timeout);
     });
+}
+function getCurrentUrl(): string {
+    // 这里返回当前网址
+    return "https://sports.mtt.xyz";
+}
+
+/**
+ * 获取网页标题
+ * @param url - 网页URL
+ * @returns 页面标题
+ * @throws 如果请求失败，抛出错误
+ */
+export async function fetchPageDom(url: string): Promise<JQuery<any>> {
+    try {
+        const response = await axios.get(url, {
+            headers: {
+                "Content-Type": "text/html; charset=utf-8",
+            },
+        });
+        const html = response.data;
+        // const $ = $(html);
+        return $(html);
+    } catch (error) {
+        throw new Error(`Error fetching the page: ${error.message}`);
+    }
 }

@@ -96,7 +96,7 @@ export function getCurrentHandCardsWithTypes(): {
 
     let handTypes = elements.get().map((element: HTMLElement) => {
         const cardType = getCardTypeFromElement(element);
-        console.log("元素坐标：", cardType, element.style.backgroundPosition);
+        // console.log("元素坐标：", cardType, element.style.backgroundPosition);
         return {
             isExistCard: cardType ? true : false,
             element,
@@ -220,6 +220,6 @@ function calculateWinProbability(hand: string[]): number {
     };
 
     const handStr = hand.sort((a, b) => cardValueMap[b] - cardValueMap[a]).join("");
-    console.log("handStr", hand, handStr);
+    // console.log("handStr", hand, handStr);
     return handRank[handStr] || 0.2; // 默认胜率为0.2
 }

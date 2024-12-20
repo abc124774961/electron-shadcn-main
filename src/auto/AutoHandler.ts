@@ -8,7 +8,6 @@ import { getCurrentHandCardsWithTypes } from "./pokerCommon";
 import { AutomationConfig } from "./AutomationConfig";
 import { mttMatchData } from "./mttMatchData";
 import $ from "jquery";
-
 export class AutoHandler {
     constructor() {
         makeAutoObservable(this);
@@ -146,20 +145,20 @@ export class AutoHandler {
         let gameOperationBar = document.querySelector(".game-operation");
         let currentHand = getCurrentHandCardsWithTypes();
         if (currentHand.handTypes.length > 0) {
-            console.log("=================================================================");
-            console.warn(
-                "===当前手牌：",
-                currentHand.handTypes.map((e) => e.cardTypeText).join(",")
-            );
-            console.warn("===当前：", currentHand.handTypes.map((e) => e.cardTypeText).join(","));
-            console.warn("===当前基础胜率：", currentHand.winProbability);
-            var hand = Hand.solve(currentHand.handTypes.map((e) => e.cardType));
-            console.log(hand.name); // Two Pair
-            console.log(hand.descr); // Two Pair, A's & Q's
-            console.log("=================================================================");
-            console.log("");
-            console.log("");
-            await sleep(1000);
+            // console.log("=================================================================");
+            // console.warn(
+            //     "===当前手牌：",
+            //     currentHand.handTypes.map((e) => e.cardTypeText).join(",")
+            // );
+            // console.warn("===当前：", currentHand.handTypes.map((e) => e.cardTypeText).join(","));
+            // console.warn("===当前基础胜率：", currentHand.winProbability);
+            // var hand = Hand.solve(currentHand.handTypes.map((e) => e.cardType));
+            // console.log(hand.name); // Two Pair
+            // console.log(hand.descr); // Two Pair, A's & Q's
+            // console.log("=================================================================");
+            // console.log("");
+            // console.log("");
+            // await sleep(1000);
         }
         // console.log("状态：", status);
         if (status.isSittingOut) {
@@ -172,14 +171,19 @@ export class AutoHandler {
         } else if (status.isOpenEndedModel) {
             let closeButton = mttDomCommon.getGameOverCloseButton();
             if (closeButton) {
-                await sleep(10000);
+                await sleep(20000);
                 console.log("closeButton click,点击关闭");
                 closeButton.trigger("click");
                 await sleep(1000);
             }
             //获取离开按钮
-            let exitButton = await waitForElement(".mtt-settlement-wrap .mtt-settlement-exit-btn");
+            let exitButton = await waitForElement(
+                ".mtt-settlement-wrap .mtt-settlement-exit-btn",
+                undefined,
+                5000
+            );
             exitButton.trigger("click");
+            await sleep(2000);
         } //如果在围观中、则点击推出游戏
         else if (status.isWatching) {
             await sleep(2000);

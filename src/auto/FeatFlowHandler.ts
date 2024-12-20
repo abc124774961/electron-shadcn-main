@@ -1,5 +1,6 @@
 import { runInAction } from "mobx";
 import {
+    fetchPageDom,
     simulateInput,
     sleep,
     waitForElement,
@@ -58,6 +59,16 @@ class FeatFlowHandler {
             return true;
         }
         return false;
+    }
+
+    getMiningCountByDate() {
+        return new Promise((resolve, reject) => {
+            fetchPageDom("https://www.baidu.com").then(($) => {
+                console.log($.html());
+                // let list = $(".history-game-list-item").get();
+                debugger;
+            });
+        });
     }
 
     async getTodayMiningCount() {

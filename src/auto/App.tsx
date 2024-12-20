@@ -29,6 +29,7 @@ export default function App() {
                         <div
                             style={{ fontSize: "12px" }}
                             onClick={() => {
+                                // featFlowHandler.getMiningCountByDate();
                                 featFlowHandler.getTodayMiningCount();
                             }}
                         >
