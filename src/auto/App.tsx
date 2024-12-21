@@ -10,6 +10,9 @@ import { featFlowHandler } from "./FeatFlowHandler";
 export default function App() {
     useEffect(() => {
         autoHandler.startAuto();
+        return () => {
+            autoHandler.destory();
+        };
     }, []);
     return (
         <Observer>

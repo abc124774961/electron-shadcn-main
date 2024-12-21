@@ -2,7 +2,6 @@ import { sleep, touchClick } from "./domCommon";
 import { EnumPage } from "./types";
 import $ from "jquery";
 
-
 class MttDomCommon {
     getGoBackSeatButton(): HTMLDivElement | undefined {
         if (document.querySelector(".game-operation .btn--back")) {
@@ -75,14 +74,16 @@ class MttDomCommon {
     // game-operation-button__wrap game-operate-button-red
     async getAllInButton() {
         let moreRaiseButton = this.getMoreRaiseButton();
-        console.log("moreRaiseButton", moreRaiseButton.length);
+        console.log("moreRaiseButton1", moreRaiseButton.length);
         if (moreRaiseButton.length > 0) {
             touchClick(moreRaiseButton.get()[0]);
             await sleep(500);
             let moreAllinButton = this.getMoreAllinButton();
             touchClick(moreAllinButton.get()[0]);
             await sleep(500);
+            // console.log("moreAllinButton1", moreAllinButton.length);
         }
+        // console.log("moreRaiseButton3", moreRaiseButton.length);
         return $(".game-operation .game-operation-button.main")[2];
     }
 
@@ -146,6 +147,9 @@ class MttDomCommon {
         //获取是否已经快到操作时间
         let isMyselfOpreateTime = time > 0 ? true : false;
 
+        //是否存在网络异常弹出层
+        let isNetworkError = $(".network-reconnect-prompt__refresh").length > 0;
+
         let isOpenEndedModel =
             $(".game-rank-modal .close-btn").length > 0 ||
             $(".mtt-settlement-wrap .mtt-settlement-exit-btn").length > 0;
@@ -202,6 +206,7 @@ class MttDomCommon {
             callPrice,
             isOpenEndedModel,
             isMyselfOpreateTime,
+            isNetworkError,
         };
     };
 }

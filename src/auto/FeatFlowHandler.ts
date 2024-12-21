@@ -90,7 +90,7 @@ class FeatFlowHandler {
             let iconMygame = await waitForElement("span.icon-mygames");
             iconMygame?.trigger("click");
         }
-        let historyItem = await waitForElement(".history-game-list-item");
+        let historyItem = await waitForElement(".history-game-list-item").catch(() => $([]));
         let todayCount = 0;
         historyItem.each((index, item) => {
             let time = $(item).find("> div > div span:nth-child(2)").html();

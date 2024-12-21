@@ -1,7 +1,7 @@
 import $ from "jquery";
 import axios from "axios";
 
-export function touchClick(element: HTMLElement | Element) {
+export function touchClick(element: HTMLElement) {
     // 创建一个鼠标点击事件
     var mouseClickEvent = new PointerEvent("pointerdown", {
         bubbles: true,

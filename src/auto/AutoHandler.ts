@@ -8,18 +8,18 @@ import { getCurrentHandCardsWithTypes } from "./pokerCommon";
 import { AutomationConfig } from "./AutomationConfig";
 import { mttMatchData } from "./mttMatchData";
 import $ from "jquery";
+
 export class AutoHandler {
     constructor() {
-        makeAutoObservable(this);
+        // makeAutoObservable(this);
     }
+    automationConfig = new AutomationConfig();
     autoStartStatus = false;
 
     running = false;
 
     runActive = false;
     activeTime: any;
-
-    automationConfig = new AutomationConfig();
 
     autoTime: any;
 
@@ -138,6 +138,11 @@ export class AutoHandler {
                 this.runActive = false;
             });
         }, 1000);
+    } 
+
+    destory() {
+        this.activeTime && clearInterval(this.activeTime);
+        this.autoTime && clearInterval(this.autoTime);
     }
 
     async autoHandlerStatus(autoHandler: AutoHandler) {
@@ -160,7 +165,7 @@ export class AutoHandler {
             // console.log("");
             // await sleep(1000);
         }
-        // console.log("状态：", status);
+        // console.log("状态：", status, currentHand, autoHandler.automationConfig.autoPaly);
         if (status.isSittingOut) {
             //回到座位
             let backButton = mttDomCommon.getGoBackSeatButton();
@@ -212,7 +217,7 @@ export class AutoHandler {
                 }
             }
         } else if (
-            this.automationConfig.autoPaly &&
+            autoHandler.automationConfig.autoPaly &&
             currentHand.winProbability > 0.5 &&
             status.isMyselfOpreateTime
         ) {
