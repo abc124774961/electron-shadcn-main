@@ -1180,9 +1180,9 @@
         {
             "isOpen": false,
             "account": {
-                "account": "theat4663",
+                "account": "landon159741",
                 "password": "666666",
-                "email": "theat4663@gmail.com",
+                "email": "landon159741@gmail.com",
                 "kyc": ""
             },
             "browser": {
@@ -1192,7 +1192,7 @@
                 },
                 "lastHrefUrl": "",
                 "proxy": {
-                    "ip": "194.50.224.16",
+                    "ip": "103.115.170.51",
                     "port": 50101,
                     "type": "socks5",
                     "username": "abc124774961",
