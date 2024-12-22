@@ -49,6 +49,11 @@ contextBridge.exposeInMainWorld("web3", {
         // alert(allow)
         ipcRenderer.invoke("web3:setLayoutColumnMaxNumber", column);
     },
+    setGroupName: (name: string) => {
+        console.log("setGroupName", name);
+        // alert(allow)
+        ipcRenderer.invoke("web3:setGroupName", name);
+    },
     setAutoMining: (autoMining: boolean, id: string) => {
         console.log("----setAutoMining", autoMining);
         ipcRenderer.invoke("web3:setAutoMining", autoMining, id);

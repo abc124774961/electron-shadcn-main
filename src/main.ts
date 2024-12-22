@@ -97,7 +97,7 @@ async function createWindow() {
     const webContainerView = new View();
     const containerLayout = new ViewContainerLayoutManager(
         webContainerView,
-        Web3AppConfig.displayMaxColumnNumber
+        web3AppConfig.displayMaxColumnNumber
     );
     SubWebwebHelper.init(containerLayout);
 
@@ -315,6 +315,7 @@ class Web3ToolBar {
         ipcMain.handle("web3:setAutoMining", SubWebwebHelper.setAutoMining);
         ipcMain.handle("web3:setAutoPlay", SubWebwebHelper.setAutoPlay);
         ipcMain.handle("web3:setAutoLogin", SubWebwebHelper.setAutoLogin);
+        ipcMain.handle("web3:setGroupName", SubWebwebHelper.setGroupName);
     }
 }
 
@@ -703,7 +704,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         console.log("params", params);
         details.url = uri?.origin + "?" + params.toString();
         console.log("faceUrl:", details.url);
-        if (Web3AppConfig.isAllowCamara && details.url.includes("face")) {
+        if (web3AppConfig.isAllowCamara && details.url.includes("face")) {
             let winHeight = 600;
             let winWidht = 375;
             const browserView = new BrowserWindow({
@@ -751,7 +752,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
                 (webContents, permission, callback) => {
                     if (permission === "media") {
                         // 拒绝摄像头权限
-                        callback(Web3AppConfig.isAllowCamara);
+                        callback(web3AppConfig.isAllowCamara);
                     } else {
                         // 其他权限请求默认允许
                         callback(true);
@@ -777,7 +778,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
     view1.webContents.session.setPermissionRequestHandler((webContents, permission, callback) => {
         if (permission === "media") {
             // 拒绝摄像头权限
-            callback(Web3AppConfig.isAllowCamara);
+            callback(web3AppConfig.isAllowCamara);
         } else {
             // 其他权限请求默认允许
             callback(true);
@@ -1053,13 +1054,13 @@ class SubWebwebHelper {
     }
 
     static setIsAllowCamera(event: any, allow: boolean, id: string) {
-        Web3AppConfig.isAllowCamara = allow;
-        console.log("setIsAllowCamera.allow", Web3AppConfig.isAllowCamara);
+        web3AppConfig.isAllowCamara = allow;
+        console.log("setIsAllowCamera.allow", web3AppConfig.isAllowCamara);
     }
 
     static setDisplayColumnNum(event: any, allow: boolean, id: string) {
-        Web3AppConfig.isAllowCamara = allow;
-        console.log("setDisplayColumnNum.allow", Web3AppConfig.isAllowCamara);
+        web3AppConfig.isAllowCamara = allow;
+        console.log("setDisplayColumnNum.allow", web3AppConfig.isAllowCamara);
     }
     static setWindowIsOpen(event: any, open: boolean, id: string) {
         let webview = SubWebwebHelper.mapWeb3Window.get(id);
@@ -1081,6 +1082,12 @@ class SubWebwebHelper {
             SubWebwebHelper.containerLayout?.parentView.getBounds()
         );
     }
+
+    static setGroupName(event: any, value: string) {
+        web3AppConfig.groupName = value;
+        console.log("setGroupName.allow", web3AppConfig.groupName);
+    }
+
     static setAutoMining(event: any, mining: boolean, id: string) {
         console.log("static.setAutoMining", id, mining);
         let webview = SubWebwebHelper.mapWeb3Window.get(id);
@@ -1123,19 +1130,18 @@ function initWebviewConfiguration(webContents: WebContents, window?: IWindowStat
             id:'${window?.account?.account}',
             password:'${window?.account?.password}',
             kyc:'${window?.account?.kyc || ""}',
-            config:{
-                isAllowCamara:${Web3AppConfig.isAllowCamara},
-                displayMaxColumnNumber:${Web3AppConfig.displayMaxColumnNumber}
-            },
+            config:${JSON.stringify(web3AppConfig)},
             autoSetting:${JSON.stringify(window?.autoSetting)}
         };`
     );
 }
 
 class Web3AppConfig {
-    static isAllowCamara: boolean = true;
-    static displayMaxColumnNumber: number = 8;
+    isAllowCamara: boolean = true;
+    displayMaxColumnNumber: number = 8;
+    groupName: string = "1";
 }
+const web3AppConfig = new Web3AppConfig();
 
 class MttWebSiteHelper {
     login = async () => {
@@ -1165,6 +1171,36 @@ class MttWebSiteHelper {
         // });
     };
 }
+
+//所有group config路径配置数组
+const groupInfoPath = [
+    "task1.config.json",
+    "task2.config.json",
+    "task3.config.json",
+    "task4.config.json",
+];
+
+class WWindowConfigList {
+    groupName: string = groupInfoPath[0];
+    configList: Array<IWindowState> = [];
+
+    getWindowList() {
+        return this.configList;
+    }
+
+    getGroupName() {
+        return this.groupName;
+    }
+
+    static getCurrentTaskConfigfromJson(json: string): ITaskConfig {
+        const dataConfig: ITaskConfig = JSON.parse(
+            fs.readFileSync("src/task1.config.json", "utf-8")
+        );
+        return dataConfig;
+    }
+}
+
+const windowConfigList = new WWindowConfigList();
 
 declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string;
 declare const MAIN_WINDOW_VITE_NAME: string;

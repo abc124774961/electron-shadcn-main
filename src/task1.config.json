@@ -19,7 +19,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -40,10 +41,11 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
-            "isOpen": true,
+            "isOpen": false,
             "account": {
                 "account": "smile1",
                 "password": "111111",
@@ -62,7 +64,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -84,7 +87,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -106,7 +110,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -129,7 +134,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -152,7 +158,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -174,7 +181,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -197,7 +205,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -220,7 +229,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -243,7 +253,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -266,7 +277,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -289,7 +301,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -312,7 +325,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -335,7 +349,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -358,7 +373,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -381,7 +397,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -404,7 +421,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -427,7 +445,184 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [1]
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "abc123456",
+                "password": "abc123456",
+                "kyc": "罗玉明-日赛"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+                },
+                "lastHrefUrl": ""
+            },
+            "groupName": [5]
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "abc124774961",
+                "password": "abc123456",
+                "kyc": "未认证"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+                },
+                "lastHrefUrl": ""
+            },
+            "groupName": [5]
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "matthew322",
+                "password": "333333",
+                "email": "m39567163@gmail.com",
+                "kyc": "合成-1002-女"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPod; U; CPU iPhone OS 3_2 like Mac OS X; gu-IN) AppleWebKit/531.1.6 (KHTML, like Gecko) Version/3.0.5 Mobile/8B119 Safari/6531.1.6"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.3.111",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            },
+            "groupName": [5]
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "j48987535",
+                "password": "333333",
+                "email": "j48987535@gmail.com",
+                "kyc": "合成-1001-女"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "45.206.3.145",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            },
+            "groupName": [5]
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "kala750623",
+                "password": "666666",
+                "email": "kala723506@gmail.com",
+                "kyc": "2024"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "194.50.223.185",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            },
+            "groupName": [1]
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "theat4663",
+                "password": "666666",
+                "email": "theat4663@gmail.com",
+                "kyc": "2025"
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 11; SM-G991U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "194.50.224.16",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            },
+            "groupName": [1]
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "landon159741",
+                "password": "666666",
+                "email": "landon159741@gmail.com",
+                "kyc": ""
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (Linux; Android 12; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Mobile Safari/537.36"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "103.115.170.51",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            },
+            "groupName": [1]
+        },
+        {
+            "isOpen": false,
+            "account": {
+                "account": "dawson159753",
+                "password": "666666",
+                "email": "dawson159753@gmail.com",
+                "kyc": ""
+            },
+            "browser": {
+                "userAgent": {
+                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Mobile/15E148 Safari/604.1"
+                },
+                "lastHrefUrl": "",
+                "proxy": {
+                    "ip": "103.101.51.167",
+                    "port": 50101,
+                    "type": "socks5",
+                    "username": "abc124774961",
+                    "password": "KAwhEZ54jg"
+                }
+            },
+            "groupName": [1]
         },
         {
             "isOpen": false,
@@ -450,7 +645,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -473,7 +669,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -496,7 +693,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -519,7 +717,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -542,7 +741,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -565,7 +765,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -589,7 +790,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -612,7 +814,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -636,7 +839,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -660,7 +864,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -685,7 +890,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -708,7 +914,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -731,7 +938,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -754,7 +962,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -777,7 +986,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -800,7 +1010,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -823,7 +1034,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -846,7 +1058,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [5]
         },
         {
             "isOpen": false,
@@ -869,106 +1082,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
-        },
-        {
-            "isOpen": false,
-            "account": {
-                "account": "abc123456",
-                "password": "abc123456",
-                "kyc": "罗玉明-日赛"
             },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
-                },
-                "lastHrefUrl": ""
-            }
-        },
-        {
-            "isOpen": false,
-            "account": {
-                "account": "abc124774961",
-                "password": "abc123456",
-                "kyc": "未认证"
-            },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
-                },
-                "lastHrefUrl": ""
-            }
-        },
-        {
-            "isOpen": false,
-            "account": {
-                "account": "matthew322",
-                "password": "333333",
-                "email": "m39567163@gmail.com",
-                "kyc": "合成-1002-女"
-            },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (iPod; U; CPU iPhone OS 3_2 like Mac OS X; gu-IN) AppleWebKit/531.1.6 (KHTML, like Gecko) Version/3.0.5 Mobile/8B119 Safari/6531.1.6"
-                },
-                "lastHrefUrl": "",
-                "proxy": {
-                    "ip": "45.206.3.111",
-                    "port": 50101,
-                    "type": "socks5",
-                    "username": "abc124774961",
-                    "password": "KAwhEZ54jg"
-                }
-            }
-        },
-        {
-            "isOpen": false,
-            "account": {
-                "account": "j48987535",
-                "password": "333333",
-                "email": "j48987535@gmail.com",
-                "kyc": "合成-1001-女"
-            },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36"
-                },
-                "lastHrefUrl": "",
-                "proxy": {
-                    "ip": "45.206.3.145",
-                    "port": 50101,
-                    "type": "socks5",
-                    "username": "abc124774961",
-                    "password": "KAwhEZ54jg"
-                }
-            }
-        },
-        {
-            "isOpen": false,
-            "account": {
-                "account": "lock8885566",
-                "password": "555555",
-                "email": "lock8885566@gmail.com",
-                "kyc": "2018"
-            },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
-                },
-                "lastHrefUrl": "",
-                "proxy": {
-                    "ip": "172.120.69.142",
-                    "port": 50101,
-                    "type": "socks5",
-                    "username": "abc124774961",
-                    "password": "KAwhEZ54jg"
-                }
-            }
+            "groupName": [5]
         },
         {
             "isOpen": false,
@@ -991,30 +1106,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
-        },
-        {
-            "isOpen": false,
-            "account": {
-                "account": "yori520520",
-                "password": "555555",
-                "email": "yori520520@gmail.com",
-                "kyc": ""
             },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 11; GPQ12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
-                },
-                "lastHrefUrl": "",
-                "proxy": {
-                    "ip": "172.120.69.14",
-                    "port": 50101,
-                    "type": "socks5",
-                    "username": "abc124774961",
-                    "password": "KAwhEZ54jg"
-                }
-            }
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -1037,7 +1130,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -1060,7 +1154,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -1083,7 +1178,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -1106,7 +1202,8 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
@@ -1129,108 +1226,56 @@
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
             "account": {
-                "account": "kala723506",
-                "password": "666666",
-                "email": "kala723506@gmail.com",
-                "kyc": ""
+                "account": "lock8885566",
+                "password": "555555",
+                "email": "lock8885566@gmail.com",
+                "kyc": "2018"
             },
             "browser": {
                 "userAgent": {
                     "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36"
+                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
                 },
                 "lastHrefUrl": "",
                 "proxy": {
-                    "ip": "194.50.223.185",
+                    "ip": "172.120.69.142",
                     "port": 50101,
                     "type": "socks5",
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
+            },
+            "groupName": [2]
         },
         {
             "isOpen": false,
             "account": {
-                "account": "theat4663",
-                "password": "666666",
-                "email": "theat4663@gmail.com",
-                "kyc": ""
+                "account": "yori520520",
+                "password": "555555",
+                "email": "yori520520@gmail.com",
+                "kyc": "2020"
             },
             "browser": {
                 "userAgent": {
                     "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 11; SM-G991U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
+                    "mobile": "Mozilla/5.0 (Linux; Android 11; GPQ12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
                 },
                 "lastHrefUrl": "",
                 "proxy": {
-                    "ip": "194.50.224.16",
+                    "ip": "172.120.69.14",
                     "port": 50101,
                     "type": "socks5",
                     "username": "abc124774961",
                     "password": "KAwhEZ54jg"
                 }
-            }
-        },
-        {
-            "isOpen": false,
-            "account": {
-                "account": "landon159741",
-                "password": "666666",
-                "email": "landon159741@gmail.com",
-                "kyc": ""
             },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 12; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Mobile Safari/537.36"
-                },
-                "lastHrefUrl": "",
-                "proxy": {
-                    "ip": "103.115.170.51",
-                    "port": 50101,
-                    "type": "socks5",
-                    "username": "abc124774961",
-                    "password": "KAwhEZ54jg"
-                }
-            }
-        },
-        {
-            "isOpen": false,
-            "account": {
-                "account": "dawson159753",
-                "password": "666666",
-                "email": "dawson159753@gmail.com",
-                "kyc": ""
-            },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Mobile/15E148 Safari/604.1"
-                },
-                "lastHrefUrl": "",
-                "proxy": {
-                    "ip": "103.101.51.167",
-                    "port": 50101,
-                    "type": "socks5",
-                    "username": "abc124774961",
-                    "password": "KAwhEZ54jg"
-                }
-            }
-        },
-        {
-            "account": "大舅妈"
-        },
-        {
-            "account": "大爷"
-        },
-        {
-            "account": "蔡晋"
+            "groupName": [2]
         }
     ]
 }

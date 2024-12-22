@@ -9,7 +9,7 @@ import { RouterProvider } from "@tanstack/react-router";
 import { Theme } from "@radix-ui/themes";
 import { useState } from "react";
 import { ThemeProvider } from "next-themes";
-import { Button, Checkbox, Col, ConfigProvider, Radio, Row, Select } from "antd";
+import { Button, Checkbox, Col, ConfigProvider, Dropdown, Radio, Row, Select } from "antd";
 import "./index.css";
 import TaskUtil from "@/task/TaskUtil";
 import DragWindowRegion from "@/components/DragWindowRegion";
@@ -26,8 +26,9 @@ export default function App() {
         window.__env?.config?.displayMaxColumnNumber ?? 8
     );
     const [autoLogin, setAutoLogin] = useState(window.__env?.config?.autoLogin ?? true);
+    const [groupName, setGroupName] = useState(window.__env?.config?.groupName ?? 1);
 
-    const windowList = TaskUtil.currentTaskConfig?.getWindowList();
+    const windowList = TaskUtil.currentTaskConfig?.getWindowList(groupName);
     useEffect(() => {
         syncThemeWithLocal();
         updateAppLanguage(i18n);
@@ -58,38 +59,59 @@ export default function App() {
             {/* <RouterProvider router={router} />; */}
             <Row gutter={[16, 16]} style={{ marginTop: "6px" }}>
                 <Col span={3} style={{ textAlign: "left", justifyContent: "left" }}>
-                    <Checkbox
-                        style={{ width: "100%", color: "white", fontSize: "12px" }}
-                        type="link"
-                        checked={allowCamera}
-                        onClick={() => {
-                            setAllowCamera(!allowCamera);
-                            window.web3.setIsAllowCamera(!allowCamera);
-                        }}
-                        onChange={(e) => {
-                            // alert('e.target.checked')
-                            // setAllowCamera(e.target.checked);
-                            // window.web3.setIsAllowCamera(e.target.checked, window.__env.id);
-                        }}
-                    >
-                        摄像头
-                    </Checkbox>
-                    <Checkbox
-                        style={{ width: "100%", color: "white", fontSize: "12px" }}
-                        type="link"
-                        checked={autoLogin}
-                        onClick={() => {
-                            setAutoLogin(!autoLogin);
-                            window.web3.setAutoLogin(!autoLogin);
-                        }}
-                        onChange={(e) => {
-                            // alert('e.target.checked')
-                            // setAllowCamera(e.target.checked);
-                            // window.web3.setIsAllowCamera(e.target.checked, window.__env.id);
-                        }}
-                    >
-                        自动登录
-                    </Checkbox>
+                    <div style={{ flexDirection: "row" }}>
+                        <Checkbox
+                            style={{ color: "white", fontSize: "12px" }}
+                            type="link"
+                            checked={allowCamera}
+                            onClick={() => {
+                                setAllowCamera(!allowCamera);
+                                window.web3.setIsAllowCamera(!allowCamera);
+                            }}
+                            onChange={(e) => {
+                                // alert('e.target.checked')
+                                // setAllowCamera(e.target.checked);
+                                // window.web3.setIsAllowCamera(e.target.checked, window.__env.id);
+                            }}
+                        >
+                            摄像头
+                        </Checkbox>
+                        <Checkbox
+                            style={{ color: "white", fontSize: "12px" }}
+                            type="link"
+                            checked={autoLogin}
+                            onClick={() => {
+                                setAutoLogin(!autoLogin);
+                                window.web3.setAutoLogin(!autoLogin);
+                            }}
+                            onChange={(e) => {
+                                // alert('e.target.checked')
+                                // setAllowCamera(e.target.checked);
+                                // window.web3.setIsAllowCamera(e.target.checked, window.__env.id);
+                            }}
+                        >
+                            自动登录
+                        </Checkbox>
+                    </div>
+                    <div>
+                        {["所有", 1, 2, 3, 4, 5].map((v, i) => {
+                            return (
+                                <Radio
+                                    checked={groupName == i}
+                                    style={{ color: "white", fontSize: "12px" }}
+                                    value={i}
+                                    onChange={(e) => {
+                                        setGroupName(e.target.value == "所有" ? 0 : e.target.value);
+                                        window.web3.setGroupName(
+                                            e.target.value == "所有" ? 0 : e.target.value
+                                        );
+                                    }}
+                                >
+                                    {v}
+                                </Radio>
+                            );
+                        })}
+                    </div>
                     {[6, 7, 8, 9, 10].map((n) => {
                         return (
                             <Radio
@@ -117,23 +139,35 @@ export default function App() {
                         ]}
                     /> */}
                 </Col>
-                <Col span={19}>
-                    {windowList?.map((win) => {
-                        return (
-                            <Checkbox
-                                style={{ color: "white", fontSize: "12px" }}
-                                checked={win.isOpen}
-                                onChange={() => {}}
-                                onClick={() => {
-                                    window.web3.setWindowIsOpen(!win.isOpen, win.account.account);
-                                    win.isOpen = !win.isOpen;
-                                    forceUpdate();
-                                }}
-                            >
-                                {win.account.account + "-" + (win.account.kyc || "")}
-                            </Checkbox>
-                        );
-                    })}
+                <Col span={17}>
+                    <div
+                        style={{
+                            paddingTop: "0px",
+                            height: "60px",
+                            overflowY: "auto",
+                            overflowX: "hidden",
+                        }}
+                    >
+                        {windowList?.map((win) => {
+                            return (
+                                <Checkbox
+                                    style={{ color: "white", fontSize: "12px" }}
+                                    checked={win.isOpen}
+                                    onChange={() => {}}
+                                    onClick={() => {
+                                        window.web3.setWindowIsOpen(
+                                            !win.isOpen,
+                                            win.account.account
+                                        );
+                                        win.isOpen = !win.isOpen;
+                                        forceUpdate();
+                                    }}
+                                >
+                                    {(win.account.kyc || "") + "-" + win.account.account}
+                                </Checkbox>
+                            );
+                        })}
+                    </div>
                 </Col>
             </Row>
         </div>

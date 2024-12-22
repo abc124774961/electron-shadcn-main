@@ -15,6 +15,7 @@ export interface IWindowState {
     account: IAccountInfo;
     browser: IBrowserConfig;
     autoSetting: IAutoSetting;
+    groupName: string;
 }
 
 export interface IAutoSetting {

@@ -27,6 +27,7 @@ class FeatFlowHandler {
         switchBtn.trigger("click");
         await sleep(1500);
         await waitForElement(".ant-input-password");
+        await sleep(1500);
         await simulateInput(".ant-input-password input", account.password);
         await sleep(200);
         let loginBtn = await waitForElement(".mtt-btn");

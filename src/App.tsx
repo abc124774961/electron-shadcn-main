@@ -21,7 +21,7 @@ export default function App() {
 
     const [allowCamera, setAllowCamera] = useState(window.__env?.config?.isAllowCamara ?? false);
 
-    const windowList = TaskUtil.currentTaskConfig?.getWindowList();
+    // const windowList = TaskUtil.currentTaskConfig?.getWindowList();
     useEffect(() => {
         syncThemeWithLocal();
         updateAppLanguage(i18n);

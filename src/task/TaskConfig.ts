@@ -31,8 +31,13 @@ class TaskConfig implements ITaskConfig {
     getWindowListByIsOpen(isOpen: boolean = true): Array<IWindowState> {
         return this.windowList.filter((win) => win.isOpen === isOpen && win.browser);
     }
-    getWindowList(): Array<IWindowState> {
-        return this.windowList.filter((win) => win.browser);
+    getWindowList(groupName?: string): Array<IWindowState> {
+        if (groupName == "undefined" || groupName == undefined || groupName.toString() == "0") {
+            return this.windowList.filter((win) => win.browser);
+        } else
+            return this.windowList.filter(
+                (win) => win.browser && (groupName ? win.groupName == groupName : true)
+            );
     }
 
     //根据Index获取accountInfo
