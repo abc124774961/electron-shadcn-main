@@ -101,8 +101,11 @@ export class AutoHandler {
                                 if (me.length) {
                                     me.trigger("click");
                                     await waitForPageLoad();
+                                    await sleep(3000);
                                     let tourney = await waitForElement(
-                                        '.card-board span[data-link="/home/tourneyList?view=5"]'
+                                        '.card-board span[data-link="/home/tourneyList?view=5"]',
+                                        undefined,
+                                        15000
                                     );
                                     tourney.trigger("click");
                                 }
@@ -138,7 +141,7 @@ export class AutoHandler {
                 this.runActive = false;
             });
         }, 1000);
-    } 
+    }
 
     destory() {
         this.activeTime && clearInterval(this.activeTime);
