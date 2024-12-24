@@ -35,6 +35,7 @@ export class AutoHandler {
 
     startAuto() {
         if (this.autoStartStatus) return;
+        this.pageActiveTime = undefined;
         console.log("----------------开始自动操作");
         runInAction(async () => {
             this.autoStartStatus = true;
@@ -107,6 +108,7 @@ export class AutoHandler {
                                         undefined,
                                         15000
                                     );
+                                    await sleep(3000);
                                     tourney.trigger("click");
                                 }
                             }
@@ -129,6 +131,7 @@ export class AutoHandler {
                     this.running = true;
                     this.runActive = true;
                 });
+                this.checkAutoHandlerStatus();
                 await runAuto().catch(() => {});
                 runInAction(async () => {
                     this.running = false;
@@ -141,6 +144,30 @@ export class AutoHandler {
                 this.runActive = false;
             });
         }, 1000);
+    }
+
+    //页面停留时间
+    pageActiveTime: any;
+
+    prevPage: EnumPage | undefined;
+    checkAutoHandlerStatus() {
+        let page = mttDomCommon.getCurrentPage();
+        if (this.automationConfig.autoMining && page != EnumPage.Game) {
+            if (page == this.prevPage && this.pageActiveTime) {
+                if (Date.now() - this.pageActiveTime > 20000) {
+                    console.log("自动操作暂停，恢复跳转至首页");
+                    location.replace(EnumPage.Home1);
+                    this.pageActiveTime = undefined;
+                    this.prevPage = undefined;
+                }
+            } else {
+                this.pageActiveTime = Date.now();
+                this.prevPage = page;
+            }
+        } else {
+            this.pageActiveTime = undefined;
+            this.prevPage = undefined;
+        }
     }
 
     destory() {

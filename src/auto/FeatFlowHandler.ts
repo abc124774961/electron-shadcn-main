@@ -50,7 +50,7 @@ class FeatFlowHandler {
         if (location.pathname == EnumPage.Home1 || location.pathname == EnumPage.Home2) {
             await waitForElement(".home-multi-table").catch(() => []);
         }
-        let tables = await waitForElement(".home-multi-table .multi-table", undefined, 5000).catch(
+        let tables = await waitForElement(".home-multi-table .multi-table", undefined, 15000).catch(
             () => []
         );
         console.log("获取到已进入的桌子：数量", tables.length);
