@@ -1499,7 +1499,7 @@
                 "account": "different2243",
                 "password": "666666",
                 "email": "different2243@gmail.com",
-                "kyc": ""
+                "kyc": "2032"
             },
             "browser": {
                 "userAgent": {
@@ -1523,7 +1523,7 @@
                 "account": "autonomy520",
                 "password": "666666",
                 "email": "autonomy520@gmail.com",
-                "kyc": ""
+                "kyc": "2033"
             },
             "browser": {
                 "userAgent": {
@@ -1547,7 +1547,7 @@
                 "account": "batchb661",
                 "password": "666666",
                 "email": "batchb661@gmail.com",
-                "kyc": ""
+                "kyc": "2035"
             },
             "browser": {
                 "userAgent": {
@@ -1557,30 +1557,6 @@
                 "lastHrefUrl": "",
                 "proxy": {
                     "ip": "45.206.54.187",
-                    "port": 50101,
-                    "type": "socks5",
-                    "username": "abc124774961",
-                    "password": "KAwhEZ54jg"
-                }
-            },
-            "groupName": [2]
-        },
-        {
-            "isOpen": false,
-            "account": {
-                "account": "canvas8853",
-                "password": "666666",
-                "email": "canvas8853@gmail.com",
-                "kyc": ""
-            },
-            "browser": {
-                "userAgent": {
-                    "pc": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.92 Safari/537.36",
-                    "mobile": "Mozilla/5.0 (Linux; Android 13; SM-G991U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Mobile Safari/537.36"
-                },
-                "lastHrefUrl": "",
-                "proxy": {
-                    "ip": "45.206.4.27",
                     "port": 50101,
                     "type": "socks5",
                     "username": "abc124774961",
