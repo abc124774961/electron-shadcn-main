@@ -827,6 +827,9 @@ const createNewWebTabContent = (windowState: IWindowState) => {
             .turnstile-wrapper {
               display: none !important;
             }
+            .tsqd-open-btn-container{
+                display: none !important;
+            }
           \`;
           document.head.appendChild(style);
         })();
