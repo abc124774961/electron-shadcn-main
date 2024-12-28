@@ -46,4 +46,4 @@ setTimeout(() => {
     shadowRoot.appendChild(rootIntoShadow);
     // createRoot(rootIntoShadow).render(<App />);
     ReactDOM.render(<App />, rootIntoShadow);
-}, 3000);
+}, 5000);

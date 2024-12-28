@@ -156,7 +156,7 @@ export class AutoHandler {
     prevPage: EnumPage | undefined;
     checkAutoHandlerStatus() {
         let page = mttDomCommon.getCurrentPage();
-        if (this.automationConfig.autoMining && page != EnumPage.Game) {
+        if (automationConfig.autoMining && page != EnumPage.Game) {
             if (page == this.prevPage && this.pageActiveTime) {
                 if (Date.now() - this.pageActiveTime > 60000) {
                     console.log("自动操作暂停，恢复跳转至首页");
@@ -235,7 +235,7 @@ export class AutoHandler {
             if (!gameOperationBar) {
                 console.log("gameMenuButton not found,等待游戏菜单出现");
             }
-            if (gameOperationBar && autoHandler.automationConfig.autoMining) {
+            if (gameOperationBar && automationConfig.autoMining) {
                 console.log("gameMenuButton click,点击游戏菜单");
                 gameMenuButton?.click();
                 await sleep(300);
@@ -251,7 +251,7 @@ export class AutoHandler {
                 }
             }
         } else if (
-            autoHandler.automationConfig.autoPaly &&
+            automationConfig.autoPaly &&
             currentHand.winProbability > 0.5 &&
             status.isMyselfOpreateTime
         ) {
