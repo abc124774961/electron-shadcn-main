@@ -5,7 +5,7 @@ import { featFlowHandler } from "./FeatFlowHandler";
 import { sleep, touchClick, waitForElement, waitForPageLoad } from "./domCommon";
 import { Hand } from "pokersolver";
 import { getCurrentHandCardsWithTypes } from "./pokerCommon";
-import { AutomationConfig } from "./AutomationConfig";
+import { automationConfig, AutomationConfig } from "./AutomationConfig";
 import { mttMatchData } from "./mttMatchData";
 import $ from "jquery";
 
@@ -13,7 +13,6 @@ export class AutoHandler {
     constructor() {
         // makeAutoObservable(this);
     }
-    automationConfig = new AutomationConfig();
     autoStartStatus = false;
 
     running = false;
@@ -64,33 +63,37 @@ export class AutoHandler {
                         default:
                     }
                 } else if (page == EnumPage.Game) {
+                    mttMatchData.needRefreshMiningData = true;
                     // console.log("自动化监听开始");
                     (await that.autoHandlerStatus(that)) as any;
                 } else if (page == EnumPage.Login) {
-                    if (that.automationConfig.autoLogin) {
+                    if (automationConfig.autoLogin) {
                         await featFlowHandler.autoHandlerLoginFlow(account);
                     }
                 } else if (page == EnumPage.VerifyPassword) {
                     await featFlowHandler.autoHandlerInputPasswordFlow(account.password);
                 } else if (page == EnumPage.TourneyList5) {
-                    if (that.automationConfig.autoMining) {
+                    if (automationConfig.autoMining) {
                         await featFlowHandler.autoHandlerEntryListMatchFlow();
                     }
                 } else {
                     // if (page == EnumPage.Home1 || page == EnumPage.Home2) {
                     // console.log("首页");
-                    if (that.automationConfig.autoMining) {
+                    if (automationConfig.autoMining) {
                         console.log("跳转至比赛页面");
                         let isEntry = await featFlowHandler.autoHandlerEnterTableFlow();
                         if (!isEntry) {
-                            let count =
-                                mttMatchData.todayMiningCount >= 0
-                                    ? mttMatchData.todayMiningCount
-                                    : await featFlowHandler.getTodayMiningCount();
-                            if (count != undefined && count >= 13) {
-                                console.log("暂停。。。。。");
-                                that.automationConfig.setAutoMining(false);
-                            } else if (count != undefined && count < 13 && count >= 0) {
+                            let count = mttMatchData.needRefreshMiningData
+                                ? await featFlowHandler.getTodayMiningCount()
+                                : mttMatchData.quickMatchCount;
+                            if (count != undefined && count >= 9) {
+                                console.log("暂停挖矿。。。。。", count);
+                                automationConfig.setAutoMining(false);
+                            } else if (
+                                mttMatchData.needRefreshMiningData == false &&
+                                count <= 9 &&
+                                count >= 0
+                            ) {
                                 console.log("返回-2");
                                 // location.href = EnumPage.TourneyList5;
                                 // window.history.go(-2);
@@ -113,10 +116,11 @@ export class AutoHandler {
                                 }
                             }
                             // location.replace(EnumPage.TourneyList5);
+                        } else {
                         }
                     }
                     // } else if (page == EnumPage.Tourney) {
-                    //     if (that.automationConfig.autoMining) {
+                    //     if (automationConfig.autoMining) {
                     //         location.href = EnumPage.TourneyList5;
                     //     }
                     // }
@@ -154,7 +158,7 @@ export class AutoHandler {
         let page = mttDomCommon.getCurrentPage();
         if (this.automationConfig.autoMining && page != EnumPage.Game) {
             if (page == this.prevPage && this.pageActiveTime) {
-                if (Date.now() - this.pageActiveTime > 20000) {
+                if (Date.now() - this.pageActiveTime > 60000) {
                     console.log("自动操作暂停，恢复跳转至首页");
                     location.replace(EnumPage.Home1);
                     this.pageActiveTime = undefined;
@@ -231,7 +235,7 @@ export class AutoHandler {
             if (!gameOperationBar) {
                 console.log("gameMenuButton not found,等待游戏菜单出现");
             }
-            if (gameOperationBar) {
+            if (gameOperationBar && autoHandler.automationConfig.autoMining) {
                 console.log("gameMenuButton click,点击游戏菜单");
                 gameMenuButton?.click();
                 await sleep(300);

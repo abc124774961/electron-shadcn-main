@@ -10,6 +10,7 @@ import {
 import $ from "jquery";
 import { mttMatchData } from "./mttMatchData";
 import { EnumPage } from "./types";
+import { automationConfig } from "./AutomationConfig";
 
 class FeatFlowHandler {
     async autoHandlerLoginFlow(account: any) {
@@ -50,7 +51,7 @@ class FeatFlowHandler {
         if (location.pathname == EnumPage.Home1 || location.pathname == EnumPage.Home2) {
             await waitForElement(".home-multi-table").catch(() => []);
         }
-        let tables = await waitForElement(".home-multi-table .multi-table", undefined, 15000).catch(
+        let tables = await waitForElement(".home-multi-table .multi-table", undefined, 10000).catch(
             () => []
         );
         console.log("获取到已进入的桌子：数量", tables.length);
@@ -58,6 +59,7 @@ class FeatFlowHandler {
         if (tables.length > 0) {
             $(tables).find(".multi-table__item:first").trigger("click");
             return true;
+        } else {
         }
         return false;
     }
@@ -93,16 +95,28 @@ class FeatFlowHandler {
         }
         let historyItem = await waitForElement(".history-game-list-item").catch(() => $([]));
         let todayCount = 0;
+        let quickMatchCount = 0; // 新增快速赛统计变量
+
         historyItem.each((index, item) => {
             let time = $(item).find("> div > div span:nth-child(2)").html();
-            let today = new Date().getDate();
+            let today = automationConfig.configDate.getDate();
             let day = new Date(time).getDate();
-            if (today == day) {
+
+            if (today === day) {
                 todayCount++;
+                let quickHtml = $(item).find("div span").html();
+                // Speed,快速
+                if (quickHtml.includes("快速") || quickHtml.includes("Speed")) {
+                    // 假设快速赛的标识是一个类名
+                    quickMatchCount++;
+                }
             }
         });
+        mttMatchData.needRefreshMiningData = false;
+
         runInAction(() => {
             mttMatchData.todayMiningCount = todayCount;
+            mttMatchData.quickMatchCount = quickMatchCount; // 假设 mttMatchData 有一个 quickMatchCount 属性
         });
         console.log("获取到今日已开奖的场次", todayCount);
         return todayCount;
@@ -124,9 +138,11 @@ class FeatFlowHandler {
             list = $(".match-card").get();
             for (let i = 0; i < list.length; i++) {
                 let item = list[i];
+                let itemName = $(item).find(".name").html();
                 if (
                     /\d{1,2}/gi.test($(item).find(".match-status").html()?.toString() || "") &&
-                    $(item).find(".registered").length == 0
+                    $(item).find(".registered").length == 0 &&
+                    automationConfig.hasAllowAiningTypeList(itemName)
                 ) {
                     console.log("点击房间", $(item).find(".match-status").html());
                     $(item).trigger("click");

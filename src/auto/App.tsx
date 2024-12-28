@@ -7,9 +7,12 @@ import { autoHandler } from "./AutoHandler";
 import { mttMatchData } from "./mttMatchData";
 import { mttDomCommon } from "./mttSportsCommon";
 import { featFlowHandler } from "./FeatFlowHandler";
+import MttGameTableData from "./mttGameTableData";
 export default function App() {
     useEffect(() => {
+        mttMatchData.init();
         autoHandler.startAuto();
+        MttGameTableData.getCurrentTableData().updateTableDataByTimer();
         return () => {
             autoHandler.destory();
         };
@@ -20,24 +23,31 @@ export default function App() {
                 return (
                     <div
                         style={{
-                            width: "50px",
-                            height: "50px",
+                            width: "60px",
+                            height: "40px",
                             background: autoHandler.runActive ? "green" : "red",
                             borderRadius: "4px",
                             justifyContent: "center",
                             alignItems: "center",
                             display: "flex",
+                            opacity: 0.6,
                         }}
                         onClick={() => {
                             // featFlowHandler.getMiningCountByDate();
                             featFlowHandler.getTodayMiningCount();
                         }}
                     >
-                        <div style={{ fontSize: "12px" }}>
-                            今日：
-                            {mttMatchData.todayMiningCount == -1
-                                ? "--"
-                                : mttMatchData.todayMiningCount}
+                        <div style={{ fontSize: "11px", textAlign: "center" }}>
+                            <div>
+                                比赛/快速
+                                {mttMatchData.todayMiningCount == -1
+                                    ? "--"
+                                    : mttMatchData.todayMiningCount}
+                                /
+                                {mttMatchData.quickMatchCount == -1
+                                    ? "--"
+                                    : mttMatchData.quickMatchCount}
+                            </div>
                             {/* {autoHandler.running} */}
                         </div>
                     </div>
