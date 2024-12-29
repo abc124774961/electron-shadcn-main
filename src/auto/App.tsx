@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { useEffect, useReducer, useState } from "react";
 import { Menu } from "react-float-menu";
 import { Observer } from "mobx-react-lite";
@@ -8,6 +8,8 @@ import { mttMatchData } from "./mttMatchData";
 import { mttDomCommon } from "./mttSportsCommon";
 import { featFlowHandler } from "./FeatFlowHandler";
 import MttGameTableData from "./mttGameTableData";
+import { useWindowSize } from "usehooks-ts";
+
 export default function App() {
     useEffect(() => {
         mttMatchData.init();
@@ -17,36 +19,56 @@ export default function App() {
             autoHandler.destory();
         };
     }, []);
+
+    useLayoutEffect(() => {
+        console.log("useLayoutEffect");
+    }, [document.querySelector("#root")]);
+
+    useWindowSize();
+
     return (
         <Observer>
             {() => {
                 return (
                     <div
                         style={{
-                            width: "60px",
-                            height: "40px",
                             background: autoHandler.runActive ? "green" : "red",
                             borderRadius: "4px",
                             justifyContent: "center",
-                            alignItems: "center",
+                            alignItems: "flex-start",
                             display: "flex",
-                            opacity: 0.6,
+                            opacity: 1,
+                            position: "absolute",
+                            top: window.innerHeight / 1.5 + "px",
+                            left: "0px",
+                            padding: "6px",
+                            minWidth: "40px",
                         }}
                         onClick={() => {
                             // featFlowHandler.getMiningCountByDate();
                             featFlowHandler.getTodayMiningCount();
                         }}
                     >
-                        <div style={{ fontSize: "11px", textAlign: "center" }}>
+                        <div style={{ fontSize: "11px", textAlign: "center", lineHeight: "13px" }}>
                             <div>
                                 比赛/快速
-                                {mttMatchData.todayMiningCount == -1
-                                    ? "--"
-                                    : mttMatchData.todayMiningCount}
-                                /
-                                {mttMatchData.quickMatchCount == -1
-                                    ? "--"
-                                    : mttMatchData.quickMatchCount}
+                                {mttMatchData.todayMiningCount}/{mttMatchData.quickMatchCount}
+                            </div>
+                            <div
+                                style={{
+                                    height: "4px",
+                                    marginTop: "4px",
+                                    borderTop: "1px solid white",
+                                }}
+                            ></div>
+                            <div>
+                                总计
+                                {mttMatchData.bonusTotal}
+                            </div>
+                            <div>日赛{mttMatchData.dayRaceBonusTotal}</div>
+                            <div>
+                                快速
+                                {mttMatchData.quickRaceBonusTotal}
                             </div>
                             {/* {autoHandler.running} */}
                         </div>

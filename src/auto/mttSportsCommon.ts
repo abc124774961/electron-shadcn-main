@@ -107,6 +107,8 @@ class MttDomCommon {
             return EnumPage.VerifyPassword;
         } else if (url.includes(EnumPage.Login)) {
             return EnumPage.Login;
+        } else if (url.includes(EnumPage.Me)) {
+            return EnumPage.Me;
         }
     }
 

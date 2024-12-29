@@ -70,6 +70,10 @@ export class AutoHandler {
                     if (automationConfig.autoLogin) {
                         await featFlowHandler.autoHandlerLoginFlow(account);
                     }
+                } else if (page == EnumPage.Me) {
+                    if (automationConfig.autoMining) {
+                        await featFlowHandler.autoHandlerGotoLoginPage(account);
+                    }
                 } else if (page == EnumPage.VerifyPassword) {
                     await featFlowHandler.autoHandlerInputPasswordFlow(account.password);
                 } else if (page == EnumPage.TourneyList5) {

@@ -14,7 +14,10 @@ setTimeout(() => {
     const rootIntoShadow = document.createElement("div");
     rootIntoShadow.id = "shadow-root";
     rootIntoShadow.style.position = "fixed";
-    rootIntoShadow.style.top = document.body.clientHeight / 1.6 + "px";
+    rootIntoShadow.style.top = "0px";
+    rootIntoShadow.style.left = "0px";
+
+    // rootIntoShadow.style.top = document.body.offsetHeight / 1.6 + "px";
     rootIntoShadow.style.zIndex = "1111";
 
     const shadowRoot = root.attachShadow({ mode: "open" });
@@ -46,4 +49,4 @@ setTimeout(() => {
     shadowRoot.appendChild(rootIntoShadow);
     // createRoot(rootIntoShadow).render(<App />);
     ReactDOM.render(<App />, rootIntoShadow);
-}, 5000);
+}, 10000);

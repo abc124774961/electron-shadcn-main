@@ -16,11 +16,13 @@ class FeatFlowHandler {
     async autoHandlerLoginFlow(account: any) {
         await waitForElement(".login-title");
         await sleep(1400);
-        let historyLogin = await waitForElement(".history-login", undefined).catch(() => []);
-        if (historyLogin?.length > 0) {
-            let switchBtn = await waitForElement("#button-next", undefined);
-            switchBtn.trigger("click");
-            await sleep(1400);
+        if ($(".ant-input.ant-input-lg").length == 0) {
+            let historyLogin = await waitForElement(".history-login", undefined).catch(() => []);
+            if (historyLogin?.length > 0) {
+                let switchBtn = await waitForElement("#button-next", undefined);
+                switchBtn.trigger("click");
+                await sleep(1400);
+            }
         }
         await simulateInput("#accountInput input", account.account);
         await sleep(500);
@@ -36,6 +38,17 @@ class FeatFlowHandler {
         console.log("route,before", location.href);
         await waitForRouteChange();
         console.log("route,alter", location.href);
+    }
+
+    async autoHandlerGotoLoginPage(password: string) {
+        if ($(".iconfont.icon-logout").length == 0) {
+            let btnSwitch = await waitForElement(".btn-switch");
+            btnSwitch.trigger("click");
+            await sleep(200);
+            await waitForRouteChange();
+        } else {
+            // console.log("已登录，无需切换账号");
+        }
     }
 
     async autoHandlerInputPasswordFlow(password: string) {
@@ -96,6 +109,14 @@ class FeatFlowHandler {
         let historyItem = await waitForElement(".history-game-list-item").catch(() => $([]));
         let todayCount = 0;
         let quickMatchCount = 0; // 新增快速赛统计变量
+        //周赛奖励统计
+        let weekRaceBonusTotal = 0;
+        //日赛奖励统计
+        let dayRaceBonusTotal = 0;
+        //普通挖矿赛奖励统计
+        let normalMiningBonusTotal = 0;
+        //快速挖矿赛 奖金 统计变量
+        let quickRaceBonusTotal = 0;
 
         historyItem.each((index, item) => {
             let time = $(item).find("> div > div span:nth-child(2)").html();
@@ -104,11 +125,30 @@ class FeatFlowHandler {
 
             if (today === day) {
                 todayCount++;
-                let quickHtml = $(item).find("div span").html();
+                let nameHtml = $(item).find("div span").html();
+                let bonusHtml = $(item).find(".match-reward .prize-count").html();
                 // Speed,快速
-                if (quickHtml.includes("快速") || quickHtml.includes("Speed")) {
+                if (nameHtml.includes("快速") || nameHtml.includes("Speed")) {
                     // 假设快速赛的标识是一个类名
                     quickMatchCount++;
+                    if (!isNaN(Number(bonusHtml))) {
+                        quickRaceBonusTotal += Number(bonusHtml);
+                    }
+                }
+                if (nameHtml == "周赛" || nameHtml == "--") {
+                    if (!isNaN(Number(bonusHtml))) {
+                        weekRaceBonusTotal += Number(bonusHtml);
+                    }
+                }
+                if (nameHtml == "挖礦賽" || nameHtml == "--") {
+                    if (!isNaN(Number(bonusHtml))) {
+                        normalMiningBonusTotal += Number(bonusHtml);
+                    }
+                }
+                if (nameHtml.includes("日賽") || nameHtml.includes("--")) {
+                    if (!isNaN(Number(bonusHtml))) {
+                        dayRaceBonusTotal += Number(bonusHtml);
+                    }
                 }
             }
         });
@@ -117,9 +157,18 @@ class FeatFlowHandler {
         runInAction(() => {
             mttMatchData.todayMiningCount = todayCount;
             mttMatchData.quickMatchCount = quickMatchCount; // 假设 mttMatchData 有一个 quickMatchCount 属性
+            mttMatchData.weekRaceBonusTotal = weekRaceBonusTotal;
+            mttMatchData.dayRaceBonusTotal = dayRaceBonusTotal;
+            mttMatchData.normalMiningBonusTotal = normalMiningBonusTotal;
+            mttMatchData.quickRaceBonusTotal = quickRaceBonusTotal;
         });
-        console.log("获取到今日已开奖的场次", todayCount);
-        return todayCount;
+        console.log("获取到今日已开奖的场次", todayCount, "快速赛", quickMatchCount);
+        console.log("周赛奖金统计", weekRaceBonusTotal);
+        console.log("日赛奖金统计", dayRaceBonusTotal);
+        console.log("普通挖矿赛奖金统计", normalMiningBonusTotal);
+        console.log("快速赛奖金统计", quickRaceBonusTotal);
+
+        return quickMatchCount;
     }
 
     async autoHandlerEntryListMatchFlow() {
