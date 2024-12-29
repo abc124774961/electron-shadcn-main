@@ -727,7 +727,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
                 width: winWidht,
                 height: winHeight,
             });
-            browserView.webContents.openDevTools();
+            // browserView.webContents.openDevTools();
             // browserView.webContents.session.resolveProxy()
             // browserView.webContents.setUserAgent(windowState.browser.userAgent.mobile);
             browserView.webContents.setUserAgent(
@@ -755,7 +755,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
             // options.width = width / 2;
             // options.height = height / 2;
             const browserView = new BrowserWindow();
-            browserView.webContents.openDevTools();
+            // browserView.webContents.openDevTools();
 
             // 监听权限请求事件
             browserView.webContents.session.setPermissionRequestHandler(
