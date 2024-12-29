@@ -72,7 +72,8 @@
             "account": {
                 "account": "lcy123",
                 "password": "111111",
-                "kyc": "蔡姣"
+                "kyc": "蔡姣",
+                "email": "frode.luo@gmail.com"
             },
             "browser": {
                 "userAgent": {
@@ -166,7 +167,8 @@
             "account": {
                 "account": "berrys",
                 "password": "111111",
-                "kyc": "罗玉明"
+                "kyc": "罗玉明",
+                "email": "abc124774961@foxmail.com"
             },
             "browser": {
                 "userAgent": {

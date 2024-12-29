@@ -633,11 +633,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
     });
     // view1.webContents.openDevTools({ mode: "right" });
     view1.webContents.on("did-finish-load", () => {
-        initWebviewConfiguration(view1.webContents, windowState);
-
-        const jsCode = fs.readFileSync(path.join(__dirname, "MTTAuto.js"), "utf8");
-        // console.log("jsCode", jsCode);
-        view1.webContents.executeJavaScript(jsCode).then((e) => {});
+        initAutoScript(view1.webContents, windowState);
     });
     view1.webContents.on("certificate-error", (event, url, error, certificate, callback) => {
         callback(true); // 信任本地的https服务器
@@ -710,14 +706,28 @@ const createNewWebTabContent = (windowState: IWindowState) => {
             const browserView = new BrowserWindow({
                 width: winWidht,
                 height: winHeight,
+                webPreferences: {
+                    nodeIntegration: true,
+                    // preload: preload,
+                    contextIsolation: false,
+                },
             });
+            browserView.webContents.on("did-finish-load", () => {
+                initAutoScript(browserView.webContents, windowState);
+            });
+            // browserView.setBounds({
+            //     x: width / 2,
+            //     y: winHeight / 2 - winHeight / 2 / 2,
+            //     width: winWidht,
+            //     height: winHeight,
+            // });
             browserView.setBounds({
                 x: width / 2,
                 y: winHeight / 2 - winHeight / 2 / 2,
                 width: winWidht,
                 height: winHeight,
             });
-            // browserView.webContents.openDevTools();
+            browserView.webContents.openDevTools();
             // browserView.webContents.session.resolveProxy()
             // browserView.webContents.setUserAgent(windowState.browser.userAgent.mobile);
             browserView.webContents.setUserAgent(
@@ -1201,6 +1211,12 @@ class WWindowConfigList {
         );
         return dataConfig;
     }
+}
+
+function initAutoScript(webContent: WebContents, windowState: IWindowState) {
+    initWebviewConfiguration(webContent, windowState);
+    const jsCode = fs.readFileSync(path.join(__dirname, "MTTAuto.js"), "utf8");
+    webContent.executeJavaScript(jsCode).then((e) => {});
 }
 
 const windowConfigList = new WWindowConfigList();

@@ -9,6 +9,7 @@ import { mttDomCommon } from "./mttSportsCommon";
 import { featFlowHandler } from "./FeatFlowHandler";
 import MttGameTableData from "./mttGameTableData";
 import { useWindowSize } from "usehooks-ts";
+import "./faceCommon";
 
 export default function App() {
     useEffect(() => {
@@ -66,6 +67,10 @@ export default function App() {
                                 {mttMatchData.bonusTotal}
                             </div>
                             <div>日赛{mttMatchData.dayRaceBonusTotal}</div>
+                            <div>
+                                挖矿赛
+                                {mttMatchData.normalMiningBonusTotal}
+                            </div>
                             <div>
                                 快速
                                 {mttMatchData.quickRaceBonusTotal}
