@@ -30,6 +30,7 @@ const whiteProxyDomains = [
     "app.adjust.com",
     "evm-rpc.mtt.network",
     "sports-pre.mtt.xyz",
+    "sports-table.mtt.xyz",
 ];
 
 /**
