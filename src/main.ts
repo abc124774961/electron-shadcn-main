@@ -34,7 +34,7 @@ const inDevelopment = process.env.NODE_ENV === "development";
 
 let electronApp: ElectronApplication;
 const TOP_TITLE_DRAG_HANDER = 28;
-const TOP_MARGIN = 64;
+const TOP_MARGIN = 68;
 
 async function createWindow() {
     // await pie.initialize(app);
@@ -578,6 +578,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
             // nodeIntegration: true,
             // contextIsolation: true,
             partition: `persist:account-${account.account}`,
+            lang: "zh-TW",
             // webSecurity: false,
             // plugins: true,
             // preload: preload,
@@ -616,6 +617,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
                 `
                     // window.TelegramWebviewProxy={};
                     // window.dispatchEvent(new Event('resize'));
+                    navigator.language='zh-TW';
                     localStorage.setItem('LanguageCode','zh-TW');
                 `
             )
@@ -695,7 +697,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         const orgRedirectUrl = decodeURI(params.get("redirectUrl") || "");
         params.set(
             "redirectUrl",
-            encodeURI(orgRedirectUrl.replace("https://localhost", "https://sports.mtt.xyz"))
+            encodeURI(orgRedirectUrl.replace(web3AppConfig.mttBaseUrl, "https://sports.mtt.xyz"))
         );
         console.log("params", params);
         details.url = uri?.origin + "?" + params.toString();
@@ -796,6 +798,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
     });
 
     view1.webContents.on("did-finish-load", () => {
+        
         // 注册脚本以监听 URL 变更
         view1.webContents.executeJavaScript(`
 
@@ -877,9 +880,10 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         sockProxyRules(proxyUrl).then((proxyRules) => {
             view1.webContents.session.setProxy({ proxyRules }).then((e) => {
                 // console.log("fsdfdafdafas");
+                view1.webContents.loadURL(web3AppConfig.mttBaseUrl);
                 // view1.webContents.loadURL("https://sports-pre.mtt.xyz");
                 // view1.webContents.loadURL("https://sports.mtt.xyz");
-                view1.webContents.loadURL("https://localhost");
+                // view1.webContents.loadURL("https://localhost");
                 // view1.webContents.loadURL("https://www.ipip.net");
             });
         });
@@ -887,7 +891,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
             console.log("preload-error");
         });
     } else {
-        view1.webContents.loadURL("https://sports.mtt.xyz/home/tourney");
+        view1.webContents.loadURL(web3AppConfig.mttBaseUrl + "/home/tourney");
     }
     // win.loadURL("https://www.ipip.net");
 
@@ -1046,7 +1050,7 @@ class SubWebwebHelper {
                         web3Content.session.setProxy({ proxyRules }).then((e) => {
                             // console.log("fsdfdafdafas");
                             // web3Content.loadURL("https://sports-pre.mtt.xyz");
-                            web3Content.loadURL("https://localhost");
+                            web3Content.loadURL(web3AppConfig.mttBaseUrl);
                             // view1.webContents.loadURL("https://www.ipip.net");
                             web3Content.reload();
                         });
@@ -1153,6 +1157,9 @@ class Web3AppConfig {
     isAllowCamara: boolean = true;
     displayMaxColumnNumber: number = 8;
     groupName: string = "1";
+
+    mttBaseUrl: string = "https://localhost/";
+    // mttBaseUrl: string = "https://sports-table.mtt.xyz";
 }
 const web3AppConfig = new Web3AppConfig();
 
