@@ -83,6 +83,8 @@ export class AutoHandler {
                 } else {
                     // if (page == EnumPage.Home1 || page == EnumPage.Home2) {
                     // console.log("首页");
+                    //限制挖矿次数
+                    const maxMiningCount = 40;
                     if (automationConfig.autoMining) {
                         console.log("跳转至比赛页面");
                         let isEntry = await featFlowHandler.autoHandlerEnterTableFlow();
@@ -90,12 +92,12 @@ export class AutoHandler {
                             let count = mttMatchData.needRefreshMiningData
                                 ? await featFlowHandler.getTodayMiningCount()
                                 : mttMatchData.quickMatchCount;
-                            if (count != undefined && count >= 9) {
+                            if (count != undefined && count >= maxMiningCount) {
                                 console.log("暂停挖矿。。。。。", count);
                                 automationConfig.setAutoMining(false);
                             } else if (
                                 mttMatchData.needRefreshMiningData == false &&
-                                count <= 9 &&
+                                count <= maxMiningCount &&
                                 count >= 0
                             ) {
                                 console.log("返回-2");
