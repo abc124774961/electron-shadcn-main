@@ -29,9 +29,10 @@ export class AutomationConfig {
     hasAllowAiningTypeList(name: string) {
         // Mining Tournament
         // return ["Speed"];
-        return ["Speed"].find((item) =>
-            name?.toLocaleLowerCase().includes(item?.toLocaleLowerCase())
-        );
+        // return ["Speed"].find((item) =>
+        //     name?.toLocaleLowerCase().includes(item?.toLocaleLowerCase())
+        // );
+        return true;
     }
 }
 
