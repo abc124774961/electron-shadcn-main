@@ -590,9 +590,9 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         },
     });
 
-    // const extensionPath = path.join(__static, 'line/ophjlpahpchlmihnnnihgmmeilfjmjjc/3.5.1_0')
+    // const extensionPath = path.join(__dirname, 'extension/extension-web3-mtt')
 
-    // view1.webContents.session.loadExtension()
+    // view1.webContents.session.loadExtension(extensionPath)
 
     view1.webContents.setUserAgent(
         // `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) electron-shadcnTemplate/1.0.0 Chrome/128.0.6613.178 Electron/32.2.0 Safari/537.36`
@@ -602,11 +602,6 @@ const createNewWebTabContent = (windowState: IWindowState) => {
     );
 
     // view1.webContents.session.loadExtension("../extension/extension-web3-mtt");
-    // const reactDevToolsPath = path.join("../../extension-web3-mtt/dist");
-
-    // view1.webContents.on("dom-ready", async () => {
-    //     view1.webContents.session.loadExtension(reactDevToolsPath);
-    // });
 
     view1.setBackgroundColor("#20293a");
     // view1.webContents.session.clearData({ dataTypes: ["cache"] });
@@ -631,10 +626,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         `
         );
     });
-    // view1.webContents.openDevTools({ mode: "right" });
-    view1.webContents.on("did-finish-load", () => {
-        initAutoScript(view1.webContents, windowState);
-    });
+    view1.webContents.openDevTools({ mode: "right" });
     view1.webContents.on("certificate-error", (event, url, error, certificate, callback) => {
         callback(true); // 信任本地的https服务器
     });
@@ -891,6 +883,17 @@ const createNewWebTabContent = (windowState: IWindowState) => {
     }
     // win.loadURL("https://www.ipip.net");
 
+    view1.webContents.on("did-finish-load", () => {
+        initAutoScript(view1.webContents, windowState);
+    });
+    const reactDevToolsPath = path.join(__dirname, "../../apps/extension-web3-mtt/dist");
+    view1.webContents.session.loadExtension(reactDevToolsPath, {
+        allowFileAccess: true,
+    });
+
+    console.log("reactDevToolsPath", reactDevToolsPath);
+
+    view1.webContents.on("dom-ready", async () => {});
     return view1;
 };
 
@@ -1215,8 +1218,8 @@ class WWindowConfigList {
 
 function initAutoScript(webContent: WebContents, windowState: IWindowState) {
     initWebviewConfiguration(webContent, windowState);
-    const jsCode = fs.readFileSync(path.join(__dirname, "MTTAuto.js"), "utf8");
-    webContent.executeJavaScript(jsCode).then((e) => {});
+    // const jsCode = fs.readFileSync(path.join(__dirname, "MTTAuto.js"), "utf8");
+    // webContent.executeJavaScript(jsCode).then((e) => {});
 }
 
 const windowConfigList = new WWindowConfigList();
