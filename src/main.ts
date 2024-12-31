@@ -63,7 +63,7 @@ async function createWindow() {
         // const cachePath = "path/to/your/cache/directory";
         // session.fromPath("./cache");
         // app.setAppLogsPath("/Users/apple/baidu-pan/web3-browser-cache");
-        if (getSystemInfo() == "windows") {
+        if (getSystemInfo() == "windows" && fs.existsSync("e:\\web3browser-cache")) {
             app.setPath("appData", "e:\\web3browser-cache");
         } else {
         }
