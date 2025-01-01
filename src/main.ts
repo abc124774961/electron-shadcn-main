@@ -628,7 +628,7 @@ const createNewWebTabContent = (windowState: IWindowState) => {
         `
         );
     });
-    view1.webContents.openDevTools({ mode: "right" });
+    // view1.webContents.openDevTools({ mode: "right" });
     view1.webContents.on("certificate-error", (event, url, error, certificate, callback) => {
         callback(true); // 信任本地的https服务器
     });
@@ -1144,14 +1144,17 @@ class SubWebwebHelper {
 
 function initWebviewConfiguration(webContents: WebContents, window?: IWindowState) {
     webContents.executeJavaScript(
-        `localStorage.setItem('__env',JSON.stringify({
+        `
+        const _env={
             account:${JSON.stringify(window?.account)},
             id:'${window?.account?.account}',
             password:'${window?.account?.password}',
             kyc:'${window?.account?.kyc || ""}',
             config:${JSON.stringify(web3AppConfig)},
             autoSetting:${JSON.stringify(window?.autoSetting)}
-    }));`
+        };
+        window.__env = _env;
+        localStorage.setItem('__env',JSON.stringify(_env));`
     );
 }
 
