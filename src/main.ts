@@ -26,7 +26,7 @@ import { IAccountInfo, ITaskConfig, IWindowState } from "./types";
 import TaskConfig from "./task/TaskConfig";
 import { BrowserView, getCurrentWebContents } from "@electron/remote";
 import { sockProxyRules } from "./utils/socksSessionProxy";
-import { getSystemInfo } from "./lib/utils";
+import { getSystemInfo } from "./utils/utils";
 import { URL } from "url";
 import os from "node:os";
 
@@ -790,7 +790,6 @@ const createNewWebTabContent = (windowState: IWindowState) => {
     });
 
     view1.webContents.on("did-finish-load", () => {
-        
         // 注册脚本以监听 URL 变更
         view1.webContents.executeJavaScript(`
 
@@ -1145,14 +1144,14 @@ class SubWebwebHelper {
 
 function initWebviewConfiguration(webContents: WebContents, window?: IWindowState) {
     webContents.executeJavaScript(
-        `window.__env = {
+        `localStorage.setItem('__env',JSON.stringify({
             account:${JSON.stringify(window?.account)},
             id:'${window?.account?.account}',
             password:'${window?.account?.password}',
             kyc:'${window?.account?.kyc || ""}',
             config:${JSON.stringify(web3AppConfig)},
             autoSetting:${JSON.stringify(window?.autoSetting)}
-        };`
+    }));`
     );
 }
 
